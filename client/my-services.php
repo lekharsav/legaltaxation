@@ -86,52 +86,579 @@ if($payment_sql){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Services - Legal Taxation</title>
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
+  <!-- Google Font: Inter (modern, clean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Theme style (AdminLTE 3) - we keep for layout but will override heavily -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  
+  <!-- Completely new custom design -->
   <style>
-    .service-card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      transition: all 0.3s;
-      overflow: hidden;
+    * {
+      font-family: 'Inter', sans-serif;
     }
-    .service-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+    body {
+      background-color: #f5f7fa;
     }
-    .service-image {
-      height: 150px;
-      overflow: hidden;
+
+    .wrapper {
+      background-color: #f5f7fa;
     }
-    .service-image img {
-      width: 100%;
+
+    /* Override AdminLTE defaults */
+    .main-header {
+      background-color: #ffffff !important;
+      border-bottom: 1px solid #e9ecef;
+      box-shadow: none;
+    }
+
+    .main-sidebar {
+      background-color: #1e293b !important;
+      box-shadow: none;
+    }
+
+    .content-wrapper {
+      background-color: #f5f7fa;
+    }
+
+    /* Custom page header */
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-weight: 600;
+      font-size: 1.8rem;
+      color: #1e293b;
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .page-header h1 i {
+      color: #3b82f6;
+      margin-right: 0.75rem;
+      font-size: 2rem;
+    }
+
+    .page-header .breadcrumb {
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .page-header .breadcrumb a {
+      color: #6c757d;
+    }
+
+    .page-header .breadcrumb .active {
+      color: #1e293b;
+      font-weight: 500;
+    }
+
+    /* KPI Cards - minimal, borderless, with soft shadows */
+    .kpi-card {
+      background: #ffffff;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      border: 1px solid #f1f4f9;
+      transition: all 0.2s;
       height: 100%;
-      object-fit: cover;
+      display: flex;
+      flex-direction: column;
     }
-    .service-body {
-      padding: 15px;
+
+    .kpi-card:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      border-color: #e2e8f0;
     }
-    .service-status {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 1;
+
+    .kpi-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
     }
-    .progress-sm {
-      height: 8px;
+
+    .kpi-icon i {
+      font-size: 1.5rem;
     }
-    .badge-custom {
+
+    .kpi-content {
+      flex: 1;
+    }
+
+    .kpi-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.2;
+    }
+
+    .kpi-footer {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: #3b82f6;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-weight: 500;
+    }
+
+    .kpi-footer:hover {
+      color: #2563eb;
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      background: #ffffff;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      border: 1px solid #f1f4f9;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 1rem;
+    }
+
+    .filter-group {
+      flex: 1 1 200px;
+    }
+
+    .filter-group label {
+      display: block;
       font-size: 0.75rem;
-      padding: 3px 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 0.5rem;
     }
-    .action-buttons {
-      margin-top: 10px;
+
+    .filter-group select,
+    .filter-group input {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      font-size: 0.9rem;
+      color: #1e293b;
+      background: #ffffff;
+      transition: border 0.2s;
+    }
+
+    .filter-group select:focus,
+    .filter-group input:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .btn-filter {
+      background: #3b82f6;
+      color: #ffffff;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-filter:hover {
+      background: #2563eb;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+      background: #f8fafc;
+    }
+
+    /* Services grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .service-item {
+      background: #ffffff;
+      border-radius: 1rem;
+      border: 1px solid #f1f4f9;
+      overflow: hidden;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-item:hover {
+      border-color: #e2e8f0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .service-header {
+      padding: 1.25rem 1.25rem 0.75rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .service-title h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0 0 0.25rem 0;
+    }
+
+    .service-category {
+      font-size: 0.8rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .service-category i {
+      color: #3b82f6;
+      font-size: 0.7rem;
+    }
+
+    .service-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .badge-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-completed {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge-other {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .service-details {
+      padding: 0 1.25rem 1rem 1.25rem;
+      border-bottom: 1px solid #f1f4f9;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .detail-label {
+      color: #64748b;
+    }
+
+    .detail-value {
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .service-progress {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid #f1f4f9;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar-bg {
+      background: #e9ecef;
+      height: 0.5rem;
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 1rem;
+      transition: width 0.3s;
+    }
+
+    .progress-fill.pending {
+      background: #f59e0b;
+    }
+
+    .progress-fill.completed {
+      background: #10b981;
+    }
+
+    .service-meta {
+      padding: 1rem 1.25rem;
+      display: flex;
+      gap: 1rem;
+      border-bottom: 1px solid #f1f4f9;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .meta-item i {
+      color: #3b82f6;
+      width: 16px;
+    }
+
+    .service-actions {
+      padding: 1rem 1.25rem 1.25rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: auto;
+    }
+
+    .btn-service {
+      flex: 1 1 auto;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 2rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #334155;
+      text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .btn-service:hover {
+      background: #ffffff;
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+
+    .btn-service.primary {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #ffffff;
+    }
+
+    .btn-service.primary:hover {
+      background: #2563eb;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: #ffffff;
+      border-radius: 1rem;
+      border: 1px solid #f1f4f9;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: #cbd5e1;
+      margin-bottom: 1.5rem;
+    }
+
+    .empty-state h4 {
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 0.75rem;
+    }
+
+    .empty-state p {
+      color: #64748b;
+      margin-bottom: 2rem;
+    }
+
+    .empty-state .btn-empty {
+      background: #3b82f6;
+      color: #ffffff;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 2rem;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Recent payments table */
+    .payments-card {
+      background: #ffffff;
+      border-radius: 1rem;
+      border: 1px solid #f1f4f9;
+      margin-top: 2rem;
+    }
+
+    .payments-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #f1f4f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .payments-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .payments-header h3 i {
+      color: #3b82f6;
+    }
+
+    .payments-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .payments-table th {
+      text-align: left;
+      padding: 1rem 1.5rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+      color: #64748b;
+      border-bottom: 1px solid #f1f4f9;
+    }
+
+    .payments-table td {
+      padding: 1rem 1.5rem;
+      font-size: 0.9rem;
+      color: #334155;
+      border-bottom: 1px solid #f8fafc;
+    }
+
+    .payments-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .payment-status {
+      display: inline-block;
+      padding: 0.2rem 0.75rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .status-success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .payments-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid #f1f4f9;
+      text-align: right;
+    }
+
+    .btn-view-all {
+      background: transparent;
+      border: 1px solid #e2e8f0;
+      border-radius: 2rem;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-view-all:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
     }
   </style>
 </head>
@@ -147,366 +674,277 @@ if($payment_sql){
 
   <!-- Content Wrapper -->
   <div class="content-wrapper">
-    <!-- Content Header -->
-    <div class="content-header">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row mb-3">
           <div class="col-sm-6">
-            <h1 class="m-0">
-              <i class="fas fa-cogs mr-2"></i>My Services
-              <small class="text-muted">(<?php echo $total_services; ?> total)</small>
-            </h1>
+            <div class="page-header">
+              <h1>
+                <i class="fas fa-file-invoice"></i>
+                My Services
+              </h1>
+            </div>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+              <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
               <li class="breadcrumb-item active">My Services</li>
             </ol>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        
-        <!-- Statistics Cards -->
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3><?php echo $total_services; ?></h3>
-                <p>Total Services</p>
+
+        <!-- KPI Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-lg-3 col-md-6">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background: #e0f2fe; color: #0284c7;">
+                <i class="fas fa-briefcase"></i>
               </div>
-              <div class="icon">
-                <i class="fas fa-cogs"></i>
+              <div class="kpi-content">
+                <div class="kpi-label">Total Services</div>
+                <div class="kpi-value"><?php echo $total_services; ?></div>
               </div>
-              <a href="#services-list" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#services-list" class="kpi-footer">View all <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>
-          
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3><?php echo $pending_services; ?></h3>
-                <p>In Progress</p>
-              </div>
-              <div class="icon">
+          <div class="col-lg-3 col-md-6">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background: #fef9c3; color: #a16207;">
                 <i class="fas fa-clock"></i>
               </div>
-              <a href="#pending" class="small-box-footer">View Pending <i class="fas fa-arrow-circle-right"></i></a>
+              <div class="kpi-content">
+                <div class="kpi-label">In Progress</div>
+                <div class="kpi-value"><?php echo $pending_services; ?></div>
+              </div>
+              <a href="#pending" class="kpi-footer">View pending <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>
-          
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3><?php echo $completed_services; ?></h3>
-                <p>Completed</p>
-              </div>
-              <div class="icon">
+          <div class="col-lg-3 col-md-6">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background: #dcfce7; color: #166534;">
                 <i class="fas fa-check-circle"></i>
               </div>
-              <a href="#completed" class="small-box-footer">View Completed <i class="fas fa-arrow-circle-right"></i></a>
+              <div class="kpi-content">
+                <div class="kpi-label">Completed</div>
+                <div class="kpi-value"><?php echo $completed_services; ?></div>
+              </div>
+              <a href="#completed" class="kpi-footer">View completed <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>
-          
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-secondary">
-              <div class="inner">
-                <h3>₹<?php echo $total_spent; ?></h3>
-                <p>Total Spent</p>
+          <div class="col-lg-3 col-md-6">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background: #f1f5f9; color: #334155;">
+                <i class="fas fa-indian-rupee-sign"></i>
               </div>
-              <div class="icon">
-                <i class="fas fa-rupee-sign"></i>
+              <div class="kpi-content">
+                <div class="kpi-label">Total Spent</div>
+                <div class="kpi-value">₹<?php echo number_format($total_spent, 2); ?></div>
               </div>
-              <a href="my-payments.php" class="small-box-footer">View Payments <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Filter Options -->
-        <div class="row mb-3">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Filter by Status:</label>
-                      <select class="form-control" id="statusFilter">
-                        <option value="all">All Status</option>
-                        <option value="0">In Progress</option>
-                        <option value="1">Completed</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Filter by Category:</label>
-                      <select class="form-control" id="categoryFilter">
-                        <option value="all">All Categories</option>
-                        <?php
-                        if(!empty($purchased_services)){
-                            $categories = array_unique(array_column($purchased_services, 'category_name'));
-                            foreach($categories as $category){
-                                if($category) {
-                                    echo "<option value='".htmlspecialchars($category)."'>".htmlspecialchars($category)."</option>";
-                                }
-                            }
-                        }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Sort by:</label>
-                      <select class="form-control" id="sortFilter">
-                        <option value="newest">Newest First</option>
-                        <option value="oldest">Oldest First</option>
-                        <option value="price_high">Price: High to Low</option>
-                        <option value="price_low">Price: Low to High</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>&nbsp;</label>
-                      <button class="btn btn-primary btn-block" onclick="applyFilters()">
-                        <i class="fas fa-filter"></i> Apply Filters
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <a href="my-payments.php" class="kpi-footer">View payments <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>
         </div>
 
-        <!-- Purchased Services List -->
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-shopping-bag mr-2"></i>My Purchased Services
-                  <span class="badge badge-primary ml-2"><?php echo $total_services; ?></span>
-                </h3>
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="card-body">
-                <?php if(empty($purchased_services)): ?>
-                  <div class="text-center py-5">
-                    <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
-                    <h4>No Services Purchased Yet</h4>
-                    <p class="text-muted">You haven't purchased any services yet.</p>
-                    <a href="../service.php" class="btn btn-primary btn-lg">
-                      <i class="fas fa-plus-circle"></i> Browse Services
-                    </a>
-                    <p class="mt-3 text-muted">
-                      <small>Once you purchase a service, it will appear here.</small>
-                    </p>
-                  </div>
-                <?php else: ?>
-                  <div class="row" id="services-list">
-                    <?php foreach($purchased_services as $service): 
-                      // Get form responses count
-                      $form_count = 0;
-                      $form_sql = $con->query("SELECT COUNT(*) as count FROM service_form_responses WHERE application_id='".$service['application_id']."'");
-                      if($form_sql && $form_row = $form_sql->fetch_assoc()){
-                        $form_count = $form_row['count'];
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label>Status</label>
+            <select id="statusFilter">
+              <option value="all">All Status</option>
+              <option value="0">In Progress</option>
+              <option value="1">Completed</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Category</label>
+            <select id="categoryFilter">
+              <option value="all">All Categories</option>
+              <?php
+              if(!empty($purchased_services)){
+                  $categories = array_unique(array_column($purchased_services, 'category_name'));
+                  foreach($categories as $category){
+                      if($category) {
+                          echo "<option value='".htmlspecialchars($category)."'>".htmlspecialchars($category)."</option>";
                       }
-                      
-                      // Get documents count
-                      $doc_count = 0;
-                      $doc_sql = $con->query("SELECT COUNT(*) as count FROM req_doc WHERE sid='".$service['application_id']."'");
-                      if($doc_sql && $doc_row = $doc_sql->fetch_assoc()){
-                        $doc_count = $doc_row['count'];
-                      }
-                    ?>
-                      <div class="col-md-4 col-sm-6" 
-                           data-status="<?php echo $service['service_status']; ?>"
-                           data-category="<?php echo htmlspecialchars($service['category_name']); ?>"
-                           data-price="<?php echo $service['paid_price']; ?>"
-                           data-date="<?php echo $service['purchase_date']; ?>">
-                        <div class="service-card">
-                          <div class="service-image">
-                            <?php if(!empty($service['service_image'])): ?>
-                              <img src="../images/<?php echo $service['service_image']; ?>" 
-                                   alt="<?php echo htmlspecialchars($service['service_title']); ?>"
-                                   onerror="this.src='../images/default-service.jpg'">
-                            <?php else: ?>
-                              <div class="bg-light d-flex align-items-center justify-content-center" style="height: 100%;">
-                                <i class="fas fa-cog fa-3x text-muted"></i>
-                              </div>
-                            <?php endif; ?>
-                            <div class="service-status">
-                              <?php if($service['service_status'] == '0'): ?>
-                                <span class="badge badge-warning badge-custom">In Progress</span>
-                              <?php elseif($service['service_status'] == '1'): ?>
-                                <span class="badge badge-success badge-custom">Completed</span>
-                              <?php else: ?>
-                                <span class="badge badge-secondary badge-custom"><?php echo $service['service_status']; ?></span>
-                              <?php endif; ?>
-                            </div>
-                          </div>
-                          <div class="service-body">
-                            <h5 class="mb-1"><?php echo htmlspecialchars($service['service_title']); ?></h5>
-                            <p class="text-muted small mb-2">
-                              <i class="fas fa-tag"></i> <?php echo htmlspecialchars($service['category_name']); ?>
-                            </p>
-                            <p class="small mb-2">
-                              <strong>Paid:</strong> ₹<?php echo $service['paid_price']; ?>
-                              <small class="text-muted">
-                                (Market: ₹<?php echo $service['market_price']; ?>)
-                              </small>
-                            </p>
-                            <p class="small mb-3">
-                              <i class="fas fa-calendar"></i> 
-                              Purchased: <?php echo date('d M Y', strtotime($service['purchase_date'])); ?>
-                            </p>
-                            
-                            <!-- Progress/Status Info -->
-                            <div class="mb-3">
-                              <div class="d-flex justify-content-between mb-1">
-                                <small>Progress:</small>
-                                <small>
-                                  <?php if($service['service_status'] == '0'): ?>
-                                    <span class="text-warning">Processing</span>
-                                  <?php elseif($service['service_status'] == '1'): ?>
-                                    <span class="text-success">Completed</span>
-                                  <?php endif; ?>
-                                </small>
-                              </div>
-                              <div class="progress progress-sm">
-                                <div class="progress-bar bg-<?php echo $service['service_status'] == '1' ? 'success' : 'warning'; ?>" 
-                                     style="width: <?php echo $service['service_status'] == '1' ? '100' : '50'; ?>%">
-                                </div>
-                              </div>
-                            </div>
-                            
-                            <!-- Stats -->
-                            <div class="d-flex justify-content-between mb-3">
-                              <span class="badge badge-info">
-                                <i class="fas fa-file-alt"></i> Forms: <?php echo $form_count; ?>
-                              </span>
-                              <span class="badge badge-warning">
-                                <i class="fas fa-file-upload"></i> Docs: <?php echo $doc_count; ?>
-                              </span>
-                              <span class="badge badge-secondary">
-                                ID: #<?php echo $service['application_id']; ?>
-                              </span>
-                            </div>
-                            
-                            <!-- Action Buttons -->
-                            <div class="action-buttons">
-                              <a href="view-service.php?application_id=<?php echo $service['application_id']; ?>" 
-                                 class="btn btn-sm btn-info btn-block">
-                                <i class="fas fa-eye"></i> View Details
-                              </a>
-                              <?php if($form_count > 0): ?>
-                              <a href="view-form.php?application_id=<?php echo $service['application_id']; ?>" 
-                                 class="btn btn-sm btn-primary btn-block mt-1">
-                                <i class="fas fa-file-alt"></i> View Form
-                              </a>
-                              <?php endif; ?>
-                              <?php if($doc_count > 0): ?>
-                              <a href="my-documents.php?service=<?php echo $service['application_id']; ?>" 
-                                 class="btn btn-sm btn-success btn-block mt-1">
-                                <i class="fas fa-download"></i> Documents
-                              </a>
-                              <?php endif; ?>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    <?php endforeach; ?>
-                  </div>
-                <?php endif; ?>
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-6">
-                    <small class="text-muted">
-                      <i class="fas fa-info-circle"></i> 
-                      Showing <?php echo $total_services; ?> service(s)
-                      <?php if($pending_services > 0): ?>
-                        | <span class="text-warning"><?php echo $pending_services; ?> in progress</span>
-                      <?php endif; ?>
-                    </small>
-                  </div>
-                  <div class="col-md-6 text-right">
-                    <?php if(!empty($purchased_services)): ?>
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default btn-sm" onclick="printServices()">
-                        <i class="fas fa-print"></i> Print
-                      </button>
-                      <a href="../service.php" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus"></i> Buy More
-                      </a>
+                  }
+              }
+              ?>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Sort by</label>
+            <select id="sortFilter">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="price_high">Price: High to Low</option>
+              <option value="price_low">Price: Low to High</option>
+            </select>
+          </div>
+          <div class="filter-actions">
+            <button class="btn-filter" onclick="applyFilters()">
+              <i class="fas fa-sliders-h"></i> Apply
+            </button>
+            <button class="btn-outline" onclick="resetFilters()">
+              <i class="fas fa-undo-alt"></i> Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Services Grid -->
+        <?php if(empty($purchased_services)): ?>
+          <div class="empty-state">
+            <i class="fas fa-box-open"></i>
+            <h4>No Services Purchased Yet</h4>
+            <p>You haven't purchased any services. Explore our offerings and get started today!</p>
+            <a href="../service.php" class="btn-empty">
+              <i class="fas fa-plus-circle"></i> Browse Services
+            </a>
+          </div>
+        <?php else: ?>
+          <div class="services-grid" id="services-list">
+            <?php foreach($purchased_services as $service): 
+              // Get form responses count
+              $form_count = 0;
+              $form_sql = $con->query("SELECT COUNT(*) as count FROM service_form_responses WHERE application_id='".$service['application_id']."'");
+              if($form_sql && $form_row = $form_sql->fetch_assoc()){
+                $form_count = $form_row['count'];
+              }
+              
+              // Get documents count
+              $doc_count = 0;
+              $doc_sql = $con->query("SELECT COUNT(*) as count FROM req_doc WHERE sid='".$service['application_id']."'");
+              if($doc_sql && $doc_row = $doc_sql->fetch_assoc()){
+                $doc_count = $doc_row['count'];
+              }
+            ?>
+              <div class="service-item" 
+                   data-status="<?php echo $service['service_status']; ?>"
+                   data-category="<?php echo htmlspecialchars($service['category_name']); ?>"
+                   data-price="<?php echo $service['paid_price']; ?>"
+                   data-date="<?php echo $service['purchase_date']; ?>">
+                <div class="service-header">
+                  <div class="service-title">
+                    <h3><?php echo htmlspecialchars($service['service_title']); ?></h3>
+                    <div class="service-category">
+                      <i class="fas fa-tag"></i> <?php echo htmlspecialchars($service['category_name'] ?: 'Uncategorized'); ?>
                     </div>
+                  </div>
+                  <div>
+                    <?php if($service['service_status'] == '0'): ?>
+                      <span class="service-badge badge-pending">In Progress</span>
+                    <?php elseif($service['service_status'] == '1'): ?>
+                      <span class="service-badge badge-completed">Completed</span>
+                    <?php else: ?>
+                      <span class="service-badge badge-other"><?php echo $service['service_status']; ?></span>
                     <?php endif; ?>
                   </div>
                 </div>
+
+                <div class="service-details">
+                  <div class="detail-row">
+                    <span class="detail-label">Paid Amount</span>
+                    <span class="detail-value">₹<?php echo number_format($service['paid_price']); ?></span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Market Price</span>
+                    <span class="detail-value">₹<?php echo number_format($service['market_price']); ?></span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Purchase Date</span>
+                    <span class="detail-value"><?php echo date('d M Y', strtotime($service['purchase_date'])); ?></span>
+                  </div>
+                </div>
+
+                <div class="service-progress">
+                  <div class="progress-header">
+                    <span>Progress</span>
+                    <span><?php echo $service['service_status'] == '1' ? '100%' : '50%'; ?></span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-fill <?php echo $service['service_status'] == '1' ? 'completed' : 'pending'; ?>" 
+                         style="width: <?php echo $service['service_status'] == '1' ? '100' : '50'; ?>%"></div>
+                  </div>
+                </div>
+
+                <div class="service-meta">
+                  <div class="meta-item">
+                    <i class="fas fa-file-alt"></i> Forms: <?php echo $form_count; ?>
+                  </div>
+                  <div class="meta-item">
+                    <i class="fas fa-file-upload"></i> Docs: <?php echo $doc_count; ?>
+                  </div>
+                  <div class="meta-item">
+                    <i class="fas fa-hashtag"></i> #<?php echo $service['application_id']; ?>
+                  </div>
+                </div>
+
+                <div class="service-actions">
+                  <a href="view-service.php?application_id=<?php echo $service['application_id']; ?>" class="btn-service primary">
+                    <i class="fas fa-eye"></i> Details
+                  </a>
+                  <?php if($form_count > 0): ?>
+                  <a href="view-form.php?application_id=<?php echo $service['application_id']; ?>" class="btn-service">
+                    <i class="fas fa-file-alt"></i> Form
+                  </a>
+                  <?php endif; ?>
+                  <?php if($doc_count > 0): ?>
+                  <a href="my-documents.php?service=<?php echo $service['application_id']; ?>" class="btn-service">
+                    <i class="fas fa-download"></i> Docs
+                  </a>
+                  <?php endif; ?>
+                </div>
               </div>
-            </div>
+            <?php endforeach; ?>
           </div>
-        </div>
+        <?php endif; ?>
 
         <!-- Recent Payments -->
         <?php if(!empty($recent_payments)): ?>
-        <div class="row mt-3">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-credit-card mr-2"></i>Recent Payments
-                </h3>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>Payment ID</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                        <th>Payment Method</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php foreach($recent_payments as $payment): ?>
-                      <tr>
-                        <td><?php echo $payment['order_id']; ?></td>
-                        <td>₹<?php echo $payment['pay_amount']; ?></td>
-                        <td>
-                          <?php if($payment['payment_status'] == 'Success'): ?>
-                            <span class="badge badge-success">Success</span>
-                          <?php else: ?>
-                            <span class="badge badge-warning">Pending</span>
-                          <?php endif; ?>
-                        </td>
-                        <td><?php echo date('d M Y', strtotime($payment['created_at'])); ?></td>
-                        <td><?php echo ucfirst($payment['payment_option'] ?? 'N/A'); ?></td>
-                      </tr>
-                      <?php endforeach; ?>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="card-footer">
-                <a href="my-payments.php" class="btn btn-sm btn-primary">
-                  <i class="fas fa-list"></i> View All Payments
-                </a>
-              </div>
-            </div>
+        <div class="payments-card">
+          <div class="payments-header">
+            <h3><i class="fas fa-credit-card"></i> Recent Payments</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="payments-table">
+              <thead>
+                <tr>
+                  <th>Payment ID</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Method</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach($recent_payments as $payment): ?>
+                <tr>
+                  <td><strong><?php echo $payment['order_id']; ?></strong></td>
+                  <td>₹<?php echo number_format($payment['pay_amount'], 2); ?></td>
+                  <td>
+                    <?php if($payment['payment_status'] == 'Success'): ?>
+                      <span class="payment-status status-success">Success</span>
+                    <?php else: ?>
+                      <span class="payment-status status-pending">Pending</span>
+                    <?php endif; ?>
+                  </td>
+                  <td><?php echo date('d M Y', strtotime($payment['created_at'])); ?></td>
+                  <td><?php echo ucfirst($payment['payment_option'] ?? 'N/A'); ?></td>
+                </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
+          <div class="payments-footer">
+            <a href="my-payments.php" class="btn-view-all">
+              View All Payments <i class="fas fa-arrow-right"></i>
+            </a>
           </div>
         </div>
         <?php endif; ?>
@@ -533,145 +971,110 @@ if($payment_sql){
 
 <script>
 $(document).ready(function() {
-    console.log('My Services page loaded');
+    console.log('My Services page - new design');
 });
 
 function applyFilters() {
     var status = $('#statusFilter').val();
     var category = $('#categoryFilter').val();
     var sort = $('#sortFilter').val();
-    
-    // Get all service cards
-    var cards = $('.service-card').parent();
-    var visibleCards = [];
-    
-    cards.each(function() {
+
+    var items = $('.service-item');
+    var visibleItems = [];
+
+    items.each(function() {
         var show = true;
-        var card = $(this);
-        var cardStatus = card.data('status');
-        var cardCategory = card.data('category');
-        var cardPrice = parseFloat(card.data('price'));
-        var cardDate = card.data('date');
-        
-        // Status filter
-        if(status !== 'all' && cardStatus != status) {
-            show = false;
-        }
-        
-        // Category filter
-        if(category !== 'all' && cardCategory !== category) {
-            show = false;
-        }
-        
-        if(show) {
-            card.show();
-            visibleCards.push({
-                element: card,
-                price: cardPrice,
-                date: cardDate
+        var item = $(this);
+        var itemStatus = item.data('status');
+        var itemCategory = item.data('category');
+        var itemPrice = parseFloat(item.data('price'));
+        var itemDate = item.data('date');
+
+        if (status !== 'all' && itemStatus != status) show = false;
+        if (category !== 'all' && itemCategory !== category) show = false;
+
+        if (show) {
+            item.show();
+            visibleItems.push({
+                element: item,
+                price: itemPrice,
+                date: itemDate
             });
         } else {
-            card.hide();
+            item.hide();
         }
     });
-    
-    // Apply sorting
-    sortCards(visibleCards, sort);
+
+    sortItems(visibleItems, sort);
 }
 
-function sortCards(cards, sortType) {
+function sortItems(items, sortType) {
     var container = $('#services-list');
-    
-    // Detach all visible cards
-    cards.forEach(function(card) {
-        card.element.detach();
-    });
-    
-    // Sort based on sort type
-    cards.sort(function(a, b) {
+    items.sort(function(a, b) {
         switch(sortType) {
-            case 'newest':
-                return new Date(b.date) - new Date(a.date);
-            case 'oldest':
-                return new Date(a.date) - new Date(b.date);
-            case 'price_high':
-                return b.price - a.price;
-            case 'price_low':
-                return a.price - b.price;
-            default:
-                return 0;
+            case 'newest': return new Date(b.date) - new Date(a.date);
+            case 'oldest': return new Date(a.date) - new Date(b.date);
+            case 'price_high': return b.price - a.price;
+            case 'price_low': return a.price - b.price;
+            default: return 0;
         }
     });
-    
-    // Re-append sorted cards
-    cards.forEach(function(card) {
-        container.append(card.element);
+
+    // Detach and reattach in order
+    items.forEach(function(item) {
+        item.element.detach();
     });
+    items.forEach(function(item) {
+        container.append(item.element);
+    });
+}
+
+function resetFilters() {
+    $('#statusFilter').val('all');
+    $('#categoryFilter').val('all');
+    $('#sortFilter').val('newest');
+    applyFilters();
 }
 
 function printServices() {
-    var originalContent = document.body.innerHTML;
-    var printContent = document.getElementById('services-list').innerHTML;
-    
-    document.body.innerHTML = `
+    var printWindow = window.open('', '_blank');
+    var content = document.getElementById('services-list').innerHTML;
+    var style = document.querySelector('style').innerHTML;
+
+    printWindow.document.write(`
         <html>
         <head>
             <title>My Services - <?php echo htmlspecialchars($customer_name); ?></title>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
             <style>
-                body { font-family: Arial, sans-serif; margin: 20px; }
-                .service-card { 
-                    border: 1px solid #ddd; 
-                    border-radius: 5px; 
-                    padding: 15px; 
-                    margin-bottom: 15px; 
-                    page-break-inside: avoid;
-                }
-                .print-header { 
-                    text-align: center; 
-                    margin-bottom: 30px; 
-                    border-bottom: 2px solid #333; 
-                    padding-bottom: 10px; 
-                }
-                .print-footer { 
-                    margin-top: 30px; 
-                    text-align: center; 
-                    font-size: 12px; 
-                    color: #666; 
-                }
-                .badge {
-                    padding: 3px 8px;
-                    border-radius: 3px;
-                    font-size: 12px;
-                }
-                .badge-warning { background-color: #ffc107; color: black; }
-                .badge-success { background-color: #28a745; color: white; }
-                .badge-secondary { background-color: #6c757d; color: white; }
+                body { font-family: 'Inter', sans-serif; margin: 2rem; color: #1e293b; }
+                .print-header { text-align: center; margin-bottom: 2rem; }
+                .print-header h2 { color: #3b82f6; }
+                .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+                .service-item { border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem; page-break-inside: avoid; }
+                .badge-pending { background: #fff3cd; color: #856404; padding: 0.25rem 0.75rem; border-radius: 2rem; }
+                .badge-completed { background: #d1fae5; color: #065f46; padding: 0.25rem 0.75rem; border-radius: 2rem; }
+                ${style}
             </style>
         </head>
         <body>
             <div class="print-header">
                 <h2>My Purchased Services</h2>
-                <h3>Customer: <?php echo htmlspecialchars($customer_name); ?> (ID: #<?php echo $customer_id; ?>)</h3>
-                <p>Generated on: <?php echo date('d M Y, h:i A'); ?></p>
-                <p>Total Services: <?php echo $total_services; ?> | 
-                   In Progress: <?php echo $pending_services; ?> | 
-                   Completed: <?php echo $completed_services; ?> | 
-                   Total Spent: ₹<?php echo $total_spent; ?></p>
+                <p>Customer: <?php echo htmlspecialchars($customer_name); ?> (ID: #<?php echo $customer_id; ?>)</p>
+                <p>Generated: <?php echo date('d M Y, h:i A'); ?></p>
+                <p>Total: <?php echo $total_services; ?> | In Progress: <?php echo $pending_services; ?> | Completed: <?php echo $completed_services; ?> | Spent: ₹<?php echo number_format($total_spent, 2); ?></p>
             </div>
-            
-            ${printContent}
-            
-            <div class="print-footer">
-                <p>Generated by Legal Taxation Customer Panel</p>
-                <p>Page generated on: <?php echo date('d M Y, h:i A'); ?></p>
+            <div class="services-grid">
+                ${content}
+            </div>
+            <div style="margin-top: 2rem; text-align: center; font-size: 0.8rem; color: #64748b;">
+                Generated by Legal Taxation Customer Panel
             </div>
         </body>
         </html>
-    `;
-    
-    window.print();
-    document.body.innerHTML = originalContent;
-    window.location.reload();
+    `);
+    printWindow.document.close();
+    printWindow.print();
 }
 </script>
 </body>

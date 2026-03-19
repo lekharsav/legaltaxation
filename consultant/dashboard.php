@@ -75,34 +75,468 @@ while($row = $recent_sql->fetch_assoc()){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CA Dashboard - Legal Taxation</title>
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
+
+  <!-- Google Font: Inter (modern, clean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Theme style (AdminLTE 3) - we keep for layout but override heavily -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  
-  <style>
-    .ca-profile-info {
-      background: linear-gradient(45deg, #007bff, #6610f2);
-      color: white;
-      padding: 15px;
-      border-radius: 5px;
-      margin-bottom: 20px;
+
+  <!-- Modern Dashboard Styles -->
+  <!-- (CSS is omitted as requested) -->
+     <style>
+    * {
+      font-family: 'Inter', sans-serif;
     }
-    .ca-profile-info h5 {
-      margin-bottom: 5px;
-      font-weight: bold;
+
+    body {
+      background-color: #f8fafc;
     }
-    .recent-service-item {
-      border-left: 3px solid #007bff;
-      margin-bottom: 10px;
-      padding: 10px;
-      background: #f8f9fa;
-      border-radius: 5px;
+
+    .wrapper {
+      background-color: #f8fafc;
     }
-    .recent-service-item:hover {
-      background: #e9ecef;
+
+    /* Override AdminLTE defaults */
+    .main-header {
+      background-color: #ffffff !important;
+      border-bottom: 1px solid #e9ecef;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .content-wrapper {
+      background-color: #f8fafc;
+    }
+
+    /* Page Header */
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-weight: 600;
+      font-size: 1.875rem;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .page-header h1 i {
+      color: #3b82f6;
+      margin-right: 0.75rem;
+      font-size: 2rem;
+    }
+
+    .page-header .breadcrumb {
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .page-header .breadcrumb a {
+      color: #64748b;
+    }
+
+    .page-header .breadcrumb .active {
+      color: #0f172a;
+      font-weight: 500;
+    }
+
+    /* Welcome Card */
+    .welcome-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #f1f5f9;
+    }
+
+    .avatar-wrapper {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 3px solid #ffffff;
+      box-shadow: 0 8px 12px -4px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-wrapper i {
+      font-size: 2.5rem;
+      color: #2563eb;
+    }
+
+    .welcome-text {
+      flex: 1;
+    }
+
+    .welcome-text h2 {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-text p {
+      color: #475569;
+      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .welcome-text p i {
+      color: #3b82f6;
+      width: 18px;
+    }
+
+    .welcome-text small {
+      color: #64748b;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .welcome-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-outline-modern {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 100px;
+      padding: 0.6rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-outline-modern:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+      color: #0f172a;
+    }
+
+    .btn-solid-modern {
+      background: #3b82f6;
+      border: 1px solid #3b82f6;
+      border-radius: 100px;
+      padding: 0.6rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #ffffff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-solid-modern:hover {
+      background: #2563eb;
+      border-color: #2563eb;
+    }
+
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 992px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #f1f5f9;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+      border-color: #e2e8f0;
+    }
+
+    .kpi-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .kpi-icon i {
+      font-size: 1.75rem;
+    }
+
+    .kpi-content {
+      flex: 1;
+    }
+
+    .kpi-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.2;
+      margin-bottom: 0.25rem;
+    }
+
+    .kpi-trend {
+      font-size: 0.8rem;
+      color: #10b981;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      border: 1px solid #f1f5f9;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .section-header {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-header h3 i {
+      color: #3b82f6;
+    }
+
+    .section-body {
+      padding: 1.5rem 1.75rem;
+    }
+
+    .section-footer {
+      padding: 1rem 1.75rem;
+      border-top: 1px solid #f1f5f9;
+      background: #f8fafc;
+    }
+
+    /* Recent Assignments List */
+    .assignment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .assignment-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 1rem;
+      transition: all 0.2s;
+    }
+
+    .assignment-item:hover {
+      background: #ffffff;
+      border-color: #e2e8f0;
+    }
+
+    .assignment-info {
+      flex: 1;
+    }
+
+    .assignment-info strong {
+      font-weight: 600;
+      color: #0f172a;
+      font-size: 0.95rem;
+    }
+
+    .assignment-info .meta {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .assignment-info .meta i {
+      color: #3b82f6;
+      width: 14px;
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .badge-pending { background: #fff3cd; color: #856404; }
+    .badge-completed { background: #d1fae5; color: #065f46; }
+
+    .btn-icon-modern {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .btn-icon-modern:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+      color: #0f172a;
+    }
+
+    /* Quick Actions Grid */
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 992px) {
+      .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .quick-actions-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .quick-action-card {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 1rem;
+      padding: 1.25rem 0.75rem;
+      text-align: center;
+      text-decoration: none;
+      color: #334155;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .quick-action-card:hover {
+      background: #ffffff;
+      border-color: #3b82f6;
+      color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .quick-action-card i {
+      font-size: 1.75rem;
+      color: #3b82f6;
+    }
+
+    .quick-action-card span {
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: #64748b;
+    }
+    .empty-state i {
+      font-size: 3rem;
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+    }
+
+    /* Footer */
+    .main-footer {
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      color: #64748b;
+      font-size: 0.85rem;
     }
   </style>
 </head>
@@ -118,12 +552,17 @@ while($row = $recent_sql->fetch_assoc()){
 
   <!-- Content Wrapper -->
   <div class="content-wrapper">
-    <!-- Content Header -->
-    <div class="content-header">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row mb-3">
           <div class="col-sm-6">
-            <h1 class="m-0">CA Dashboard</h1>
+            <div class="page-header">
+              <h1>
+                <i class="fas fa-chart-pie"></i>
+                CA Dashboard
+              </h1>
+            </div>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -133,178 +572,160 @@ while($row = $recent_sql->fetch_assoc()){
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Welcome Message -->
-        <div class="row">
-          <div class="col-12">
-            <div class="ca-profile-info">
-              <div class="row">
-                <div class="col-md-8">
-                  <h5>Welcome, <?php echo $ca_name; ?>!</h5>
-                  <p>CA ID: <?php echo $ca_id_number; ?> | Email: <?php echo $ca_email; ?> | Mobile: <?php echo $ca_contact; ?></p>
-                  <?php if(!empty($ca_reg_no)): ?>
-                    <p>Registration No: <?php echo $ca_reg_no; ?></p>
-                  <?php endif; ?>
-                  <p><small>Last login: Today at <?php echo date('h:i A'); ?></small></p>
-                </div>
-                <div class="col-md-4 text-right">
-                  <a href="profile.php" class="btn btn-light btn-sm">Edit Profile</a>
-                  <a href="assigned_services.php" class="btn btn-light btn-sm mt-2">View All Services</a>
-                </div>
-              </div>
+
+        <!-- Welcome Card -->
+        <div class="welcome-card">
+          <div class="avatar-wrapper">
+            <?php if(!empty($ca_image)): ?>
+              <img src="../uploads/ca/<?php echo $ca_image; ?>" 
+                   alt="<?php echo htmlspecialchars($ca_name); ?>"
+                   onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fas fa-user-tie\'></i>';">
+            <?php else: ?>
+              <i class="fas fa-user-tie"></i>
+            <?php endif; ?>
+          </div>
+          <div class="welcome-text">
+            <h2>Welcome, <?php echo htmlspecialchars($ca_name); ?>!</h2>
+            <p><i class="fas fa-id-card"></i> CA ID: <?php echo htmlspecialchars($ca_id_number); ?></p>
+            <p><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($ca_email); ?></p>
+            <p><i class="fas fa-phone-alt"></i> <?php echo htmlspecialchars($ca_contact); ?></p>
+            <?php if(!empty($ca_reg_no)): ?>
+              <p><i class="fas fa-certificate"></i> Reg. No: <?php echo htmlspecialchars($ca_reg_no); ?></p>
+            <?php endif; ?>
+            <small><i class="fas fa-clock"></i> Last login: Today at <?php echo date('h:i A'); ?></small>
+          </div>
+          <div class="welcome-actions">
+            <a href="profile.php" class="btn-outline-modern">
+              <i class="fas fa-user-edit"></i> Edit Profile
+            </a>
+            <a href="assigned_services.php" class="btn-solid-modern">
+              <i class="fas fa-tasks"></i> View All Services
+            </a>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background: #e0f2fe; color: #0284c7;">
+              <i class="fas fa-tasks"></i>
+            </div>
+            <div class="kpi-content">
+              <div class="kpi-label">Total Assignments</div>
+              <div class="kpi-value"><?php echo $assigned_stats['total']; ?></div>
+              <div class="kpi-trend"><i class="fas fa-arrow-up"></i> All time</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background: #fef9c3; color: #a16207;">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="kpi-content">
+              <div class="kpi-label">Pending</div>
+              <div class="kpi-value"><?php echo $assigned_stats['pending']; ?></div>
+              <div class="kpi-trend"><i class="fas fa-hourglass-half"></i> In progress</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background: #dcfce7; color: #166534;">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="kpi-content">
+              <div class="kpi-label">Completed</div>
+              <div class="kpi-value"><?php echo $assigned_stats['completed']; ?></div>
+              <div class="kpi-trend"><i class="fas fa-check-double"></i> Done</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background: #f1f5f9; color: #334155;">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="kpi-content">
+              <div class="kpi-label">Unique Customers</div>
+              <div class="kpi-value"><?php echo $total_customers; ?></div>
+              <div class="kpi-trend"><i class="fas fa-user-plus"></i> Served</div>
             </div>
           </div>
         </div>
 
-        <!-- Statistics Cards -->
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3><?php echo $assigned_stats['total']; ?></h3>
-                <p>Total Assignments</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-tasks"></i>
-              </div>
-              <a href="assigned_services.php" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+        <!-- Recent Assignments Card -->
+        <div class="section-card">
+          <div class="section-header">
+            <h3>
+              <i class="fas fa-history"></i> Recent Assignments
+            </h3>
+            <span class="badge" style="background: #f1f5f9; color: #334155; padding: 0.25rem 0.75rem; border-radius: 100px;">Last 5</span>
           </div>
-          
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3><?php echo $assigned_stats['pending']; ?></h3>
-                <p>Pending</p>
+          <div class="section-body">
+            <?php if(empty($recent_services)): ?>
+              <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <p>No assignments yet.</p>
               </div>
-              <div class="icon">
-                <i class="fas fa-clock"></i>
-              </div>
-              <a href="assigned_services.php?filter=pending" class="small-box-footer">View Pending <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3><?php echo $assigned_stats['completed']; ?></h3>
-                <p>Completed</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-check-circle"></i>
-              </div>
-              <a href="assigned_services.php?filter=completed" class="small-box-footer">View Completed <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-secondary">
-              <div class="inner">
-                <h3><?php echo $total_customers; ?></h3>
-                <p>Unique Customers</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-users"></i>
-              </div>
-              <a href="my-customers.php" class="small-box-footer">View Customers <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Recent Assignments -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-history mr-2"></i>Recent Assignments
-                </h3>
-                <div class="card-tools">
-                  <span class="badge badge-primary">Last 5</span>
-                </div>
-              </div>
-              <div class="card-body">
-                <?php if(empty($recent_services)): ?>
-                  <div class="text-center py-3">
-                    <i class="fas fa-inbox fa-3x text-muted mb-2"></i>
-                    <p class="text-muted">No assignments yet</p>
-                  </div>
-                <?php else: ?>
-                  <div class="list-group">
-                    <?php foreach($recent_services as $service): ?>
-                      <div class="recent-service-item">
-                        <div class="d-flex justify-content-between align-items-center">
-                          <div>
-                            <strong><?php echo htmlspecialchars($service['customer_name']); ?></strong>
-                            <br>
-                            <small class="text-muted">
-                              <?php echo htmlspecialchars($service['service_title']); ?>
-                              | Applied: <?php echo date('d M', strtotime($service['application_date'])); ?>
-                            </small>
-                          </div>
-                          <div>
-                            <?php if($service['application_status'] == '0'): ?>
-                              <span class="badge badge-warning">Pending</span>
-                            <?php else: ?>
-                              <span class="badge badge-success">Completed</span>
-                            <?php endif; ?>
-                            <a href="view_assigned_service.php?application_id=<?php echo $service['application_id']; ?>" 
-                               class="btn btn-sm btn-info ml-2">
-                              <i class="fas fa-eye"></i>
-                            </a>
-                          </div>
-                        </div>
+            <?php else: ?>
+              <div class="assignment-list">
+                <?php foreach($recent_services as $service): ?>
+                  <div class="assignment-item">
+                    <div class="assignment-info">
+                      <strong><?php echo htmlspecialchars($service['customer_name']); ?></strong>
+                      <div class="meta">
+                        <span><i class="fas fa-tag"></i> <?php echo htmlspecialchars($service['service_title']); ?></span>
+                        <span><i class="fas fa-calendar-alt"></i> <?php echo date('d M Y', strtotime($service['application_date'])); ?></span>
                       </div>
-                    <?php endforeach; ?>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                      <?php if($service['application_status'] == '0'): ?>
+                        <span class="status-badge badge-pending">Pending</span>
+                      <?php else: ?>
+                        <span class="status-badge badge-completed">Completed</span>
+                      <?php endif; ?>
+                      <a href="view_assigned_service.php?application_id=<?php echo $service['application_id']; ?>" 
+                         class="btn-icon-modern">
+                        <i class="fas fa-eye"></i> View
+                      </a>
+                    </div>
                   </div>
-                <?php endif; ?>
+                <?php endforeach; ?>
               </div>
-              <div class="card-footer">
-                <a href="assigned_services.php" class="btn btn-primary btn-sm">
-                  <i class="fas fa-list"></i> View All Assignments
-                </a>
-              </div>
-            </div>
+            <?php endif; ?>
+          </div>
+          <div class="section-footer">
+            <a href="assigned_services.php" class="btn-icon-modern">
+              <i class="fas fa-list"></i> View All Assignments
+            </a>
           </div>
         </div>
 
-        <!-- Quick Links -->
-        <div class="row mt-3">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-bolt mr-2"></i>Quick Actions
-                </h3>
-              </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-3 col-sm-6">
-                    <a href="assigned_services.php" class="btn btn-outline-primary btn-block mb-2">
-                      <i class="fas fa-cogs"></i> Manage Services
-                    </a>
-                  </div>
-                  <div class="col-md-3 col-sm-6">
-                    <a href="my-customers.php" class="btn btn-outline-success btn-block mb-2">
-                      <i class="fas fa-users"></i> View Customers
-                    </a>
-                  </div>
-                  <div class="col-md-3 col-sm-6">
-                    <a href="documents.php" class="btn btn-outline-info btn-block mb-2">
-                      <i class="fas fa-file-alt"></i> Documents
-                    </a>
-                  </div>
-                  <div class="col-md-3 col-sm-6">
-                    <a href="profile.php" class="btn btn-outline-warning btn-block mb-2">
-                      <i class="fas fa-user-edit"></i> Edit Profile
-                    </a>
-                  </div>
-                </div>
-              </div>
+        <!-- Quick Actions Card -->
+        <div class="section-card">
+          <div class="section-header">
+            <h3>
+              <i class="fas fa-bolt"></i> Quick Actions
+            </h3>
+          </div>
+          <div class="section-body">
+            <div class="quick-actions-grid">
+              <a href="assigned_services.php" class="quick-action-card">
+                <i class="fas fa-cogs"></i>
+                <span>Manage Services</span>
+              </a>
+              <a href="my-customers.php" class="quick-action-card">
+                <i class="fas fa-users"></i>
+                <span>View Customers</span>
+              </a>
+              <a href="documents.php" class="quick-action-card">
+                <i class="fas fa-file-alt"></i>
+                <span>Documents</span>
+              </a>
+              <a href="profile.php" class="quick-action-card">
+                <i class="fas fa-user-edit"></i>
+                <span>Edit Profile</span>
+              </a>
             </div>
           </div>
         </div>
@@ -331,13 +752,7 @@ while($row = $recent_sql->fetch_assoc()){
 
 <script>
 $(document).ready(function() {
-  console.log('CA Dashboard loaded successfully');
-  
-  // Auto-refresh dashboard every 60 seconds
-  setInterval(function() {
-    console.log('Refreshing dashboard...');
-    // You could implement partial refresh here if needed
-  }, 60000);
+  console.log('CA Dashboard loaded - modern design');
 });
 </script>
 </body>

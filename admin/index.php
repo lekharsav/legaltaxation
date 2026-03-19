@@ -47,15 +47,15 @@ if(isset($_POST["login"])){
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Admin Portal | Legal Taxation</title>
+    <title>Admin Login | Legal Taxation</title>
     <link rel="icon" type="image/webp" href="../images/favicon.webp">
     
-    <!-- Fonts -->
+    <!-- Google Font: Inter (modern, clean) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     
-    <!-- Icons -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -67,78 +67,57 @@ if(isset($_POST["login"])){
         }
 
         :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary: #7209b7;
-            --accent: #f72585;
-            --dark: #1e293b;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
             --light: #f8fafc;
             --gray: #64748b;
+            --gray-light: #e2e8f0;
             --white: #ffffff;
-            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --shadow: 0 20px 40px rgba(0,0,0,0.15);
-            --border-radius: 24px;
-            --transition: all 0.3s ease;
+            --gradient: linear-gradient(145deg, var(--dark), var(--dark-light));
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            --border-radius: 2rem;
+            --transition: all 0.2s ease;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--gradient);
+            background: #f8fafc;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
-            animation: rotate 30s linear infinite;
-            z-index: 0;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
 
         .login-wrapper {
             width: 100%;
             max-width: 1200px;
-            position: relative;
-            z-index: 10;
         }
 
         .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--white);
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow);
+            border: 1px solid var(--gray-light);
             display: flex;
             flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease-out;
+            animation: fadeInUp 0.6s ease-out;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* ===== Left Panel (Branding) ===== */
         .brand-panel {
             flex: 1 1 45%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 60px 40px;
+            background: var(--gradient);
+            color: var(--white);
+            padding: 3rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -153,7 +132,7 @@ if(isset($_POST["login"])){
             right: -30%;
             width: 300px;
             height: 300px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 50%;
             pointer-events: none;
         }
@@ -165,7 +144,7 @@ if(isset($_POST["login"])){
             left: -20%;
             width: 250px;
             height: 250px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 50%;
             pointer-events: none;
         }
@@ -178,11 +157,12 @@ if(isset($_POST["login"])){
         .brand-logo {
             width: 80px;
             height: 80px;
-            background: white;
-            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             padding: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
         }
 
         .brand-logo img {
@@ -192,56 +172,58 @@ if(isset($_POST["login"])){
         }
 
         .brand-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.5rem;
             font-weight: 700;
+            font-size: 2.2rem;
             line-height: 1.2;
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
         }
 
         .brand-description {
-            font-size: 1rem;
-            opacity: 0.9;
-            line-height: 1.8;
-            margin-bottom: 40px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
         }
 
         .feature-list {
             list-style: none;
-            margin-top: 30px;
         }
 
         .feature-list li {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-            font-size: 1rem;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
         }
 
         .feature-list li i {
             width: 24px;
-            font-size: 1.2rem;
-            color: rgba(255,255,255,0.8);
+            color: var(--primary);
+            background: rgba(59, 130, 246, 0.2);
+            padding: 0.5rem;
+            border-radius: 10px;
+            font-size: 1rem;
         }
 
         /* ===== Right Panel (Form) ===== */
         .form-panel {
             flex: 1 1 45%;
-            padding: 60px 40px;
-            background: white;
+            padding: 3rem;
+            background: var(--white);
         }
 
         .form-header {
-            margin-bottom: 35px;
+            margin-bottom: 2rem;
         }
 
         .form-header h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
             font-weight: 700;
+            font-size: 2rem;
             color: var(--dark);
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
         }
 
         .form-header p {
@@ -250,15 +232,17 @@ if(isset($_POST["login"])){
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 1.5rem;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
             font-weight: 500;
             color: var(--dark);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .input-wrapper {
@@ -267,46 +251,50 @@ if(isset($_POST["login"])){
 
         .input-wrapper i {
             position: absolute;
-            left: 16px;
+            left: 1rem;
             top: 50%;
             transform: translateY(-50%);
             color: var(--gray);
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: var(--transition);
             pointer-events: none;
         }
 
         .form-control {
             width: 100%;
-            padding: 14px 16px 14px 45px;
-            border: 2px solid #e2e8f0;
-            border-radius: 16px;
-            font-size: 1rem;
+            padding: 0.75rem 3rem 0.75rem 2.5rem;
+            border: 1px solid var(--gray-light);
+            border-radius: 1rem;
+            font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
             transition: var(--transition);
-            background: var(--light);
+            background: var(--white);
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .password-toggle {
             position: absolute;
-            right: 16px;
+            right: 1rem;
             top: 50%;
             transform: translateY(-50%);
             color: var(--gray);
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: var(--transition);
             background: transparent;
             border: none;
             padding: 0;
             z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
         }
 
         .password-toggle:hover {
@@ -314,21 +302,22 @@ if(isset($_POST["login"])){
         }
 
         .alert {
-            padding: 14px 16px;
-            border-radius: 16px;
-            margin-bottom: 25px;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
             font-size: 0.9rem;
-            border-left: 4px solid #ef476f;
-            background: rgba(239, 71, 111, 0.05);
-            color: #ef476f;
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.75rem;
             animation: slideIn 0.3s ease-out;
         }
 
         .alert i {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            color: #ef4444;
         }
 
         @keyframes slideIn {
@@ -338,34 +327,27 @@ if(isset($_POST["login"])){
 
         .btn-login {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 16px;
-            font-size: 1rem;
+            border-radius: 100px;
+            font-size: 0.95rem;
             font-weight: 600;
-            font-family: 'Inter', sans-serif;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+            gap: 0.5rem;
         }
 
         .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(67, 97, 238, 0.4);
+            background: var(--primary-dark);
         }
 
         .btn-login:active {
-            transform: translateY(0);
-        }
-
-        .btn-login i {
-            font-size: 1.1rem;
+            transform: translateY(1px);
         }
 
         .btn-login.loading {
@@ -393,36 +375,34 @@ if(isset($_POST["login"])){
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 1px solid #e2e8f0;
+            margin-top: 1.5rem;
         }
 
         .checkbox-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
             cursor: pointer;
         }
 
         .checkbox-wrapper input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #cbd5e1;
-            border-radius: 5px;
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--gray-light);
+            border-radius: 4px;
             cursor: pointer;
             accent-color: var(--primary);
         }
 
         .checkbox-wrapper span {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--gray);
         }
 
         .forgot-link {
             color: var(--primary);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             transition: var(--transition);
         }
@@ -434,9 +414,9 @@ if(isset($_POST["login"])){
 
         .copyright {
             text-align: center;
-            margin-top: 30px;
-            color: rgba(255,255,255,0.8);
-            font-size: 0.85rem;
+            margin-top: 2rem;
+            color: var(--gray);
+            font-size: 0.8rem;
         }
 
         /* ===== Responsive ===== */
@@ -444,23 +424,17 @@ if(isset($_POST["login"])){
             .login-card {
                 flex-direction: column;
             }
-            .brand-panel {
-                padding: 40px 30px;
+            .brand-panel, .form-panel {
+                padding: 2rem;
             }
             .brand-title {
                 font-size: 2rem;
             }
-            .form-panel {
-                padding: 40px 30px;
-            }
         }
 
         @media (max-width: 576px) {
-            .brand-panel {
-                padding: 30px 20px;
-            }
-            .form-panel {
-                padding: 30px 20px;
+            .brand-panel, .form-panel {
+                padding: 1.5rem;
             }
             .brand-title {
                 font-size: 1.75rem;
@@ -474,11 +448,11 @@ if(isset($_POST["login"])){
 <body>
     <div class="login-wrapper">
         <div class="login-card">
-            <!-- Left Panel (Branding) -->
+            <!-- Left Panel (Branding) - Dark Slate Gradient -->
             <div class="brand-panel">
                 <div class="brand-content">
                     <div class="brand-logo">
-                        <img src="../images/logo.webp" alt="Legal Taxation Logo">
+                        <img src="../images/logo.png" alt="Legal Taxation Logo">
                     </div>
                     <h1 class="brand-title">Admin Portal</h1>
                     <p class="brand-description">
@@ -516,7 +490,7 @@ if(isset($_POST["login"])){
                             <i class="fas fa-envelope"></i>
                             <input type="email" 
                                    name="email" 
-                                   value="<?= htmlspecialchars(@$_COOKIE['tax_admin_email']) ?>" 
+                                   value="<?= htmlspecialchars(@$_COOKIE['tax_admin_email'] ?? '') ?>" 
                                    class="form-control" 
                                    placeholder="admin@example.com"
                                    required
@@ -531,7 +505,7 @@ if(isset($_POST["login"])){
                             <i class="fas fa-lock"></i>
                             <input type="password" 
                                    name="pass" 
-                                   value="<?= htmlspecialchars(@$_COOKIE['tax_admin_pass']) ?>" 
+                                   value="<?= htmlspecialchars(@$_COOKIE['tax_admin_pass'] ?? '') ?>" 
                                    class="form-control" 
                                    placeholder="••••••••"
                                    required
@@ -544,7 +518,7 @@ if(isset($_POST["login"])){
                     </div>
 
                     <button type="submit" class="btn-login" id="loginBtn">
-                        <i class="fas fa-sign-in-alt"></i> SIGN IN
+                        <i class="fas fa-sign-in-alt"></i> Sign In
                     </button>
 
                     <div class="form-options">
@@ -568,12 +542,31 @@ if(isset($_POST["login"])){
             // Toggle password visibility
             const togglePassword = document.getElementById('togglePassword');
             const passwordInput = document.getElementById('passwordInput');
+            
             if (togglePassword && passwordInput) {
-                togglePassword.addEventListener('click', function() {
+                togglePassword.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent any default action
+                    
+                    // Get the current type
                     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordInput.setAttribute('type', type);
-                    this.querySelector('i').className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+                    
+                    // Toggle the icon class
+                    const icon = this.querySelector('i');
+                    if (icon) {
+                        if (type === 'text') {
+                            icon.classList.remove('fa-eye');
+                            icon.classList.add('fa-eye-slash');
+                        } else {
+                            icon.classList.remove('fa-eye-slash');
+                            icon.classList.add('fa-eye');
+                        }
+                    }
+                    
+                    console.log('Password visibility toggled to:', type); // Debug
                 });
+            } else {
+                console.error('Password toggle elements not found');
             }
 
             // Form submission

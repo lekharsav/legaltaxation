@@ -69,7 +69,7 @@ New sample entry
 ```html
 <li class="nav-item">
   <a href="pages/widgets.html" class="nav-link">
-    <i class="nav-icon fas fa-th"></i>
+    <i class="nav-icon"></i>
     <p>
       Widgets
       <span class="right badge badge-danger">New</span>
@@ -104,7 +104,7 @@ New sample entry (with tree menu)
 ```html
 <li class="nav-item">
   <a href="#" class="nav-link">
-    <i class="nav-icon fas fa-tachometer-alt"></i>
+    <i class="nav-icon"></i>
     <p>
       Dashboard
       <i class="right fas fa-angle-left"></i>
