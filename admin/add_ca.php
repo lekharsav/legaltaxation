@@ -3,6 +3,7 @@ include("../db.php");
 $aid = $_COOKIE["tax_admin_log"];
 if(!$aid){
   echo"<script>window.location='index.php';</script>";
+  exit;
 }
 
 // Get admin details
@@ -109,30 +110,262 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Add CA - Legal Taxation</title>
-  
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
+  <title>Add CA | Admin Dashboard | Legal Taxation</title>
+
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Theme style (AdminLTE) -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
   <style>
-    .preview-image {
-        max-width: 150px;
-        max-height: 150px;
-        border: 1px solid #ddd;
-        padding: 5px;
-        margin-top: 10px;
-        display: none;
+    * { font-family: 'Inter', sans-serif; }
+    body { background-color: #f8fafc; }
+    .content-wrapper { background-color: #f8fafc; }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
     }
+    .page-header .icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(145deg, #3b82f6, #2563eb);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 0 8px 12px -4px rgba(59,130,246,0.3);
+    }
+    .page-header h1 {
+      font-weight: 600;
+      font-size: 1.875rem;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    /* Modern Card */
+    .modern-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .card-header-custom {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+    }
+    .card-header-custom h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-header-custom h3 i { color: #3b82f6; }
+    .card-body-custom { padding: 1.5rem 1.75rem; }
+    .card-footer-custom {
+      padding: 1rem 1.75rem;
+      border-top: 1px solid #f1f5f9;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Form */
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label {
+      font-weight: 500;
+      color: #334155;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .form-control, .form-select, .select2-container--bootstrap4 .select2-selection {
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem !important;
+      padding: 0.6rem 1rem;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      width: 100%;
+      height: auto;
+    }
+    .form-control:focus, .select2-container--bootstrap4.select2-container--focus .select2-selection {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+      outline: none;
+    }
+    .input-group-text {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem 0 0 1rem;
+      color: #64748b;
+    }
+    .input-group .form-control {
+      border-left: none;
+      border-radius: 0 1rem 1rem 0;
+    }
+
+    /* Password toggle */
     .password-toggle {
-        cursor: pointer;
-        position: absolute;
-        right: 35px;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 10;
+      cursor: pointer;
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+      z-index: 10;
+      background: white;
+      padding: 0 5px;
+    }
+    .password-toggle:hover { color: #3b82f6; }
+
+    /* Custom file input */
+    .custom-file-label {
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      padding: 0.6rem 1rem;
+    }
+    .custom-file-label::after {
+      background: #f8fafc;
+      border-left: 1px solid #e2e8f0;
+      border-radius: 0 1rem 1rem 0;
+      color: #334155;
+    }
+
+    /* Preview image */
+    .preview-image {
+      max-width: 150px;
+      max-height: 150px;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      padding: 0.25rem;
+      margin-top: 0.75rem;
+      display: none;
+    }
+    .preview-image img { border-radius: 0.75rem; }
+
+    /* Badge */
+    .badge-modern {
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .badge-success { background: #d1fae5; color: #065f46; }
+
+    /* Buttons */
+    .btn-modern {
+      border-radius: 100px;
+      padding: 0.6rem 1.5rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary-modern {
+      background: #3b82f6;
+      color: white;
+    }
+    .btn-primary-modern:hover { background: #2563eb; }
+    .btn-secondary-modern {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+    }
+    .btn-secondary-modern:hover { background: #f8fafc; border-color: #94a3b8; }
+
+    /* Info boxes */
+    .info-box-modern {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 1rem;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .info-box-icon-modern {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .info-box-content-modern { flex: 1; }
+    .info-box-text-modern {
+      font-size: 0.8rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .info-box-number-modern {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    /* Callout */
+    .callout-modern {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    .callout-modern h5 {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+    .callout-modern p { color: #334155; font-size: 0.85rem; margin-bottom: 0.25rem; }
+
+    /* Alerts */
+    .alert {
+      border-radius: 1rem;
+      border: none;
+      padding: 1rem 1.25rem;
+    }
+    .alert-danger { background: #fee2e2; color: #991b1b; }
+    .alert-success { background: #d1fae5; color: #065f46; }
+
+    /* Footer */
+    .main-footer {
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      color: #64748b;
+      font-size: 0.85rem;
     }
   </style>
 </head>
@@ -141,7 +374,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
 
   <!-- Navbar -->
   <?php include("navbar.php"); ?>
-  <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   <?php include("sidebar.php"); ?>
@@ -153,11 +385,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">
-              <span class="page-title-icon bg-gradient-primary text-white me-2">
-                <i class="mdi mdi-account-plus"></i>
-              </span>&nbsp;Add CA
-            </h1>
+            <div class="page-header">
+              <div class="icon"><i class="fas fa-user-plus"></i></div>
+              <h1>Add CA</h1>
+            </div>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -176,54 +407,41 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
         
         <!-- Messages -->
         <?php if($error): ?>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="alert alert-danger alert-dismissible">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              <h5><i class="icon fas fa-ban"></i> Error!</h5>
-              <?php echo $error; ?>
-            </div>
-          </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="fas fa-exclamation-circle me-2"></i> <?php echo $error; ?>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <?php endif; ?>
         
         <?php if($success): ?>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="alert alert-success alert-dismissible">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              <h5><i class="icon fas fa-check"></i> Success!</h5>
-              <?php echo $success; ?>
-            </div>
-          </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="fas fa-check-circle me-2"></i> <?php echo $success; ?>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <?php endif; ?>
 
         <div class="row">
           <div class="col-md-8">
-            <div class="card">
-              <div class="card-header bg-primary">
-                <h3 class="card-title"><i class="fas fa-user-tie"></i> CA Details</h3>
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
+            <div class="modern-card">
+              <div class="card-header-custom">
+                <h3><i class="fas fa-user-tie"></i> CA Details</h3>
               </div>
-              <div class="card-body">
+              <div class="card-body-custom">
                 <form method="post" enctype="multipart/form-data" id="caForm">
                   <div class="row">
                     <!-- Image Upload -->
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="image">CA Photo</label>
-                        <div class="input-group">
-                          <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
-                            <label class="custom-file-label" for="image">Choose file</label>
-                          </div>
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
+                          <label class="custom-file-label" for="image">Choose file</label>
                         </div>
-                        <small class="form-text text-muted">Max 2MB. JPG, PNG, GIF allowed.</small>
+                        <small class="text-muted">Max 2MB. JPG, PNG, GIF allowed.</small>
                         <div id="imagePreview" class="preview-image"></div>
                       </div>
                     </div>
@@ -233,7 +451,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
                       <div class="form-group">
                         <label>CA ID</label>
                         <input type="text" class="form-control bg-light" value="Auto-generated" readonly>
-                        <small class="form-text text-muted">Will be generated automatically</small>
+                        <small class="text-muted">Will be generated automatically</small>
                       </div>
                     </div>
                     
@@ -277,7 +495,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
                                  pattern="[0-9]{10}"
                                  value="<?php echo isset($_POST['cont']) ? htmlspecialchars($_POST['cont']) : ''; ?>">
                         </div>
-                        <small class="form-text text-muted">10 digits without country code</small>
+                        <small class="text-muted">10 digits without country code</small>
                       </div>
                     </div>
                     
@@ -298,34 +516,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
                     
                     <!-- Password -->
                     <div class="col-md-6">
-                      <div class="form-group">
+                      <div class="form-group" style="position: relative;">
                         <label for="password">Password <span class="text-danger">*</span></label>
-                        <div class="input-group" style="position: relative;">
+                        <div class="input-group">
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
                           </div>
                           <input type="password" class="form-control" id="password" name="password" 
-                                 placeholder="Enter password (min 6 characters)" required
-                                 minlength="6">
+                                 placeholder="Enter password (min 6 characters)" required minlength="6">
                           <span class="password-toggle" onclick="togglePassword()">
                             <i class="fas fa-eye" id="toggleIcon"></i>
                           </span>
                         </div>
-                        <small class="form-text text-muted">Minimum 6 characters</small>
+                        <small class="text-muted">Minimum 6 characters</small>
                       </div>
                     </div>
                     
                     <!-- Confirm Password -->
                     <div class="col-md-6">
-                      <div class="form-group">
+                      <div class="form-group" style="position: relative;">
                         <label for="confirm_password">Confirm Password <span class="text-danger">*</span></label>
-                        <div class="input-group" style="position: relative;">
+                        <div class="input-group">
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
                           </div>
                           <input type="password" class="form-control" id="confirm_password" 
-                                 placeholder="Confirm password" required
-                                 minlength="6">
+                                 placeholder="Confirm password" required minlength="6">
                           <span class="password-toggle" onclick="toggleConfirmPassword()">
                             <i class="fas fa-eye" id="toggleConfirmIcon"></i>
                           </span>
@@ -351,21 +567,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
                       <div class="form-group">
                         <label>Status</label>
                         <div class="form-control bg-light">
-                          <span class="badge badge-success">Active</span> (New CAs are active by default)
+                          <span class="badge-modern badge-success">Active</span> <small class="text-muted">(New CAs are active by default)</small>
                         </div>
                       </div>
                     </div>
                   </div>
                 </form>
               </div>
-              <div class="card-footer">
-                <button type="submit" name="submit" form="caForm" class="btn btn-primary">
-                  <i class="fas fa-save"></i> Save CA
-                </button>
-                <button type="reset" class="btn btn-default" onclick="resetForm()">
-                  <i class="fas fa-undo"></i> Reset
-                </button>
-                <a href="all_ca.php" class="btn btn-secondary float-right">
+              <div class="card-footer-custom">
+                <div>
+                  <button type="submit" name="submit" form="caForm" class="btn-modern btn-primary-modern">
+                    <i class="fas fa-save"></i> Save CA
+                  </button>
+                  <button type="reset" class="btn-modern btn-secondary-modern" onclick="resetForm()">
+                    <i class="fas fa-undo"></i> Reset
+                  </button>
+                </div>
+                <a href="all_ca.php" class="btn-modern btn-secondary-modern">
                   <i class="fas fa-list"></i> View All CA
                 </a>
               </div>
@@ -374,13 +592,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
           
           <!-- Info Card -->
           <div class="col-md-4">
-            <div class="card">
-              <div class="card-header bg-info">
-                <h3 class="card-title"><i class="fas fa-info-circle"></i> Information</h3>
+            <div class="modern-card">
+              <div class="card-header-custom">
+                <h3><i class="fas fa-info-circle"></i> Information</h3>
               </div>
-              <div class="card-body">
-                <p><strong>About CA Management:</strong></p>
-                <ul>
+              <div class="card-body-custom">
+                <ul style="padding-left: 1.2rem; color: #334155;">
                   <li>CA ID is auto-generated (5 digits)</li>
                   <li>Profile photo is optional</li>
                   <li>All active CAs will be visible to customers</li>
@@ -388,9 +605,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
                   <li>Mobile number must be valid for OTP verification</li>
                   <li>Password must be at least 6 characters long</li>
                 </ul>
-                <hr>
-                <div class="callout callout-info">
-                  <h5><i class="fas fa-lightbulb"></i> Tip</h5>
+                <div class="callout-modern">
+                  <h5><i class="fas fa-lightbulb" style="color: #f59e0b;"></i> Tip</h5>
                   <p>Ensure all information is accurate. CA details cannot be edited easily once assigned to customers.</p>
                   <p><strong>Password Security:</strong> Use a strong password combination of letters, numbers, and special characters.</p>
                 </div>
@@ -398,31 +614,31 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
             </div>
             
             <!-- Quick Stats -->
-            <div class="card mt-3">
-              <div class="card-header bg-success">
-                <h3 class="card-title"><i class="fas fa-chart-bar"></i> CA Statistics</h3>
+            <div class="modern-card mt-3">
+              <div class="card-header-custom">
+                <h3><i class="fas fa-chart-bar"></i> CA Statistics</h3>
               </div>
-              <div class="card-body">
+              <div class="card-body-custom">
                 <?php
                 $total_ca = $con->query("SELECT COUNT(*) as total FROM ca")->fetch_assoc()['total'];
                 $active_ca = $con->query("SELECT COUNT(*) as active FROM ca WHERE status='1'")->fetch_assoc()['active'];
                 ?>
                 <div class="row">
-                  <div class="col-6 text-center">
-                    <div class="info-box bg-light">
-                      <span class="info-box-icon bg-primary"><i class="fas fa-user-tie"></i></span>
-                      <div class="info-box-content">
-                        <span class="info-box-text">Total CA</span>
-                        <span class="info-box-number"><?php echo $total_ca; ?></span>
+                  <div class="col-6">
+                    <div class="info-box-modern">
+                      <div class="info-box-icon-modern" style="background: #e0f2fe;"><i class="fas fa-user-tie" style="color: #0284c7;"></i></div>
+                      <div class="info-box-content-modern">
+                        <span class="info-box-text-modern">Total CA</span>
+                        <span class="info-box-number-modern"><?php echo $total_ca; ?></span>
                       </div>
                     </div>
                   </div>
-                  <div class="col-6 text-center">
-                    <div class="info-box bg-light">
-                      <span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span>
-                      <div class="info-box-content">
-                        <span class="info-box-text">Active</span>
-                        <span class="info-box-number"><?php echo $active_ca; ?></span>
+                  <div class="col-6">
+                    <div class="info-box-modern">
+                      <div class="info-box-icon-modern" style="background: #d1fae5;"><i class="fas fa-check-circle" style="color: #059669;"></i></div>
+                      <div class="info-box-content-modern">
+                        <span class="info-box-text-modern">Active</span>
+                        <span class="info-box-number-modern"><?php echo $active_ca; ?></span>
                       </div>
                     </div>
                   </div>
@@ -436,13 +652,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
     </section>
   </div>
 
-  <!-- Footer -->
-   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">Legal Taxation</a></strong>
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2014-<?php echo date('Y'); ?> <a href="../index.php">Legal Taxation</a></strong>
     All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      
-    </div>
   </footer>
 </div>
 
@@ -452,15 +664,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- bs-custom-file-input -->
 <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
 <!-- Select2 -->
 <script src="plugins/select2/js/select2.full.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
 
 <script>
 $(document).ready(function() {
     // Initialize Select2
-    $('.select2').select2();
+    $('.select2').select2({
+        theme: 'bootstrap4',
+        placeholder: 'Choose Designation',
+        allowClear: true
+    });
     
     // Initialize bs-custom-file-input
     bsCustomFileInput.init();

@@ -125,62 +125,458 @@ $total_services = count(array_unique(array_column($assigned_services, 'service_i
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Assigned Services - Legal Taxation</title>
+  <title>Assigned Services - CA Dashboard | Legal Taxation</title>
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
+  <!-- Google Font: Inter (modern, clean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Theme style (AdminLTE 3) - we keep for layout but override heavily -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- DataTables -->
+  <!-- DataTables (for functionality only, we'll restyle) -->
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  
+
+  <!-- Modern Styles (matching other dashboards) -->
   <style>
-    .service-card {
-      border-left: 4px solid #007bff;
-      margin-bottom: 15px;
-      transition: all 0.3s;
+    * {
+      font-family: 'Inter', sans-serif;
     }
-    .service-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+    body {
+      background-color: #f8fafc;
     }
-    .user-info {
-      background: #f8f9fa;
-      border-radius: 5px;
-      padding: 10px;
+
+    .wrapper {
+      background-color: #f8fafc;
     }
-    .status-badge {
+
+    /* Override AdminLTE defaults */
+    .main-header {
+      background-color: #ffffff !important;
+      border-bottom: 1px solid #e9ecef;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .content-wrapper {
+      background-color: #f8fafc;
+    }
+
+    /* Page Header */
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-weight: 600;
+      font-size: 1.875rem;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .page-header h1 i {
+      color: #3b82f6;
+      margin-right: 0.75rem;
+      font-size: 2rem;
+    }
+
+    .page-header .breadcrumb {
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .page-header .breadcrumb a {
+      color: #64748b;
+    }
+
+    .page-header .breadcrumb .active {
+      color: #0f172a;
+      font-weight: 500;
+    }
+
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 992px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #f1f5f9;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+      border-color: #e2e8f0;
+    }
+
+    .kpi-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .kpi-icon i {
+      font-size: 1.75rem;
+    }
+
+    .kpi-content {
+      flex: 1;
+    }
+
+    .kpi-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.2;
+      margin-bottom: 0.25rem;
+    }
+
+    .kpi-trend {
       font-size: 0.8rem;
-      padding: 3px 8px;
+      color: #10b981;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
     }
-    .action-buttons {
-      white-space: nowrap;
+
+    .kpi-stats {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 0.5rem;
     }
-    .user-type-badge {
+
+    .kpi-stats span {
+      margin-right: 0.5rem;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .filter-group label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .filter-group select,
+    .filter-group input {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      font-size: 0.9rem;
+      color: #0f172a;
+      background: #ffffff;
+      transition: border 0.2s;
+    }
+
+    .filter-group select:focus,
+    .filter-group input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+    }
+
+    .user-type-filters {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .user-type-btn {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 100px;
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .user-type-btn:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    .user-type-btn.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #ffffff;
+    }
+
+    /* Main Card */
+    .main-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      border: 1px solid #f1f5f9;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+
+    .card-header-custom {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-header-custom h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-header-custom h3 i {
+      color: #3b82f6;
+    }
+
+    .card-body-custom {
+      padding: 1.5rem 1.75rem;
+    }
+
+    .card-footer-custom {
+      padding: 1rem 1.75rem;
+      border-top: 1px solid #f1f5f9;
+      background: #f8fafc;
+    }
+
+    /* Table Styling (modern) */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 0.5rem;
+    }
+
+    .table thead th {
+      border: none;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      background: #f8fafc;
+      padding: 0.75rem 1rem;
+    }
+
+    .table tbody tr {
+      background: #ffffff;
+      border-radius: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s;
+    }
+
+    .table tbody tr:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .table tbody td {
+      border: none;
+      padding: 1rem;
+      vertical-align: middle;
+      font-size: 0.9rem;
+      color: #334155;
+    }
+
+    /* Badges */
+    .badge-modern {
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
       font-size: 0.7rem;
-      padding: 2px 6px;
-      border-radius: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
-    .customer-badge {
-      background-color: #28a745;
-      color: white;
+
+    .badge-customer {
+      background: #d1fae5;
+      color: #065f46;
     }
-    .partner-badge {
-      background-color: #007bff;
-      color: white;
+
+    .badge-partner {
+      background: #dbeafe;
+      color: #1e40af;
     }
-    .client-count-badge {
-      background-color: #6c757d;
-      color: white;
-      font-size: 0.7rem;
-      padding: 2px 6px;
-      border-radius: 10px;
+
+    .badge-pending {
+      background: #fff3cd;
+      color: #856404;
     }
-    .filter-active {
-      background-color: #007bff !important;
-      color: white !important;
+
+    .badge-completed {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge-info {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .badge-secondary {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    /* Buttons */
+    .btn-icon-modern {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 100px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+    }
+
+    .btn-icon-modern:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    .btn-icon-modern i {
+      font-size: 0.8rem;
+    }
+
+    .btn-group-modern {
+      display: flex;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+    }
+
+    /* User info box */
+    .user-info-box {
+      background: #f8fafc;
+      border-radius: 0.75rem;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .user-info-box strong {
+      color: #0f172a;
+    }
+
+    .user-info-box small {
+      color: #64748b;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h4 {
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+      color: #64748b;
+    }
+
+    /* Charts */
+    .chart-container {
+      position: relative;
+      height: 150px;
+    }
+
+    /* Footer */
+    .main-footer {
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      color: #64748b;
+      font-size: 0.85rem;
     }
   </style>
 </head>
@@ -189,22 +585,24 @@ $total_services = count(array_unique(array_column($assigned_services, 'service_i
 
   <!-- Navbar -->
   <?php include('navbar.php'); ?>
-  <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
+  <!-- Sidebar -->
   <?php include('sidebar.php'); ?>
 
   <!-- Content Wrapper -->
   <div class="content-wrapper">
     <!-- Content Header -->
-    <div class="content-header">
+    <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row mb-3">
           <div class="col-sm-6">
-            <h1 class="m-0">
-              <i class="fas fa-tasks mr-2"></i>Assigned Services
-              <small class="text-muted">(<?php echo $total_assignments; ?> total)</small>
-            </h1>
+            <div class="page-header">
+              <h1>
+                <i class="fas fa-tasks"></i>
+                Assigned Services
+                <span class="text-muted" style="font-size: 1rem; margin-left: 0.5rem;">(<?php echo $total_assignments; ?> total)</span>
+              </h1>
+            </div>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -214,407 +612,332 @@ $total_services = count(array_unique(array_column($assigned_services, 'service_i
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        
-        <!-- Statistics Cards -->
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3><?php echo $total_assignments; ?></h3>
-                <p>Total Assignments</p>
-                <div class="small">
-                  <span class="badge badge-success">Customers: <?php echo $customer_count; ?></span>
-                  <span class="badge badge-primary">Partners: <?php echo $partner_count; ?></span>
-                </div>
-              </div>
-              <div class="icon">
-                <i class="fas fa-tasks"></i>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background: #e0f2fe; color: #0284c7;">
+              <i class="fas fa-tasks"></i>
+            </div>
+            <div class="kpi-content">
+              <div class="kpi-label">Total Assignments</div>
+              <div class="kpi-value"><?php echo $total_assignments; ?></div>
+              <div class="kpi-stats">
+                <span><span class="badge badge-customer">C: <?php echo $customer_count; ?></span></span>
+                <span><span class="badge badge-partner">P: <?php echo $partner_count; ?></span></span>
               </div>
             </div>
           </div>
-          
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3><?php echo $pending_assignments; ?></h3>
-                <p>Pending</p>
-                <div class="small">Awaiting action</div>
-              </div>
-              <div class="icon">
-                <i class="fas fa-clock"></i>
-              </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background: #fef9c3; color: #a16207;">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="kpi-content">
+              <div class="kpi-label">Pending</div>
+              <div class="kpi-value"><?php echo $pending_assignments; ?></div>
+              <div class="kpi-trend"><i class="fas fa-hourglass-half"></i> Awaiting action</div>
             </div>
           </div>
-          
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3><?php echo $completed_assignments; ?></h3>
-                <p>Completed</p>
-                <div class="small">Service delivered</div>
-              </div>
-              <div class="icon">
-                <i class="fas fa-check-circle"></i>
-              </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background: #dcfce7; color: #166534;">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="kpi-content">
+              <div class="kpi-label">Completed</div>
+              <div class="kpi-value"><?php echo $completed_assignments; ?></div>
+              <div class="kpi-trend"><i class="fas fa-check-double"></i> Delivered</div>
             </div>
           </div>
-          
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-secondary">
-              <div class="inner">
-                <h3><?php echo $total_customers + $total_partners; ?></h3>
-                <p>Unique Clients</p>
-                <div class="small">
-                  <span class="badge badge-success">Customers: <?php echo $total_customers; ?></span>
-                  <span class="badge badge-primary">Partners: <?php echo $total_partners; ?></span>
-                </div>
-              </div>
-              <div class="icon">
-                <i class="fas fa-users"></i>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background: #f1f5f9; color: #334155;">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="kpi-content">
+              <div class="kpi-label">Unique Clients</div>
+              <div class="kpi-value"><?php echo $total_customers + $total_partners; ?></div>
+              <div class="kpi-stats">
+                <span><span class="badge badge-customer">C: <?php echo $total_customers; ?></span></span>
+                <span><span class="badge badge-partner">P: <?php echo $total_partners; ?></span></span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Filter Options -->
-        <div class="row mb-3">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Filter by User Type:</label>
-                      <div class="btn-group d-flex">
-                        <a href="?user_type=all" class="btn btn-sm <?php echo $filter_user_type == 'all' ? 'btn-primary' : 'btn-outline-primary'; ?> flex-fill">
-                          All (<?php echo $total_assignments; ?>)
-                        </a>
-                        <a href="?user_type=customer" class="btn btn-sm <?php echo $filter_user_type == 'customer' ? 'btn-success' : 'btn-outline-success'; ?> flex-fill">
-                          Customers (<?php echo $customer_count; ?>)
-                        </a>
-                        <a href="?user_type=partner" class="btn btn-sm <?php echo $filter_user_type == 'partner' ? 'btn-info' : 'btn-outline-info'; ?> flex-fill">
-                          Partners (<?php echo $partner_count; ?>)
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Filter by Status:</label>
-                      <select class="form-control" id="statusFilter">
-                        <option value="all">All Status</option>
-                        <option value="0">Pending</option>
-                        <option value="1">Completed</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Filter by Service:</label>
-                      <select class="form-control" id="serviceFilter">
-                        <option value="all">All Services</option>
-                        <?php
-                        if(!empty($assigned_services)){
-                            $services = array_unique(array_column($assigned_services, 'service_title'));
-                            foreach($services as $service){
-                                echo "<option value='".htmlspecialchars($service)."'>".htmlspecialchars($service)."</option>";
-                            }
-                        }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Filter by Date:</label>
-                      <input type="date" class="form-control" id="dateFilter">
-                    </div>
-                  </div>
-                </div>
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-grid">
+            <div class="filter-group">
+              <label>User Type</label>
+              <div class="user-type-filters">
+                <a href="?user_type=all" class="user-type-btn <?php echo $filter_user_type == 'all' ? 'active' : ''; ?>">
+                  <i class="fas fa-users"></i> All (<?php echo $total_assignments; ?>)
+                </a>
+                <a href="?user_type=customer" class="user-type-btn <?php echo $filter_user_type == 'customer' ? 'active' : ''; ?>">
+                  <i class="fas fa-user"></i> Customers (<?php echo $customer_count; ?>)
+                </a>
+                <a href="?user_type=partner" class="user-type-btn <?php echo $filter_user_type == 'partner' ? 'active' : ''; ?>">
+                  <i class="fas fa-handshake"></i> Partners (<?php echo $partner_count; ?>)
+                </a>
               </div>
+            </div>
+            <div class="filter-group">
+              <label>Status</label>
+              <select id="statusFilter" class="form-control">
+                <option value="all">All Status</option>
+                <option value="0">Pending</option>
+                <option value="1">Completed</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Service</label>
+              <select id="serviceFilter" class="form-control">
+                <option value="all">All Services</option>
+                <?php
+                if(!empty($assigned_services)){
+                    $services = array_unique(array_column($assigned_services, 'service_title'));
+                    foreach($services as $service){
+                        echo "<option value='".htmlspecialchars($service)."'>".htmlspecialchars($service)."</option>";
+                    }
+                }
+                ?>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Date</label>
+              <input type="date" id="dateFilter" class="form-control">
             </div>
           </div>
         </div>
 
-        <!-- Assigned Services List -->
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-list mr-2"></i>Your Assigned Services
-                  <span class="badge badge-primary ml-2"><?php echo $total_assignments; ?></span>
-                </h3>
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="card-body">
-                <?php if(empty($assigned_services)): ?>
-                  <div class="text-center py-5">
-                    <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
-                    <h4>No Services Assigned Yet</h4>
-                    <p class="text-muted">You don't have any services assigned to you at the moment.</p>
-                    <?php if($filter_user_type != 'all'): ?>
-                      <p class="text-info">
-                        <i class="fas fa-info-circle"></i> 
-                        No <?php echo $filter_user_type; ?> assignments found. 
-                        <a href="?user_type=all">View all assignments</a>
-                      </p>
-                    <?php else: ?>
-                      <p class="text-info">
-                        <i class="fas fa-info-circle"></i> 
-                        Services will appear here once admin assigns them to you.
-                      </p>
-                    <?php endif; ?>
-                  </div>
-                <?php else: ?>
-                  <div class="table-responsive" id="assignments-list">
-                    <table class="table table-striped table-bordered" id="servicesTable">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Application ID</th>
-                          <th>User Type</th>
-                          <th>User Details</th>
-                          <th>Service Details</th>
-                          <th>Clients</th>
-                          <th>Application Date</th>
-                          <th>Status</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php 
-                        $sl = 1;
-                        foreach($assigned_services as $service):
-                          // Get form responses count for this application
-                          $form_count = 0;
-                          $form_sql = $con->query("SELECT COUNT(*) as count FROM service_form_responses WHERE application_id='".$service['application_id']."'");
-                          if($form_sql && $form_row = $form_sql->fetch_assoc()){
-                            $form_count = $form_row['count'];
-                          }
-                          
-                          // Calculate form completion percentage
-                          $total_fields_query = $con->query("SELECT COUNT(*) as count FROM service_form_fields WHERE service_id='".$service['service_id']."'");
-                          $total_fields = 0;
-                          if($total_fields_query && $field_row = $total_fields_query->fetch_assoc()){
-                              $total_fields = $field_row['count'];
-                          }
-                          $total_expected_fields = $total_fields * ($service['client_count'] ?: 1);
-                          $completion_percentage = $total_expected_fields > 0 ? round(($form_count / $total_expected_fields) * 100) : 0;
-                          
-                          // Get documents count
-                          $doc_count = 0;
-                          $doc_sql = $con->query("SELECT COUNT(*) as count FROM req_doc WHERE sid='".$service['application_id']."'");
-                          if($doc_sql && $doc_row = $doc_sql->fetch_assoc()){
-                            $doc_count = $doc_row['count'];
-                          }
-                        ?>
-                          <tr data-status="<?php echo $service['application_status']; ?>" 
-                              data-service="<?php echo htmlspecialchars($service['service_title']); ?>"
-                              data-date="<?php echo $service['application_date']; ?>">
-                            <td><?php echo $sl++; ?></td>
-                            <td>
-                              <strong>#<?php echo $service['application_id']; ?></strong>
-                              <br>
-                              <small class="text-muted">Service: #<?php echo $service['service_id']; ?></small>
-                            </td>
-                            <td>
-                              <span class="user-type-badge <?php echo $service['user_type'] == 'customer' ? 'customer-badge' : 'partner-badge'; ?>">
-                                <?php echo ucfirst($service['user_type']); ?>
-                              </span>
-                              <?php if($service['user_type'] == 'partner' && $service['is_partner_price_applied']): ?>
-                                <br><small class="text-success">Partner Price</small>
-                              <?php endif; ?>
-                            </td>
-                            <td>
-                              <div class="user-info">
-                                <strong><?php echo htmlspecialchars($service['user_name']); ?></strong>
-                                <?php if($service['user_type'] == 'partner' && $service['partner_business']): ?>
-                                  <br><small><?php echo htmlspecialchars($service['partner_business']); ?></small>
-                                <?php endif; ?>
-                                <br>
-                                <small>
-                                  <i class="fas fa-envelope"></i> <?php echo htmlspecialchars($service['user_email']); ?>
-                                  <br>
-                                  <i class="fas fa-phone"></i> <?php echo htmlspecialchars($service['user_contact']); ?>
-                                </small>
-                                <br>
-                                <span class="badge badge-secondary">
-                                  ID: #<?php echo $service['user_id']; ?>
-                                </span>
-                              </div>
-                            </td>
-                            <td>
-                              <strong><?php echo htmlspecialchars($service['service_title']); ?></strong>
-                              <br>
-                              <small class="text-muted">
-                                <i class="fas fa-tag"></i> <?php echo htmlspecialchars($service['category_name']); ?>
-                              </small>
-                              <br>
-                              <div class="mt-2">
-                                <?php if($service['user_type'] == 'partner' && $service['partner_price']): ?>
-                                  <span class="badge badge-info">
-                                    <i class="fas fa-tag"></i> Partner: ₹<?php echo $service['partner_price']; ?>
-                                  </span>
-                                <?php else: ?>
-                                  <span class="badge badge-info">
-                                    <i class="fas fa-tag"></i> Price: ₹<?php echo $service['original_price']; ?>
-                                  </span>
-                                <?php endif; ?>
-                              </div>
-                            </td>
-                            <td>
-                              <?php if($service['user_type'] == 'partner' && $service['client_count'] > 1): ?>
-                                <span class="client-count-badge" title="Multiple clients">
-                                  <?php echo $service['client_count']; ?> clients
-                                </span>
-                                <br>
-                                <span class="badge badge-<?php echo $completion_percentage >= 100 ? 'success' : ($completion_percentage > 0 ? 'warning' : 'danger'); ?>">
-                                  <?php echo $completion_percentage; ?>% complete
-                                </span>
-                              <?php else: ?>
-                                <span class="text-muted">1 client</span>
-                                <br>
-                                <?php if($form_count > 0): ?>
-                                  <span class="badge badge-success">Form filled</span>
-                                <?php else: ?>
-                                  <span class="badge badge-warning">Form pending</span>
-                                <?php endif; ?>
-                              <?php endif; ?>
-                            </td>
-                            <td>
-                              <?php echo date('d M Y', strtotime($service['application_date'])); ?>
-                              <br>
-                              <small class="text-muted">
-                                <?php 
-                                $days = floor((time() - strtotime($service['application_date'])) / (60 * 60 * 24));
-                                echo $days == 0 ? 'Today' : ($days . ' day(s) ago');
-                                ?>
-                              </small>
-                            </td>
-                            <td>
-                              <?php if($service['application_status'] == '0'): ?>
-                                <span class="badge badge-warning status-badge">Pending</span>
-                              <?php elseif($service['application_status'] == '1'): ?>
-                                <span class="badge badge-success status-badge">Completed</span>
-                              <?php else: ?>
-                                <span class="badge badge-secondary status-badge"><?php echo $service['application_status']; ?></span>
-                              <?php endif; ?>
-                            </td>
-                            <td class="action-buttons">
-                              <!-- View Full Details -->
-                              <a href="view_assigned_service.php?application_id=<?php echo $service['application_id']; ?>" 
-                                 class="btn btn-sm btn-info mb-1" title="View Full Details">
-                                <i class="fas fa-eye"></i> View
-                              </a>
-                              
-                              <!-- View Form Data - Different for Partner vs Customer -->
-                              <?php if($service['user_type'] == 'partner' && $service['client_count'] > 1): ?>
-                                <a href="view_partner_clients_ca.php?application_id=<?php echo $service['application_id']; ?>" 
-                                   class="btn btn-sm btn-primary mb-1" 
-                                   title="View All Clients Data">
-                                  <i class="fas fa-users"></i> Clients
-                                </a>
-                              <?php else: ?>
-                                <a href="view_customer_form.php?application_id=<?php echo $service['application_id']; ?>" 
-                                   class="btn btn-sm btn-primary mb-1" 
-                                   title="View Form Data"
-                                   <?php if($form_count == 0): ?>disabled<?php endif; ?>>
-                                  <i class="fas fa-file-alt"></i> Form
-                                </a>
-                              <?php endif; ?>
-                              
-                              <!-- Update Status -->
-                              <button type="button" 
-                                      class="btn btn-sm btn-<?php echo $service['application_status'] == '0' ? 'success' : 'warning'; ?> mb-1"
-                                      onclick="updateStatus(<?php echo $service['application_id']; ?>, <?php echo $service['application_status']; ?>)"
-                                      title="<?php echo $service['application_status'] == '0' ? 'Mark as Completed' : 'Mark as Pending'; ?>">
-                                <i class="fas fa-<?php echo $service['application_status'] == '0' ? 'check' : 'undo'; ?>"></i>
-                                <?php echo $service['application_status'] == '0' ? 'Complete' : 'Reopen'; ?>
-                              </button>
-                              
-                              <!-- Contact User -->
-                              <div class="btn-group">
-                                <a href="mailto:<?php echo $service['user_email']; ?>" 
-                                   class="btn btn-sm btn-secondary" title="Email">
-                                  <i class="fas fa-envelope"></i>
-                                </a>
-                                <a href="tel:<?php echo $service['user_contact']; ?>" 
-                                   class="btn btn-sm btn-secondary" title="Call">
-                                  <i class="fas fa-phone"></i>
-                                </a>
-                              </div>
-                            </td>
-                          </tr>
-                        <?php endforeach; ?>
-                      </tbody>
-                    </table>
-                  </div>
+        <!-- Assignments List -->
+        <div class="main-card">
+          <div class="card-header-custom">
+            <h3><i class="fas fa-list"></i> Your Assigned Services</h3>
+            <div>
+              <button class="btn-icon-modern" onclick="window.location.reload()">
+                <i class="fas fa-sync"></i> Refresh
+              </button>
+            </div>
+          </div>
+          <div class="card-body-custom">
+            <?php if(empty($assigned_services)): ?>
+              <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h4>No Services Assigned Yet</h4>
+                <p>You don't have any services assigned to you at the moment.</p>
+                <?php if($filter_user_type != 'all'): ?>
+                  <p><a href="?user_type=all" class="user-type-btn">View all assignments</a></p>
                 <?php endif; ?>
               </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-6">
-                    <small class="text-muted">
-                      <i class="fas fa-info-circle"></i> 
-                      Showing <?php echo count($assigned_services); ?> assigned service(s)
-                      <?php if($filter_user_type != 'all'): ?>
-                        (Filtered by: <?php echo $filter_user_type; ?>)
-                      <?php endif; ?>
-                    </small>
-                  </div>
-                  <div class="col-md-6 text-right">
-                    <?php if(!empty($assigned_services)): ?>
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default btn-sm" onclick="printTable()">
-                        <i class="fas fa-print"></i> Print
-                      </button>
-                      <button type="button" class="btn btn-default btn-sm" onclick="exportToExcel()">
-                        <i class="fas fa-download"></i> Export
-                      </button>
-                      <button type="button" class="btn btn-default btn-sm" onclick="window.location.reload()">
-                        <i class="fas fa-sync"></i> Refresh
-                      </button>
-                    </div>
-                    <?php endif; ?>
-                  </div>
-                </div>
+            <?php else: ?>
+              <div class="table-responsive">
+                <table class="table" id="servicesTable">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>App ID</th>
+                      <th>Type</th>
+                      <th>User Details</th>
+                      <th>Service</th>
+                      <th>Clients</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php 
+                    $sl = 1;
+                    foreach($assigned_services as $service):
+                      // Get form responses count
+                      $form_count = 0;
+                      $form_sql = $con->query("SELECT COUNT(*) as count FROM service_form_responses WHERE application_id='".$service['application_id']."'");
+                      if($form_sql && $form_row = $form_sql->fetch_assoc()){
+                        $form_count = $form_row['count'];
+                      }
+                      
+                      // Calculate form completion percentage
+                      $total_fields_query = $con->query("SELECT COUNT(*) as count FROM service_form_fields WHERE service_id='".$service['service_id']."'");
+                      $total_fields = 0;
+                      if($total_fields_query && $field_row = $total_fields_query->fetch_assoc()){
+                          $total_fields = $field_row['count'];
+                      }
+                      $total_expected_fields = $total_fields * ($service['client_count'] ?: 1);
+                      $completion_percentage = $total_expected_fields > 0 ? round(($form_count / $total_expected_fields) * 100) : 0;
+                      
+                      // Get documents count
+                      $doc_count = 0;
+                      $doc_sql = $con->query("SELECT COUNT(*) as count FROM req_doc WHERE sid='".$service['application_id']."'");
+                      if($doc_sql && $doc_row = $doc_sql->fetch_assoc()){
+                        $doc_count = $doc_row['count'];
+                      }
+                    ?>
+                      <tr data-status="<?php echo $service['application_status']; ?>" 
+                          data-service="<?php echo htmlspecialchars($service['service_title']); ?>"
+                          data-date="<?php echo $service['application_date']; ?>">
+                        <td><?php echo $sl++; ?></td>
+                        <td>
+                          <strong>#<?php echo $service['application_id']; ?></strong>
+                        </td>
+                        <td>
+                          <span class="badge-modern <?php echo $service['user_type'] == 'customer' ? 'badge-customer' : 'badge-partner'; ?>">
+                            <?php echo ucfirst($service['user_type']); ?>
+                          </span>
+                          <?php if($service['user_type'] == 'partner' && $service['is_partner_price_applied']): ?>
+                            <br><small class="badge badge-info">Partner Price</small>
+                          <?php endif; ?>
+                        </td>
+                        <td>
+                          <div class="user-info-box">
+                            <strong><?php echo htmlspecialchars($service['user_name']); ?></strong>
+                            <?php if($service['user_type'] == 'partner' && $service['partner_business']): ?>
+                              <div><small><?php echo htmlspecialchars($service['partner_business']); ?></small></div>
+                            <?php endif; ?>
+                            <div><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($service['user_email']); ?></div>
+                            <div><i class="fas fa-phone"></i> <?php echo htmlspecialchars($service['user_contact']); ?></div>
+                            <div><span class="badge badge-secondary">ID: #<?php echo $service['user_id']; ?></span></div>
+                          </div>
+                        </td>
+                        <td>
+                          <strong><?php echo htmlspecialchars($service['service_title']); ?></strong>
+                          <div><small class="text-muted"><i class="fas fa-tag"></i> <?php echo htmlspecialchars($service['category_name']); ?></small></div>
+                          <?php if($service['user_type'] == 'partner' && $service['partner_price']): ?>
+                            <span class="badge badge-info"><i class="fas fa-tag"></i> Partner: ₹<?php echo $service['partner_price']; ?></span>
+                          <?php else: ?>
+                            <span class="badge badge-info"><i class="fas fa-tag"></i> ₹<?php echo $service['original_price']; ?></span>
+                          <?php endif; ?>
+                        </td>
+                        <td>
+                          <?php if($service['user_type'] == 'partner' && $service['client_count'] > 1): ?>
+                            <span class="badge badge-secondary"><?php echo $service['client_count']; ?> clients</span>
+                            <br>
+                            <span class="badge badge-<?php echo $completion_percentage >= 100 ? 'success' : ($completion_percentage > 0 ? 'warning' : 'danger'); ?>">
+                              <?php echo $completion_percentage; ?>% complete
+                            </span>
+                          <?php else: ?>
+                            <span class="badge badge-secondary">1 client</span>
+                            <br>
+                            <?php if($form_count > 0): ?>
+                              <span class="badge badge-success">Form filled</span>
+                            <?php else: ?>
+                              <span class="badge badge-warning">Form pending</span>
+                            <?php endif; ?>
+                          <?php endif; ?>
+                        </td>
+                        <td>
+                          <?php echo date('d M Y', strtotime($service['application_date'])); ?>
+                          <br>
+                          <small class="text-muted">
+                            <?php 
+                            $days = floor((time() - strtotime($service['application_date'])) / (60 * 60 * 24));
+                            echo $days == 0 ? 'Today' : ($days . ' day(s) ago');
+                            ?>
+                          </small>
+                        </td>
+                        <td>
+                          <?php if($service['application_status'] == '0'): ?>
+                            <span class="badge-modern badge-pending">Pending</span>
+                          <?php elseif($service['application_status'] == '1'): ?>
+                            <span class="badge-modern badge-completed">Completed</span>
+                          <?php else: ?>
+                            <span class="badge-modern badge-secondary"><?php echo $service['application_status']; ?></span>
+                          <?php endif; ?>
+                        </td>
+                        <td>
+                          <div class="btn-group-modern">
+                            <a href="view_assigned_service.php?application_id=<?php echo $service['application_id']; ?>" 
+                               class="btn-icon-modern" title="View Full Details">
+                              <i class="fas fa-eye"></i> View
+                            </a>
+                            
+                            <?php if($service['user_type'] == 'partner' && $service['client_count'] > 1): ?>
+                              <a href="view_partner_clients_ca.php?application_id=<?php echo $service['application_id']; ?>" 
+                                 class="btn-icon-modern" title="View All Clients Data">
+                                <i class="fas fa-users"></i> Clients
+                              </a>
+                            <?php else: ?>
+                              <a href="view_customer_form.php?application_id=<?php echo $service['application_id']; ?>" 
+                                 class="btn-icon-modern" 
+                                 title="View Form Data"
+                                 <?php if($form_count == 0): ?>onclick="return false;" style="opacity:0.5; pointer-events:none;"<?php endif; ?>>
+                                <i class="fas fa-file-alt"></i> Form
+                              </a>
+                            <?php endif; ?>
+                            
+                            <button type="button" 
+                                    class="btn-icon-modern <?php echo $service['application_status'] == '0' ? 'btn-primary' : 'btn-warning'; ?>"
+                                    onclick="updateStatus(<?php echo $service['application_id']; ?>, <?php echo $service['application_status']; ?>)"
+                                    title="<?php echo $service['application_status'] == '0' ? 'Mark as Completed' : 'Mark as Pending'; ?>">
+                              <i class="fas fa-<?php echo $service['application_status'] == '0' ? 'check' : 'undo'; ?>"></i>
+                              <?php echo $service['application_status'] == '0' ? 'Complete' : 'Reopen'; ?>
+                            </button>
+                            
+                            <div class="btn-group-modern">
+                              <a href="mailto:<?php echo $service['user_email']; ?>" class="btn-icon-modern" title="Email">
+                                <i class="fas fa-envelope"></i>
+                              </a>
+                              <a href="tel:<?php echo $service['user_contact']; ?>" class="btn-icon-modern" title="Call">
+                                <i class="fas fa-phone"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
               </div>
+            <?php endif; ?>
+          </div>
+          <div class="card-footer-custom">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <small class="text-muted">
+                <i class="fas fa-info-circle"></i> 
+                Showing <?php echo count($assigned_services); ?> assigned service(s)
+                <?php if($filter_user_type != 'all'): ?>
+                  (Filtered by: <?php echo $filter_user_type; ?>)
+                <?php endif; ?>
+              </small>
+              <?php if(!empty($assigned_services)): ?>
+              <div class="btn-group-modern">
+                <button class="btn-icon-modern" onclick="printTable()">
+                  <i class="fas fa-print"></i> Print
+                </button>
+                <button class="btn-icon-modern" onclick="exportToExcel()">
+                  <i class="fas fa-download"></i> Export
+                </button>
+              </div>
+              <?php endif; ?>
             </div>
           </div>
         </div>
 
         <!-- Service Statistics -->
         <?php if(!empty($assigned_services)): ?>
-        <div class="row mt-3">
+        <div class="row">
           <div class="col-md-6">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-pie mr-2"></i> Assignment Distribution</h3>
+            <div class="main-card">
+              <div class="card-header-custom">
+                <h3><i class="fas fa-chart-pie"></i> Assignment Distribution</h3>
               </div>
-              <div class="card-body">
+              <div class="card-body-custom">
                 <div class="chart-container">
                   <canvas id="assignmentChart" height="150"></canvas>
                 </div>
               </div>
             </div>
           </div>
-          
           <div class="col-md-6">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-line mr-2"></i> Monthly Assignments</h3>
+            <div class="main-card">
+              <div class="card-header-custom">
+                <h3><i class="fas fa-chart-line"></i> Monthly Assignments</h3>
               </div>
-              <div class="card-body">
+              <div class="card-body-custom">
                 <div class="chart-container">
                   <canvas id="monthlyChart" height="150"></canvas>
                 </div>
@@ -640,7 +963,7 @@ $total_services = count(array_unique(array_column($assigned_services, 'service_i
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
 <script src="plugins/chart.js/Chart.min.js"></script>
-<!-- DataTables -->
+<!-- DataTables (for functionality, but we'll style it minimal) -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <!-- AdminLTE App -->
@@ -648,20 +971,34 @@ $total_services = count(array_unique(array_column($assigned_services, 'service_i
 
 <script>
 $(document).ready(function() {
-    // Initialize DataTable
+    // Initialize DataTable (we keep it for search/pagination, but restyled)
     $('#servicesTable').DataTable({
         "pageLength": 10,
         "responsive": true,
         "autoWidth": false,
-        "order": [[6, 'desc']], // Sort by date desc
+        "order": [[6, 'desc']],
         "language": {
-            "search": "Search assignments:",
-            "lengthMenu": "Show _MENU_ assignments per page",
-            "info": "Showing _START_ to _END_ of _TOTAL_ assignments",
+            "search": "Search:",
+            "lengthMenu": "Show _MENU_ entries",
+            "info": "Showing _START_ to _END_ of _TOTAL_ entries",
             "emptyTable": "No assignments found"
+        },
+        "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        initComplete: function() {
+            // Style the search input and select
+            $('#servicesTable_filter input').css({
+                'border': '1px solid #e2e8f0',
+                'border-radius': '0.75rem',
+                'padding': '0.4rem 0.75rem'
+            });
+            $('#servicesTable_length select').css({
+                'border': '1px solid #e2e8f0',
+                'border-radius': '0.75rem',
+                'padding': '0.4rem'
+            });
         }
     });
-    
+
     <?php if(!empty($assigned_services)): ?>
     initializeCharts();
     <?php endif; ?>
@@ -678,31 +1015,19 @@ function applyFilters() {
         var rowService = $(this).data('service');
         var rowDate = $(this).data('date');
         
-        if(status !== 'all' && rowStatus != status) {
-            show = false;
-        }
+        if(status !== 'all' && rowStatus != status) show = false;
+        if(service !== 'all' && rowService !== service) show = false;
+        if(date && rowDate !== date) show = false;
         
-        if(service !== 'all' && rowService !== service) {
-            show = false;
-        }
-        
-        if(date && rowDate !== date) {
-            show = false;
-        }
-        
-        if(show) {
-            $(this).show();
-        } else {
-            $(this).hide();
-        }
+        if(show) $(this).show(); else $(this).hide();
     });
 }
 
 function updateStatus(applicationId, currentStatus) {
     var newStatus = currentStatus == '0' ? '1' : '0';
     var confirmMessage = currentStatus == '0' 
-        ? 'Are you sure you want to mark this service as completed?' 
-        : 'Are you sure you want to reopen this service?';
+        ? 'Mark this service as completed?' 
+        : 'Reopen this service?';
     
     if(confirm(confirmMessage)) {
         $.ajax({
@@ -714,10 +1039,10 @@ function updateStatus(applicationId, currentStatus) {
             },
             success: function(response) {
                 alert('Status updated successfully!');
-                window.location.reload();
+                location.reload();
             },
             error: function() {
-                alert('Error updating status. Please try again.');
+                alert('Error updating status.');
             }
         });
     }
@@ -732,81 +1057,62 @@ function printTable() {
         <head>
             <title>Assigned Services Report - <?php echo $ca_name; ?></title>
             <style>
-                body { font-family: Arial, sans-serif; margin: 20px; }
-                table { width: 100%; border-collapse: collapse; }
-                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                th { background-color: #f2f2f2; font-weight: bold; }
-                .print-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
-                .print-footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
-                .user-type-badge { padding: 2px 6px; border-radius: 10px; font-size: 11px; }
-                .customer-badge { background-color: #28a745; color: white; }
-                .partner-badge { background-color: #007bff; color: white; }
+                body { font-family: 'Inter', sans-serif; margin: 2rem; }
+                .print-header { text-align: center; margin-bottom: 2rem; }
+                .print-header h2 { color: #3b82f6; }
+                table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+                th, td { border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left; }
+                th { background: #f8fafc; font-weight: 600; }
+                .badge-modern { padding: 0.2rem 0.5rem; border-radius: 100px; font-size: 0.7rem; }
+                .badge-customer { background: #d1fae5; color: #065f46; }
+                .badge-partner { background: #dbeafe; color: #1e40af; }
             </style>
         </head>
         <body>
             <div class="print-header">
                 <h2>Assigned Services Report</h2>
                 <h3>CA: <?php echo $ca_name; ?> (ID: <?php echo $ca_id_number; ?>)</h3>
-                <p>Generated on: <?php echo date('d M Y, h:i A'); ?></p>
-                <p>Total Assignments: <?php echo $total_assignments; ?> | 
-                   Customers: <?php echo $customer_count; ?> | 
-                   Partners: <?php echo $partner_count; ?> |
-                   Pending: <?php echo $pending_assignments; ?> | 
-                   Completed: <?php echo $completed_assignments; ?></p>
+                <p>Generated: <?php echo date('d M Y, h:i A'); ?></p>
+                <p>Total: <?php echo $total_assignments; ?> | Pending: <?php echo $pending_assignments; ?> | Completed: <?php echo $completed_assignments; ?></p>
             </div>
-            
             ${printContent}
-            
-            <div class="print-footer">
-                <p>Generated by Legal Taxation CA Panel</p>
-                <p>Page generated on: <?php echo date('d M Y, h:i A'); ?></p>
-            </div>
         </body>
         </html>
     `;
-    
     window.print();
     document.body.innerHTML = originalContent;
-    window.location.reload();
+    location.reload();
 }
 
 function exportToExcel() {
     var table = document.getElementById("servicesTable");
     var html = table.outerHTML;
-    
     var blob = new Blob([html], {type: 'application/vnd.ms-excel'});
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'assigned_services_<?php echo date('Y-m-d'); ?>.xls';
-    
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    
-    alert('Export started. The file will be downloaded shortly.');
 }
 
 <?php if(!empty($assigned_services)): ?>
 function initializeCharts() {
-    // Assignment Distribution Chart (Customer vs Partner)
+    // Assignment Distribution Chart
     var assignmentCtx = document.getElementById('assignmentChart').getContext('2d');
-    var assignmentChart = new Chart(assignmentCtx, {
+    new Chart(assignmentCtx, {
         type: 'doughnut',
         data: {
             labels: ['Customers (<?php echo $customer_count; ?>)', 'Partners (<?php echo $partner_count; ?>)'],
             datasets: [{
                 data: [<?php echo $customer_count; ?>, <?php echo $partner_count; ?>],
-                backgroundColor: ['#28a745', '#007bff'],
-                borderWidth: 1
+                backgroundColor: ['#10b981', '#3b82f6'],
+                borderWidth: 0
             }]
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                }
-            }
+            plugins: { legend: { position: 'bottom' } }
         }
     });
     
@@ -819,22 +1125,19 @@ function initializeCharts() {
         echo "monthlyData['$month']++;";
     }
     ?>
-    
-    var monthLabels = Object.keys(monthlyData).slice(-6); // Last 6 months
-    var monthValues = monthLabels.map(function(month) {
-        return monthlyData[month] || 0;
-    });
+    var monthLabels = Object.keys(monthlyData).slice(-6);
+    var monthValues = monthLabels.map(function(month) { return monthlyData[month]; });
     
     var monthCtx = document.getElementById('monthlyChart').getContext('2d');
-    var monthChart = new Chart(monthCtx, {
+    new Chart(monthCtx, {
         type: 'line',
         data: {
             labels: monthLabels,
             datasets: [{
                 label: 'Assignments',
                 data: monthValues,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59,130,246,0.1)',
                 borderWidth: 2,
                 tension: 0.3,
                 fill: true
@@ -842,14 +1145,7 @@ function initializeCharts() {
         },
         options: {
             responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
-                    }
-                }
-            }
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
         }
     });
 }

@@ -3,257 +3,318 @@ include("../db.php");
 $aid = $_COOKIE["tax_admin_log"];
 if(!$aid){
   echo"<script>window.location='index.php';</script>";
+  exit;
 }
- $currentDate = date("Y-m-d");
+$currentDate = date("Y-m-d");
 $givenDate = "2024-09-16";
- if (strtotime($currentDate) > strtotime($givenDate)) {
-        // $initialValue = "Date Passed"; // Update value if current date is greater
-      $sql = $con->query("select * from admin where id='$aid'");
-        // echo"<script>window.location='index.php';</script>";
-    }
-    else
-    {
-        $sql = $con->query("select * from admin where id='$aid'");
-    }
-    
-    //   $sql = $con->query("select * from admin where id='$aid'");
+if (strtotime($currentDate) > strtotime($givenDate)) {
+    $sql = $con->query("select * from admin where id='$aid'");
+} else {
+    $sql = $con->query("select * from admin where id='$aid'");
+}
 
 if($row = $sql->fetch_assoc()){
-  $admin_image = $row["image"];
-  $admin_name = $row["name"];
-  $admin_cont = $row["contact"];
-  $admin_email = $row["email"];
-  $admin_pass = $row["password"];
+    $admin_image = $row["image"];
+    $admin_name = $row["name"];
+    $admin_cont = $row["contact"];
+    $admin_email = $row["email"];
+    $admin_pass = $row["password"];
 }
-
 
 if(isset($_GET['status'])){
-  if($con->query("update customer set status='".$_GET['status']."' where id='".$_GET['id']."'") === true){
-    echo"<script>window.location='customers.php';</script>";
-  }else{
-    echo"<script>alert('Server Error!!!');window.location='customers.php';</script>";
-  }
+    if($con->query("update customer set status='".$_GET['status']."' where id='".$_GET['id']."'") === true){
+        echo"<script>window.location='customers.php';</script>";
+    }else{
+        echo"<script>alert('Server Error!!!');window.location='customers.php';</script>";
+    }
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Legal Taxation</title>
+  <title>Customers | Admin Dashboard | Legal Taxation</title>
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
-  <!-- Theme style -->
+  <!-- Google Font: Inter (modern) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Theme style (AdminLTE) -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background-color: #f8fafc; }
+    .content-wrapper { background-color: #f8fafc; }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .page-header .icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(145deg, #3b82f6, #2563eb);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 0 8px 12px -4px rgba(59,130,246,0.3);
+    }
+    .page-header h1 {
+      font-weight: 600;
+      font-size: 1.875rem;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    /* Main Card */
+    .customers-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+    .card-header-custom {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-header-custom h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-header-custom h3 i { color: #3b82f6; }
+    .card-body-custom { padding: 1.5rem 1.75rem; }
+
+    /* Table Styling */
+    .table-responsive {
+      overflow-x: auto;
+    }
+    .table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 0.5rem;
+    }
+    .table thead th {
+      border: none;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      background: #f8fafc;
+      padding: 0.75rem 1rem;
+    }
+    .table tbody tr {
+      background: #ffffff;
+      border-radius: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      transition: all 0.2s;
+    }
+    .table tbody tr:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .table tbody td {
+      border: none;
+      padding: 1rem;
+      vertical-align: middle;
+      font-size: 0.9rem;
+      color: #334155;
+    }
+
+    /* Badges */
+    .badge-modern {
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .badge-pending { background: #fff3cd; color: #856404; }
+    .badge-approved { background: #d1fae5; color: #065f46; }
+
+    /* Buttons */
+    .btn-modern {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+    }
+    .btn-modern:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+    .btn-modern-success {
+      background: #10b981;
+      border-color: #10b981;
+      color: white;
+    }
+    .btn-modern-success:hover {
+      background: #059669;
+    }
+    .btn-modern-warning {
+      background: #f59e0b;
+      border-color: #f59e0b;
+      color: white;
+    }
+    .btn-modern-warning:hover {
+      background: #d97706;
+    }
+
+    /* Footer */
+    .main-footer {
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  
-
-
-
-
-
-
   <!-- Navbar -->
   <?php include("navbar.php"); ?>
-  <!-- /.navbar -->
-
-
-
-
 
   <!-- Main Sidebar Container -->
   <?php include("sidebar.php"); ?>
 
-<!--- Main Sidebar Container--->
-
-
-
-
-
-
-  <!-- Content Wrapper. Contains page content -->
+  <!-- Content Wrapper -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+    <!-- Content Header -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0"><span class="page-title-icon bg-gradient-primary text-white me-2">
-      <i class="fa fa-users"></i>
-    </span>&nbsp;All Customers</h1>
-          </div><!-- /.col -->
-          <!-- <div class="col-sm-6">
+            <div class="page-header">
+              <div class="icon"><i class="fas fa-users"></i></div>
+              <h1>All Customers</h1>
+            </div>
+          </div>
+          <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
+              <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+              <li class="breadcrumb-item active">Customers</li>
             </ol>
-          </div> -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-
-
-
-
-
-
-
-    <section class="content">
-      <div class="container-fluid">
-      
-
-   
-      <div class="row">
-  <div class="col-md-12 mb-3">
-    <div class="card">
-      <div class="card-body">
-        <div class="table-responsive"> 
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>SL</th>
-                <th>Full Name</th>
-                <th>Mobile Number</th>
-                <th>Email Address</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              $sl = 1;
-              $sql = $con->query("select * from customer order by id desc");
-              while($row = $sql->fetch_assoc()){
-              ?>
-              <tr>
-                <td><?php echo $sl ?></td>
-                <td><?php echo $row['name'] ?></td>
-                <td><?php echo $row['contact'] ?></td>
-                <td><?php echo $row['email']; ?></td>
-                <td>
-                  <?php
-                  if($row['status'] == 0){
-                      echo '<span class="badge badge-warning text-dark">Pending</span>';
-                  }
-                  if($row['status'] == 1){
-                      echo '<span class="badge badge-success">Approved</span>';
-                  }
-                  ?>
-                </td>
-                <td>
-                  <?php
-                  if($row['status'] == 0){
-                      echo '<a href="customers.php?status=1&id='.$row['id'].'" class="btn btn-sm btn-success">Approve</a>';
-                  }
-                  if($row['status'] == 1){
-                      echo '<a href="customers.php?status=0&id='.$row['id'].'" class="btn btn-sm btn-warning text-dark">Pending</a>';
-                  }
-                  ?>
-                </td>
-              </tr>
-              <?php
-              $sl++;
-              }
-              ?>
-            </tbody>
-          </table>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-      
-
-       
-        
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="customers-card">
+              <div class="card-header-custom">
+                <h3><i class="fas fa-list"></i> Customer List</h3>
+                <span class="badge badge-info"><?php
+                  $count = $con->query("SELECT COUNT(*) as total FROM customer")->fetch_assoc()['total'];
+                  echo $count; ?> total
+                </span>
+              </div>
+              <div class="card-body-custom">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Full Name</th>
+                        <th>Mobile Number</th>
+                        <th>Email Address</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      $sl = 1;
+                      $sql = $con->query("select * from customer order by id desc");
+                      while($row = $sql->fetch_assoc()){
+                      ?>
+                      <tr>
+                        <td><?php echo $sl; ?></td>
+                        <td><strong><?php echo htmlspecialchars($row['name']); ?></strong></td>
+                        <td><?php echo htmlspecialchars($row['contact']); ?></td>
+                        <td><?php echo htmlspecialchars($row['email']); ?></td>
+                        <td>
+                          <?php
+                          if($row['status'] == 0){
+                              echo '<span class="badge-modern badge-pending">Pending</span>';
+                          } elseif($row['status'] == 1){
+                              echo '<span class="badge-modern badge-approved">Approved</span>';
+                          }
+                          ?>
+                        </td>
+                        <td>
+                          <?php if($row['status'] == 0): ?>
+                            <a href="customers.php?status=1&id=<?php echo $row['id']; ?>" class="btn-modern btn-modern-success">
+                              <i class="fas fa-check"></i> Approve
+                            </a>
+                          <?php elseif($row['status'] == 1): ?>
+                            <a href="customers.php?status=0&id=<?php echo $row['id']; ?>" class="btn-modern btn-modern-warning">
+                              <i class="fas fa-undo-alt"></i> Pending
+                            </a>
+                          <?php endif; ?>
+                        </td>
+                      </tr>
+                      <?php
+                      $sl++;
+                      }
+                      ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div><!-- /.container-fluid -->
     </section>
-    <!-- /.content -->
-
-
-
-
-
-
-
-
   </div>
-  <!-- /.content-wrapper -->
+
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">Legal Taxation</a></strong>
+    <strong>Copyright &copy; 2014-<?php echo date('Y'); ?> <a href="../index.php">Legal Taxation</a></strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.2.0
     </div>
   </footer>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
 </body>
 </html>

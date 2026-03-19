@@ -113,57 +113,235 @@ if (isset($_SESSION['error'])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Legal Taxation - Category Management</title>
+  <title>Category Management | Admin Dashboard | Legal Taxation</title>
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
-  <!-- Theme style -->
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Theme style (AdminLTE) -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background-color: #f8fafc; }
+    .content-wrapper { background-color: #f8fafc; }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .page-header .icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(145deg, #3b82f6, #2563eb);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 0 8px 12px -4px rgba(59,130,246,0.3);
+    }
+    .page-header h1 {
+      font-weight: 600;
+      font-size: 1.875rem;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    /* Cards */
+    .modern-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .card-header-custom {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-header-custom h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-header-custom h3 i { color: #3b82f6; }
+    .card-body-custom { padding: 1.5rem 1.75rem; }
+
+    /* Form */
+    .form-group label {
+      font-weight: 500;
+      color: #334155;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .form-control {
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .form-control:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+      outline: none;
+    }
+    .btn-modern {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 100px;
+      padding: 0.6rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    .btn-modern:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+    .btn-primary-modern {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: white;
+    }
+    .btn-primary-modern:hover {
+      background: #2563eb;
+    }
+
+    /* Table */
+    .table-responsive { overflow-x: auto; }
+    .table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 0.5rem;
+    }
+    .table thead th {
+      border: none;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      background: #f8fafc;
+      padding: 0.75rem 1rem;
+    }
+    .table tbody tr {
+      background: #ffffff;
+      border-radius: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      transition: all 0.2s;
+    }
+    .table tbody tr:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .table tbody td {
+      border: none;
+      padding: 1rem;
+      vertical-align: middle;
+      font-size: 0.9rem;
+      color: #334155;
+    }
+
+    /* Action buttons */
+    .btn-icon {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 100px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+      color: #334155;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+      margin-right: 0.25rem;
+    }
+    .btn-icon:hover { background: #f8fafc; border-color: #94a3b8; }
+    .btn-icon-danger:hover { background: #fee2e2; border-color: #f87171; color: #991b1b; }
+
+    /* Badge */
+    .badge-count {
+      background: #f1f5f9;
+      color: #334155;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    /* Alerts */
+    .alert {
+      border-radius: 1rem;
+      border: none;
+      padding: 1rem 1.25rem;
+    }
+    .alert-success { background: #d1fae5; color: #065f46; }
+    .alert-danger { background: #fee2e2; color: #991b1b; }
+
+    /* Footer */
+    .main-footer {
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
   <!-- Navbar -->
   <?php include("navbar.php"); ?>
-  <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   <?php include("sidebar.php"); ?>
 
-  <!-- Content Wrapper. Contains page content -->
+  <!-- Content Wrapper -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+    <!-- Content Header -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">
-              <span class="page-title-icon bg-gradient-primary text-white me-2">
-                <i class="fa fa-tags"></i>
-              </span>
-              Category Management
-            </h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+            <div class="page-header">
+              <div class="icon"><i class="fas fa-tags"></i></div>
+              <h1>Category Management</h1>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+              <li class="breadcrumb-item active">Categories</li>
+            </ol>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- /.content-header -->
 
     <!-- Main content -->
     <section class="content">
@@ -188,164 +366,111 @@ if (isset($_SESSION['error'])) {
         <?php endif; ?>
 
         <!-- Add/Edit Category Card -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas <?php echo $edit_id ? 'fa-edit' : 'fa-plus-circle'; ?> mr-2"></i>
-                  <?php echo $edit_id ? 'Edit Category' : 'Add New Category'; ?>
-                </h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <form method="POST" action="">
-                  <input type="hidden" name="id" value="<?php echo $edit_id; ?>">
-                  <div class="row">
-                    <div class="col-md-8">
-                      <div class="form-group">
-                        <label for="name">Category Name</label>
-                        <input type="text" 
-                               class="form-control" 
-                               id="name" 
-                               name="name" 
-                               placeholder="e.g., TAXATION & ACCOUNTING"
-                               value="<?php echo htmlspecialchars($edit_name); ?>" 
-                               required>
-                      </div>
-                    </div>
-                    <div class="col-md-4 d-flex align-items-end">
-                      <div class="form-group w-100">
-                        <button type="submit" name="submit" class="btn btn-primary">
-                          <i class="fas <?php echo $edit_id ? 'fa-save' : 'fa-plus'; ?> mr-2"></i>
-                          <?php echo $edit_id ? 'Update Category' : 'Add Category'; ?>
-                        </button>
-                        <?php if ($edit_id): ?>
-                          <a href="catagory.php" class="btn btn-default ml-2">
-                            <i class="fas fa-times mr-1"></i> Cancel
-                          </a>
-                        <?php endif; ?>
-                      </div>
-                    </div>
+        <div class="modern-card">
+          <div class="card-header-custom">
+            <h3>
+              <i class="fas <?php echo $edit_id ? 'fa-edit' : 'fa-plus-circle'; ?>"></i>
+              <?php echo $edit_id ? 'Edit Category' : 'Add New Category'; ?>
+            </h3>
+          </div>
+          <div class="card-body-custom">
+            <form method="POST" action="">
+              <input type="hidden" name="id" value="<?php echo $edit_id; ?>">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="name">Category Name</label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="name" 
+                           name="name" 
+                           placeholder="e.g., TAXATION & ACCOUNTING"
+                           value="<?php echo htmlspecialchars($edit_name); ?>" 
+                           required>
                   </div>
-                </form>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                  <div class="form-group w-100">
+                    <button type="submit" name="submit" class="btn-modern btn-primary-modern">
+                      <i class="fas <?php echo $edit_id ? 'fa-save' : 'fa-plus'; ?>"></i>
+                      <?php echo $edit_id ? 'Update Category' : 'Add Category'; ?>
+                    </button>
+                    <?php if ($edit_id): ?>
+                      <a href="catagory.php" class="btn-modern ml-2">
+                        <i class="fas fa-times"></i> Cancel
+                      </a>
+                    <?php endif; ?>
+                  </div>
+                </div>
               </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+            </form>
           </div>
         </div>
 
         <!-- Categories List Card -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-list mr-2"></i>
-                  All Categories
-                </h3>
+        <div class="modern-card">
+          <div class="card-header-custom">
+            <h3><i class="fas fa-list"></i> All Categories</h3>
+            <span class="badge-count"><?php echo count($categories); ?> total</span>
+          </div>
+          <div class="card-body-custom">
+            <?php if (count($categories) > 0): ?>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Category Name</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach ($categories as $cat): ?>
+                    <tr>
+                      <td><?php echo $cat['id']; ?></td>
+                      <td><?php echo htmlspecialchars($cat['name']); ?></td>
+                      <td>
+                        <a href="catagory.php?edit=<?php echo $cat['id']; ?>" class="btn-icon" title="Edit">
+                          <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="catagory.php?delete=<?php echo $cat['id']; ?>" 
+                           class="btn-icon btn-icon-danger" 
+                           title="Delete"
+                           onclick="return confirm('Are you sure you want to delete this category?');">
+                          <i class="fas fa-trash-alt"></i> Delete
+                        </a>
+                      </td>
+                    </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <?php if (count($categories) > 0): ?>
-                  <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Category Name</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php foreach ($categories as $cat): ?>
-                        <tr>
-                          <td><?php echo $cat['id']; ?></td>
-                          <td><?php echo htmlspecialchars($cat['name']); ?></td>
-                          <td>
-                            <a href="catagory.php?edit=<?php echo $cat['id']; ?>" class="btn btn-sm btn-info" title="Edit">
-                              <i class="fas fa-edit"></i>
-                            </a>
-                            <a href="catagory.php?delete=<?php echo $cat['id']; ?>" 
-                               class="btn btn-sm btn-danger" 
-                               title="Delete"
-                               onclick="return confirm('Are you sure you want to delete this category?');">
-                              <i class="fas fa-trash-alt"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <?php endforeach; ?>
-                      </tbody>
-                    </table>
-                  </div>
-                <?php else: ?>
-                  <p class="text-muted text-center py-4">No categories found. Add one above!</p>
-                <?php endif; ?>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+            <?php else: ?>
+              <p class="text-muted text-center py-4">No categories found. Add one above!</p>
+            <?php endif; ?>
           </div>
         </div>
 
       </div><!-- /.container-fluid -->
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
 
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">Legal Taxation</a></strong>
+    <strong>Copyright &copy; 2014-<?php echo date('Y'); ?> <a href="../index.php">Legal Taxation</a></strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.2.0
     </div>
   </footer>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
-<!-- Optional: auto-dismiss alerts after 3 seconds -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- Optional: auto-dismiss alerts -->
 <script>
   setTimeout(function() {
     document.querySelectorAll('.alert').forEach(function(alert) {

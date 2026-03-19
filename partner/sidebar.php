@@ -1,12 +1,220 @@
 <?php
-// partner/sidebar.php - Partner Dashboard Sidebar
+// partner/sidebar.php - Partner Dashboard Sidebar (Modern Design)
 // This file requires $partner variables to be defined before including
 ?>
+
+<!-- Inter font (if not already loaded) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+
+<!-- Modern Sidebar Styles -->
+<style>
+  /* Force Inter font on sidebar */
+  .main-sidebar * {
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Sidebar background - dark slate */
+  .main-sidebar {
+    background-color: #1e293b !important; /* slate-800 */
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.05);
+    border-right: 1px solid #334155;
+  }
+
+  /* Brand link */
+  .brand-link {
+    border-bottom: 1px solid #334155 !important;
+    padding: 1rem 1rem !important;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .brand-image {
+    border: none !important;
+    opacity: 1 !important;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+
+  .brand-text {
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    color: #f1f5f9 !important;
+    letter-spacing: 0.3px;
+  }
+
+  /* User panel */
+  .user-panel {
+    padding: 1.5rem 1rem !important;
+    border-bottom: 1px solid #334155 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .user-panel .image {
+    width: 48px;
+    height: 48px;
+  }
+
+  .user-panel .image img,
+  .user-panel .image div {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px !important;
+    object-fit: cover;
+  }
+
+  .user-panel .image div {
+    background: #f59e0b; /* amber-500 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+  }
+
+  .user-panel .info {
+    padding-left: 1rem !important;
+  }
+
+  .user-panel .info a {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #f1f5f9 !important;
+    margin-bottom: 0.2rem;
+  }
+
+  .user-panel .info small {
+    font-size: 0.7rem;
+    color: #94a3b8 !important; /* slate-400 */
+    display: block;
+  }
+
+  /* Navigation menu */
+  .nav-sidebar {
+    padding: 1rem 0.75rem;
+  }
+
+  .nav-item {
+    margin-bottom: 0.25rem;
+  }
+
+  /* Top-level nav links */
+  .nav-link {
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.75rem !important;
+    color: #cbd5e1 !important; /* slate-300 */
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .nav-link i {
+    font-size: 1.1rem;
+    width: 1.5rem;
+    color: #64748b; /* slate-500 */
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover {
+    background-color: #334155 !important; /* slate-700 */
+    color: #f1f5f9 !important;
+  }
+
+  .nav-link:hover i {
+    color: #3b82f6 !important; /* blue-500 */
+  }
+
+  .nav-link.active {
+    background-color: #3b82f6 !important; /* blue-500 */
+    color: #ffffff !important;
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+  }
+
+  .nav-link.active i {
+    color: #ffffff !important;
+  }
+
+  /* Treeview / submenu styles */
+  .nav-treeview {
+    margin-left: 0.5rem;
+    padding-left: 0.5rem;
+    border-left: 1px solid #334155;
+  }
+
+  .nav-treeview .nav-item {
+    margin-bottom: 0.15rem;
+  }
+
+  .nav-treeview .nav-link {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem;
+    border-radius: 0.5rem !important;
+  }
+
+  .nav-treeview .nav-link i {
+    font-size: 0.9rem;
+    width: 1.2rem;
+  }
+
+  /* Arrow icons for treeview */
+  .nav-link .right {
+    margin-left: auto;
+    transition: transform 0.2s;
+  }
+
+  .nav-item.menu-open > .nav-link .right {
+    transform: rotate(-90deg);
+  }
+
+  /* Logout special styling */
+  .nav-link.text-danger {
+    color: #f87171 !important; /* red-400 */
+  }
+
+  .nav-link.text-danger i {
+    color: #f87171 !important;
+  }
+
+  .nav-link.text-danger:hover {
+    background-color: #334155 !important;
+    color: #fecaca !important;
+  }
+
+  .nav-link.text-danger:hover i {
+    color: #f87171 !important;
+  }
+
+  /* Scrollbar styling */
+  .sidebar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .sidebar::-webkit-scrollbar-track {
+    background: #1e293b;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb {
+    background: #475569; /* slate-600 */
+    border-radius: 4px;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+</style>
+
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
-        <img src="../images/logo.webp" alt="Legal Taxation Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="../images/logo.png" alt="Legal Taxation Logo" class="brand-image" style="opacity: .8">
         <span class="brand-text font-weight-light">Partner Panel</span>
     </a>
 
@@ -47,13 +255,13 @@
                 ?>
                 <li class="nav-item">
                     <a href="dashboard.php" class="nav-link <?php echo $current_page == 'dashboard.php' ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <i class="nav-icon"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 
                 <!-- Partner Business Menu -->
-                <li class="nav-item has-treeview <?php 
+                <!-- <li class="nav-item has-treeview <?php 
                     echo (isActivePage('my-profile', $current_page) || 
                           isActivePage('business-profile', $current_page)) ? 'menu-open' : ''; 
                 ?>">
@@ -61,7 +269,7 @@
                         echo (isActivePage('my-profile', $current_page) || 
                               isActivePage('business-profile', $current_page)) ? 'active' : ''; 
                     ?>">
-                        <i class="nav-icon fas fa-user-tie"></i>
+                        <i class="nav-icon"></i>
                         <p>
                             Profile
                             <i class="right fas fa-angle-left"></i>
@@ -81,10 +289,10 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 
                 <!-- Referrals & Commissions -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="referrals.php" class="nav-link <?php echo isActivePage('referrals', $current_page) ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Referrals</p>
@@ -103,7 +311,7 @@
                         <i class="nav-icon fas fa-chart-line"></i>
                         <p>Earnings Report</p>
                     </a>
-                </li>
+                </li> -->
 
                 <!-- Services Menu -->
                 <li class="nav-item has-treeview <?php 
@@ -141,7 +349,7 @@
                 </li>
 
                 <!-- Accounting Menu -->
-                <li class="nav-item has-treeview <?php 
+                <!-- <li class="nav-item has-treeview <?php 
                     echo (isActivePage('parties', $current_page) || 
                           isActivePage('add_party', $current_page) || 
                           isActivePage('edit_party', $current_page) ||
@@ -239,10 +447,10 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 
                 <!-- Partner Resources -->
-                <li class="nav-item has-treeview <?php 
+                <!-- <li class="nav-item has-treeview <?php 
                     echo (isActivePage('documents', $current_page) || 
                           isActivePage('resources', $current_page) || 
                           isActivePage('marketing-materials', $current_page)) ? 'menu-open' : ''; 
@@ -278,23 +486,23 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 
                 <!-- Support -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="support.php" class="nav-link <?php echo isActivePage('support', $current_page) ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-headset"></i>
                         <p>Support</p>
                     </a>
-                </li>
+                </li> -->
                 
                 <!-- Settings -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="settings.php" class="nav-link <?php echo isActivePage('settings', $current_page) ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>Settings</p>
                     </a>
-                </li>
+                </li> -->
                 
                 <!-- Change Password -->
                 <li class="nav-item">
@@ -305,30 +513,30 @@
                 </li>
                 
                 <!-- External Links -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="refer-client.php" class="nav-link <?php echo isActivePage('refer-client', $current_page) ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-user-plus"></i>
                         <p>Refer a Client</p>
                     </a>
-                </li>
+                </li> -->
                 
-                <li class="nav-item">
-                    <a href="../service.php" class="nav-link" target="_blank">
-                        <i class="nav-icon fas fa-plus-circle"></i>
-                        <p>Browse Services</p>
-                    </a>
-                </li>
+                    <!-- <li class="nav-item">
+                        <a href="../service.php" class="nav-link" target="_blank">
+                            <i class="nav-icon fas fa-plus-circle"></i>
+                            <p>Browse Services</p>
+                        </a>
+                    </li> -->
                 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="../index.php" class="nav-link" target="_blank">
                         <i class="nav-icon fas fa-globe"></i>
                         <p>Main Website</p>
                     </a>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
                     <a href="../logout.php?return=index" class="nav-link text-danger">
-                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <i class="nav-icon"></i>
                         <p>Logout</p>
                     </a>
                 </li>
@@ -336,5 +544,3 @@
         </nav>
     </div>
 </aside>
-
-<!-- Remove the custom JavaScript at the bottom -->

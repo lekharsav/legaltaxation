@@ -1,25 +1,28 @@
 <?php include('db.php'); ?>
 <!doctype html>
 <html lang="en-gb">
+
 <head>
     <title>Legal Taxation - Professional Tax & Business Solutions</title>
     <link rel="shortcut icon" href="images/favicon.webp" type="image/x-icon" />
     <meta charset="utf-8">
     <meta name="author" content="Legal Taxation">
     <meta name="keywords" content="Taxation, GST, Income Tax, Business Registration, Legal Services, CA Services">
-    <meta name="description" content="Professional tax and business solutions. Get expert CA services, GST filing, business registration, and legal compliance all in one platform.">		
+    <meta name="description"
+        content="Professional tax and business solutions. Get expert CA services, GST filing, business registration, and legal compliance all in one platform.">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
+
     <!-- Google Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
+
     <!-- Styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link href="css/slick.css" rel="stylesheet">
     <link href="css/slick-theme.css" rel="stylesheet">
-    
+
     <style>
         /* ========================================
            Global Styles & Variables
@@ -36,9 +39,9 @@
             --white: #ffffff;
             --gradient-1: linear-gradient(135deg, #4361ee, #7209b7);
             --gradient-2: linear-gradient(135deg, #f72585, #f9c74f);
-            --shadow-sm: 0 5px 15px rgba(0,0,0,0.05);
-            --shadow-md: 0 10px 25px rgba(0,0,0,0.1);
-            --shadow-lg: 0 20px 40px rgba(0,0,0,0.15);
+            --shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
             --border-radius: 20px;
             --transition: all 0.3s ease;
         }
@@ -50,7 +53,12 @@
             overflow-x: hidden;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-weight: 700;
             color: var(--dark);
         }
@@ -108,7 +116,7 @@
         }
 
         .btn-secondary {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             padding: 12px 30px;
             border-radius: 50px;
@@ -117,12 +125,12 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             transition: var(--transition);
         }
 
         .btn-secondary:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             transform: translateY(-3px);
         }
@@ -145,7 +153,7 @@
             right: -10%;
             width: 500px;
             height: 500px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 50%;
         }
 
@@ -156,7 +164,7 @@
             left: -5%;
             width: 400px;
             height: 400px;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 50%;
         }
 
@@ -203,8 +211,15 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
         }
 
         /* ========================================
@@ -375,10 +390,12 @@
             .about-image-item:last-child {
                 transform: translateY(0);
             }
+
             .about-content {
                 padding-right: 0;
                 text-align: center;
             }
+
             .about-content h2::after {
                 left: 50%;
                 transform: translateX(-50%);
@@ -403,33 +420,33 @@
             right: -10%;
             width: 400px;
             height: 400px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
         }
 
         .stat-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             padding: 35px 20px;
             text-align: center;
             transition: var(--transition);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             height: 100%;
         }
 
         .stat-card:hover {
             transform: translateY(-10px);
-            background: rgba(255,255,255,0.15);
-            border-color: rgba(255,255,255,0.3);
-            box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
         }
 
         .stat-icon {
             width: 80px;
             height: 80px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -611,7 +628,7 @@
             margin: 20px 15px;
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.03);
+            border: 1px solid rgba(0, 0, 0, 0.03);
         }
 
         .testimonial-card:hover {
@@ -777,17 +794,17 @@
         .cta-buttons .btn-primary {
             background: white;
             color: var(--dark);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         .cta-buttons .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
         .cta-buttons .btn-secondary {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.5);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         /* ========================================
@@ -797,6 +814,7 @@
             .hero-title {
                 font-size: 42px;
             }
+
             .about-image-item:last-child {
                 transform: translateY(0);
             }
@@ -806,87 +824,152 @@
             .hero-title {
                 font-size: 36px;
             }
+
             .hero-buttons {
                 flex-direction: column;
                 align-items: flex-start;
             }
+
             .section-title h2 {
                 font-size: 30px;
             }
+
             .stat-number {
                 font-size: 36px;
             }
+
             .cta-title {
                 font-size: 30px;
             }
+
             .about-image-grid {
                 margin-top: 30px;
             }
         }
+
+        .education-promo {
+            padding: 60px 0;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            text-align: center;
+        }
+
+        .education-promo .logo-container {
+            margin-bottom: 30px;
+        }
+
+        .education-promo img {
+            max-width: 220px;
+            height: auto;
+        }
+
+        .education-promo h2 {
+            color: #1e40af;
+            font-size: 2.1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .education-promo p {
+            max-width: 780px;
+            margin: 0 auto 1.8rem;
+            color: #334155;
+        }
+
+        .education-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .education-features li {
+            background: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        @media (max-width: 768px) {
+            .education-promo {
+                padding: 50px 15px;
+            }
+
+            .education-promo h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        
     </style>
 </head>
+
 <body>
 
-<?php include("includes/header.php"); ?>
+    <?php include("includes/header.php"); ?>
 
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <div class="hero-content animate__animated animate__fadeInUp">
-                    <h1 class="hero-title">Welcome To Legal <span>Taxation</span></h1>
-                    <p class="hero-description">Legal Taxation is a technology platform to simplify Taxation and business-related matters. Get expert CA services, GST filing, business registration, and legal compliance all in one platform.</p>
-                    <div class="hero-buttons">
-                        <a href="ca-list.php" class="btn-primary"><i class="fas fa-users"></i> Our CA Partners</a>
-                        <a href="#services" class="btn-secondary"><i class="fas fa-cogs"></i> Explore Services</a>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content animate__animated animate__fadeInUp">
+                        <h1 class="hero-title">Welcome To Legal <span>Taxation</span></h1>
+                        <p class="hero-description">Legal Taxation is a technology platform to simplify Taxation and
+                            business-related matters. Get expert CA services, GST filing, business registration, and
+                            legal compliance all in one platform.</p>
+                        <div class="hero-buttons">
+                            <a href="ca-list.php" class="btn-primary"><i class="fas fa-users"></i> Our CA Partners</a>
+                            <a href="#services" class="btn-secondary"><i class="fas fa-cogs"></i> Explore Services</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image animate__animated animate__fadeInRight">
+                        <img src="images/tax-img.png" alt="Legal Taxation Services">
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="hero-image animate__animated animate__fadeInRight">
-                    <img src="images/tax-img.png" alt="Legal Taxation Services">
-                </div>
-            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Features Section -->
-<section class="features-section">
-    <div class="container">
-        <div class="section-title">
-            <h2>Why Choose Legal Taxation?</h2>
-            <p>We provide comprehensive tax and business solutions with expertise and technology</p>
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose Legal Taxation?</h2>
+                <p>We provide comprehensive tax and business solutions with expertise and technology</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                        <h3>High Security</h3>
+                        <p>Your data is protected with enterprise-grade security measures and encryption protocols.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>Advanced Analytics</h3>
+                        <p>Get detailed insights and analytics to make informed financial decisions for your business.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h3>Growth Strategies</h3>
+                        <p>Strategic planning and advisory services to help your business grow and thrive.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-lock"></i></div>
-                    <h3>High Security</h3>
-                    <p>Your data is protected with enterprise-grade security measures and encryption protocols.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3>Advanced Analytics</h3>
-                    <p>Get detailed insights and analytics to make informed financial decisions for your business.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
-                    <h3>Growth Strategies</h3>
-                    <p>Strategic planning and advisory services to help your business grow and thrive.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- About Section (Enhanced) -->
-<section class="about-section">
+    <!-- About Section (Enhanced) -->
+    <!-- <section class="about-section">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
@@ -910,118 +993,258 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
-<!-- Stats Section -->
-<section class="stats-section">
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-briefcase"></i></div>
+                        <div class="stat-number" data-count="2500">0</div>
+                        <div class="stat-label">Complete Projects</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-number" data-count="100">0</div>
+                        <div class="stat-label">Professional Workers</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-smile"></i></div>
+                        <div class="stat-number" data-count="1000">0</div>
+                        <div class="stat-label">Happy Clients</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-award"></i></div>
+                        <div class="stat-number" data-count="100">0</div>
+                        <div class="stat-label">Awards & Recognitions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<!-- === UPDATED LEGAL TAXATION PROMO BLOCK (with 3 images on right) === -->
+<section class="education-promo"  style="padding: 80px 0; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);">
     <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-briefcase"></i></div>
-                    <div class="stat-number" data-count="2500">0</div>
-                    <div class="stat-label">Complete Projects</div>
+        <div class="row align-items-center g-5">
+            <!-- Left: Text content (~60%) – Now taxation-focused -->
+            <div class="col-lg-8">
+                <div class="pe-lg-4">
+
+                    <h2 style="color: #1e40af; font-size: 2.4rem; font-weight: 700; margin-bottom: 1.5rem;">
+                        Experience Our Taxation Services: Simplifying Compliance & Empowering Growth
+                    </h2>
+
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: #334155; margin-bottom: 1.5rem;">
+                        Legal Taxation is your trusted platform for expert tax filing, GST & income tax compliance, business registration, loans, and legal solutions. We make complex regulations simple, accurate, and stress-free so you can focus on growing your business.
+                    </p>
+
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: #334155; margin-bottom: 2rem;">
+                        With technology-driven efficiency, experienced CA partners, and client-first approach, we deliver fast, reliable, and affordable services that build confidence and ensure you're always compliant.
+                    </p>
+
+                    <ul class="education-features list-unstyled d-flex flex-wrap gap-3 mb-4">
+                        <li style="background: white; padding: 10px 24px; border-radius: 50px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); font-weight: 500; color: #1e293b;">
+                            ✓ Expert Tax Filing & Compliance
+                        </li>
+                        <li style="background: white; padding: 10px 24px; border-radius: 50px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); font-weight: 500; color: #1e293b;">
+                            ✓ Startup & Business Registration
+                        </li>
+                        <li style="background: white; padding: 10px 24px; border-radius: 50px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); font-weight: 500; color: #1e293b;">
+                            ✓ Hassle-Free GST & ITR Services
+                        </li>
+                        <li style="background: white; padding: 10px 24px; border-radius: 50px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); font-weight: 500; color: #1e293b;">
+                            ✓ Business Loans & Financial Guidance
+                        </li>
+                        <li style="background: white; padding: 10px 24px; border-radius: 50px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); font-weight: 500; color: #1e293b;">
+                            ✓ 100% Accuracy & Timely Support
+                        </li>
+                    </ul>
+
+                    <!-- Removed 70+ years / legacy part as it doesn't fit -->
+                    <!-- If you have real stats/awards (e.g. "10,000+ Filings" or "Rated 4.9 ★"), add here -->
+
+                    <div class="mt-4">
+                        <a href="service-details.php?id=5" class="btn btn-primary"
+                            style="background: #4361ee; color: white; padding: 14px 40px; border-radius: 50px; font-weight: 600; font-size: 1.1rem; text-decoration: none; box-shadow: 0 8px 20px rgba(67,97,238,0.25); transition: all 0.3s;">
+                            Explore Services
+                        </a>
+                    </div>
+
+                    <!-- Optional: Add real award or testimonial badge if available -->
+                    <!-- <div class="mt-4" style="font-weight: 600; color: #059669; font-size: 1.1rem;">
+                        Trusted by 5000+ Businesses • 4.9 ★ Rating
+                    </div> -->
+
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-users"></i></div>
-                    <div class="stat-number" data-count="100">0</div>
-                    <div class="stat-label">Professional Workers</div>
-                </div>
+
+            <!-- Right: Images (~40%) – 1 centered + text + 2 side by side below -->
+            <div class="col-lg-4">
+    <div class="d-flex flex-column align-items-center gap-4">
+
+        <!-- IMAGE + OVERLAP TEXT -->
+        <div class="iit-container text-center mt-4 mb-5">
+
+            <img
+                class="iit-logo"
+                src="images/iit patna.png"
+                alt="Incubated by IIT Patna"
+            >
+
+            <svg class="iit-curve" viewBox="0 0 600 320"
+d="M60,150 Q300,300 540,150"
+height:220px style="font-size: 40px;
+    font-weight: 100;">
+                <path id="smileCurve"
+                      d="M60,100 Q300,170 540,100"
+                      fill="none"
+                      stroke="none" />
+
+                <text class="curve-text">
+                    <textPath href="#smileCurve"
+                        startOffset="50%"
+                        text-anchor="middle">
+
+                        Incubated and maintained by IIT Patna
+
+                    </textPath>
+                </text>
+            </svg>
+
+        </div>
+
+
+        <!-- ✅ YOUR TWO IMAGES (NOT REMOVED) -->
+        <div class="row g-4 w-100">
+
+            <div class="col-6">
+                <img
+                    src="images/Rajesh.jpg"
+                    alt="GST Filing Dashboard"
+                    style="
+                        border-radius: 12px;
+                        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                        height: 180px;
+                       
+                    "
+                >
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-smile"></i></div>
-                    <div class="stat-number" data-count="1000">0</div>
-                    <div class="stat-label">Happy Clients</div>
-                </div>
+
+            <div class="col-6">
+                <img
+                    src="images/success.png"
+                    alt="Business Compliance Services"
+                    style="
+                        border-radius: 12px;
+                        height: 180px;
+                       margin-left: 20px;
+                    "
+                >
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-award"></i></div>
-                    <div class="stat-number" data-count="100">0</div>
-                    <div class="stat-label">Awards & Recognitions</div>
-                </div>
-            </div>
+
+        </div>
+
+    </div>
+</div>
         </div>
     </div>
 </section>
+<!-- === END UPDATED BLOCK === -->
 
-<!-- Services Section -->
-<section id="services" class="services-section">
-    <div class="container">
-        <div class="section-title">
-            <h2>Our Professional Services</h2>
-            <p>Comprehensive solutions for all your business and tax needs</p>
-        </div>
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6">
-                <div class="service-card">
-                    <div class="service-image">
-                        <img src="images/what_img1.webp" alt="Startup Services">
-                        <div class="service-overlay">
-                            <span class="service-tag">Popular</span>
-                        </div>
-                    </div>
-                    <div class="service-content">
-                        <h3>Startup Registration</h3>
-                        <p>Complete solutions for new business registration including proprietorship, partnership, and private limited company formation.</p>
-                        <div class="service-price">
-                            <span class="original-price">₹10,000</span>
-                            <span class="discount-price">₹8,000</span>
-                        </div>
-                        <a href="#" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="service-card">
-                    <div class="service-image">
-                        <img src="images/what_img2.webp" alt="GST & Income Tax">
-                        <div class="service-overlay">
-                            <span class="service-tag">Trending</span>
-                        </div>
-                    </div>
-                    <div class="service-content">
-                        <h3>GST & Income Tax</h3>
-                        <p>Professional GST registration, filing, and income tax return preparation services for businesses and individuals.</p>
-                        <div class="service-price">
-                            <span class="original-price">₹10,000</span>
-                            <span class="discount-price">₹8,000</span>
-                        </div>
-                        <a href="#" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="service-card">
-                    <div class="service-image">
-                        <img src="images/what_img3.webp" alt="Finance Services">
-                        <div class="service-overlay">
-                            <span class="service-tag">New</span>
-                        </div>
-                    </div>
-                    <div class="service-content">
-                        <h3>Financial Services</h3>
-                        <p>Business loans, working capital financing, and investment advisory services for business growth.</p>
-                        <div class="service-price">
-                            <span class="original-price">₹10,000</span>
-                            <span class="discount-price">₹8,000</span>
-                        </div>
-                        <a href="#" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="text-center mt-5">
-            <a href="service.php" class="btn-primary"><i class="fas fa-eye me-2"></i> View All Services</a>
-        </div>
-    </div>
-</section>
 
-<!-- Testimonials Section -->
-<section class="testimonials-section">
+
+
+
+
+
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Professional Services</h2>
+                <p>Comprehensive solutions for all your business and tax needs</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="images/what_img1.webp" alt="Startup Services">
+                            <div class="service-overlay">
+                                <span class="service-tag">Popular</span>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h3>Startup Registration</h3>
+                            <p>Complete solutions for new business registration including proprietorship, partnership,
+                                and private limited company formation.</p>
+                            <div class="service-price">
+                                <span class="original-price">₹10,000</span>
+                                <span class="discount-price">₹8,000</span>
+                            </div>
+                            <a href="#" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="images/what_img2.webp" alt="GST & Income Tax">
+                            <div class="service-overlay">
+                                <span class="service-tag">Trending</span>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h3>GST & Income Tax</h3>
+                            <p>Professional GST registration, filing, and income tax return preparation services for
+                                businesses and individuals.</p>
+                            <div class="service-price">
+                                <span class="original-price">₹10,000</span>
+                                <span class="discount-price">₹8,000</span>
+                            </div>
+                            <a href="#" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="images/what_img3.webp" alt="Finance Services">
+                            <div class="service-overlay">
+                                <span class="service-tag">New</span>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h3>Financial Services</h3>
+                            <p>Business loans, working capital financing, and investment advisory services for business
+                                growth.</p>
+                            <div class="service-price">
+                                <span class="original-price">₹10,000</span>
+                                <span class="discount-price">₹8,000</span>
+                            </div>
+                            <a href="#" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="service.php" class="btn-primary"><i class="fas fa-eye me-2"></i> View All Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <!-- <section class="testimonials-section">
     <div class="container">
         <div class="section-title">
             <h2>What Our Clients Say</h2>
@@ -1054,106 +1277,108 @@
                     </div>
                 </div>
             </div>
-            <!-- Add more testimonials as needed -->
+         
         </div>
     </div>
-</section>
+</section> -->
 
-<!-- CTA Section -->
-<section class="cta-section">
-    <div class="container">
-        <h2 class="cta-title">Ready to Simplify Your Taxation?</h2>
-        <p class="cta-description">Join thousands of satisfied clients who trust Legal Taxation for their business and tax needs.</p>
-        <div class="cta-buttons">
-            <a href="user-login.php" class="btn-primary"><i class="fas fa-user-plus"></i> Register Now</a>
-            <a href="contact-us.html" class="btn-secondary"><i class="fas fa-headset"></i> Contact Us</a>
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Ready to Simplify Your Taxation?</h2>
+            <p class="cta-description">Join thousands of satisfied clients who trust Legal Taxation for their business
+                and tax needs.</p>
+            <div class="cta-buttons">
+                <a href="user-login.php" class="btn-primary"><i class="fas fa-user-plus"></i> Register Now</a>
+                <a href="contact-us.html" class="btn-secondary"><i class="fas fa-headset"></i> Contact Us</a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<?php include("includes/footer.php"); ?>
+    <?php include("includes/footer.php"); ?>
 
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="js/slick.min.js"></script>
-<script>
-    $(document).ready(function(){
-        // Testimonial slider
-        $('.testimonial-slider').slick({
-            dots: true,
-            arrows: true,
-            infinite: true,
-            speed: 500,
-            slidesToShow: 2,
-            slidesToScroll: 1,
-            autoplay: true,
-            autoplaySpeed: 5000,
-            prevArrow: '<button class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
-            nextArrow: '<button class="slick-next"><i class="fas fa-chevron-right"></i></button>',
-            responsive: [
-                {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 2
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Testimonial slider
+            $('.testimonial-slider').slick({
+                dots: true,
+                arrows: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 2,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                prevArrow: '<button class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
+                nextArrow: '<button class="slick-next"><i class="fas fa-chevron-right"></i></button>',
+                responsive: [
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 1,
+                            arrows: false
+                        }
                     }
-                },
-                {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 1,
-                        arrows: false
-                    }
-                }
-            ]
-        });
-
-        // Counter animation
-        function isElementInViewport(el) {
-            var rect = el.getBoundingClientRect();
-            return (
-                rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
-        }
-
-        function animateCounter($el) {
-            var countTo = $el.data('count');
-            $({ countNum: 0 }).animate({ countNum: countTo }, {
-                duration: 2000,
-                easing: 'swing',
-                step: function() {
-                    $el.text(Math.floor(this.countNum));
-                },
-                complete: function() {
-                    $el.text(this.countNum);
-                }
+                ]
             });
-        }
 
-        var $statNumbers = $('.stat-number');
-        var animated = false;
+            // Counter animation
+            function isElementInViewport(el) {
+                var rect = el.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
 
-        function checkCounters() {
-            if (!animated) {
-                $statNumbers.each(function() {
-                    if (isElementInViewport(this)) {
-                        animated = true;
-                        $statNumbers.each(function() {
-                            animateCounter($(this));
-                        });
-                        return false;
+            function animateCounter($el) {
+                var countTo = $el.data('count');
+                $({ countNum: 0 }).animate({ countNum: countTo }, {
+                    duration: 2000,
+                    easing: 'swing',
+                    step: function () {
+                        $el.text(Math.floor(this.countNum));
+                    },
+                    complete: function () {
+                        $el.text(this.countNum);
                     }
                 });
             }
-        }
 
-        checkCounters();
-        $(window).on('scroll', function() {
+            var $statNumbers = $('.stat-number');
+            var animated = false;
+
+            function checkCounters() {
+                if (!animated) {
+                    $statNumbers.each(function () {
+                        if (isElementInViewport(this)) {
+                            animated = true;
+                            $statNumbers.each(function () {
+                                animateCounter($(this));
+                            });
+                            return false;
+                        }
+                    });
+                }
+            }
+
             checkCounters();
+            $(window).on('scroll', function () {
+                checkCounters();
+            });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>

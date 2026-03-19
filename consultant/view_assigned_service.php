@@ -162,84 +162,321 @@ while($row = $sql->fetch_assoc()){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>View Assigned Service - Legal Taxation</title>
-  
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
+  <title>View Assigned Service - CA Dashboard | Legal Taxation</title>
+
+  <!-- Google Font: Inter (modern, clean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Theme style (AdminLTE 3) - we keep for layout but override heavily -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+
   <style>
-    .info-card {
-      border-left: 4px solid #007bff;
-      margin-bottom: 20px;
+    * {
+      font-family: 'Inter', sans-serif;
     }
-    .user-type-badge {
-      padding: 3px 8px;
-      border-radius: 15px;
-      font-size: 0.8rem;
-      font-weight: normal;
+
+    body {
+      background-color: #f8fafc;
     }
-    .customer-badge {
-      background-color: #28a745;
-      color: white;
+
+    .wrapper {
+      background-color: #f8fafc;
     }
-    .partner-badge {
-      background-color: #007bff;
-      color: white;
+
+    /* Override AdminLTE defaults */
+    .main-header {
+      background-color: #ffffff !important;
+      border-bottom: 1px solid #e9ecef;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
-    .field-value {
-      background: #f8f9fa;
-      padding: 8px;
-      border-radius: 4px;
-      border-left: 3px solid #28a745;
+
+    .content-wrapper {
+      background-color: #f8fafc;
     }
-    .document-item {
-      border: 1px solid #dee2e6;
-      border-radius: 4px;
-      padding: 10px;
-      margin-bottom: 10px;
-      transition: all 0.3s;
+
+    /* Page Header */
+    .page-header {
+      margin-bottom: 2rem;
     }
-    .document-item:hover {
-      background: #f8f9fa;
-      border-color: #007bff;
+
+    .page-header h1 {
+      font-weight: 600;
+      font-size: 1.875rem;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
     }
-    .timeline-item {
-      padding: 15px;
-      border-left: 3px solid #007bff;
-      background: #f8f9fa;
-      margin-bottom: 10px;
-      border-radius: 0 5px 5px 0;
+
+    .page-header h1 i {
+      color: #3b82f6;
+      margin-right: 0.75rem;
+      font-size: 2rem;
     }
-    .status-badge {
-      padding: 5px 10px;
-      border-radius: 15px;
+
+    .page-header .breadcrumb {
+      background: transparent;
+      padding: 0;
+      margin: 0;
       font-size: 0.9rem;
     }
+
+    .page-header .breadcrumb a {
+      color: #64748b;
+    }
+
+    .page-header .breadcrumb .active {
+      color: #0f172a;
+      font-weight: 500;
+    }
+
+    /* Action Bar */
+    .action-bar {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn-group-modern {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-modern {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 100px;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-modern:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+      color: #0f172a;
+    }
+
+    .btn-modern-primary {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #ffffff;
+    }
+    .btn-modern-primary:hover {
+      background: #2563eb;
+      border-color: #2563eb;
+    }
+
+    .btn-modern-success {
+      background: #10b981;
+      border-color: #10b981;
+      color: #ffffff;
+    }
+    .btn-modern-success:hover {
+      background: #059669;
+      border-color: #059669;
+    }
+
+    .badge-modern {
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .badge-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .badge-completed {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .badge-customer {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .badge-partner {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    /* Cards */
+    .detail-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      border: 1px solid #f1f5f9;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .detail-card-header {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      background: #f8fafc;
+    }
+
+    .detail-card-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .detail-card-header h3 i {
+      color: #3b82f6;
+    }
+
+    .detail-card-body {
+      padding: 1.5rem 1.75rem;
+    }
+
+    /* Info tables */
+    .info-table {
+      width: 100%;
+    }
+    .info-table tr td {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .info-table tr:last-child td {
+      border-bottom: none;
+    }
+    .info-table td:first-child {
+      font-weight: 500;
+      color: #64748b;
+      width: 40%;
+    }
+    .info-table td:last-child {
+      color: #0f172a;
+      font-weight: 500;
+    }
+
     .price-highlight {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #28a745;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #10b981;
     }
-    .client-tab {
-      cursor: pointer;
-      padding: 8px 15px;
-      margin-right: 5px;
-      border: 1px solid #dee2e6;
-      border-radius: 5px 5px 0 0;
+
+    /* Progress bar */
+    .progress-modern {
+      height: 0.5rem;
+      background: #e9ecef;
+      border-radius: 1rem;
+      overflow: hidden;
     }
-    .client-tab.active {
-      background: #007bff;
-      color: white;
-      border-color: #007bff;
+    .progress-bar-modern {
+      height: 100%;
+      border-radius: 1rem;
     }
-    .client-content {
-      border: 1px solid #dee2e6;
-      padding: 20px;
-      border-radius: 0 5px 5px 5px;
-      margin-top: -1px;
+
+    /* Tabs */
+    .nav-tabs-modern {
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .nav-tabs-modern .nav-link {
+      border: none;
+      color: #64748b;
+      font-weight: 500;
+      padding: 0.75rem 1.25rem;
+      margin-right: 0.25rem;
+      border-radius: 100px 100px 0 0;
+    }
+    .nav-tabs-modern .nav-link:hover {
+      color: #0f172a;
+      background: #f1f5f9;
+    }
+    .nav-tabs-modern .nav-link.active {
+      color: #3b82f6;
+      background: transparent;
+      border-bottom: 2px solid #3b82f6;
+    }
+
+    .tab-content-modern {
+      padding: 1.5rem 0;
+    }
+
+    /* Field value */
+    .field-value {
+      background: #f8fafc;
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      border-left: 3px solid #3b82f6;
+    }
+
+    /* Documents */
+    .document-item {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 1rem;
+      padding: 1rem;
+      transition: all 0.2s;
+    }
+    .document-item:hover {
+      border-color: #3b82f6;
+      background: #ffffff;
+    }
+    .document-item a {
+      color: #0f172a;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .document-item i {
+      font-size: 1.5rem;
+    }
+    .fa-file-pdf { color: #ef4444; }
+    .fa-file-image { color: #3b82f6; }
+    .fa-file { color: #64748b; }
+
+    /* Notes */
+    .note-item {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .note-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .note-header strong {
+      color: #0f172a;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .action-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -248,22 +485,24 @@ while($row = $sql->fetch_assoc()){
 
   <!-- Navbar -->
   <?php include('navbar.php'); ?>
-  <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
+  <!-- Sidebar -->
   <?php include('sidebar.php'); ?>
 
   <!-- Content Wrapper -->
   <div class="content-wrapper">
     <!-- Content Header -->
-    <div class="content-header">
+    <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row mb-3">
           <div class="col-sm-6">
-            <h1 class="m-0">
-              <i class="fas fa-file-alt mr-2"></i>Service Details
-              <small class="text-muted">Application #<?php echo $application_id; ?></small>
-            </h1>
+            <div class="page-header">
+              <h1>
+                <i class="fas fa-file-alt"></i>
+                Service Details
+                <span class="text-muted" style="font-size: 1rem; margin-left: 0.5rem;">#<?php echo $application_id; ?></span>
+              </h1>
+            </div>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -274,144 +513,133 @@ while($row = $sql->fetch_assoc()){
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        
-        <!-- Quick Actions Row -->
-        <div class="row mb-3">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <div class="btn-group">
-                  <a href="assigned_services.php" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Back
-                  </a>
-                  <?php if($user_type == 'partner' && $total_clients > 1): ?>
-                    <a href="view_partner_clients_ca.php?application_id=<?php echo $application_id; ?>" class="btn btn-primary">
-                      <i class="fas fa-users"></i> View All Clients
-                    </a>
-                  <?php else: ?>
-                    <a href="view_customer_form.php?application_id=<?php echo $application_id; ?>" class="btn btn-primary">
-                      <i class="fas fa-file-alt"></i> View Form Data
-                    </a>
-                  <?php endif; ?>
-                  <button type="button" class="btn btn-success" onclick="updateStatus(<?php echo $application_id; ?>, <?php echo $application['status']; ?>)">
-                    <i class="fas fa-<?php echo $application['status'] == '0' ? 'check' : 'undo'; ?>"></i>
-                    <?php echo $application['status'] == '0' ? 'Mark Completed' : 'Mark Pending'; ?>
-                  </button>
-                  <button type="button" class="btn btn-info" onclick="window.print()">
-                    <i class="fas fa-print"></i> Print
-                  </button>
-                </div>
-                
-                <div class="float-right">
-                  <span class="badge <?php echo $application['status'] == '0' ? 'badge-warning' : 'badge-success'; ?> status-badge mr-2">
-                    <?php echo $application['status'] == '0' ? 'Pending' : 'Completed'; ?>
-                  </span>
-                  <span class="user-type-badge <?php echo $user_type == 'customer' ? 'customer-badge' : 'partner-badge'; ?>">
-                    <?php echo ucfirst($user_type); ?> Application
-                  </span>
-                </div>
-              </div>
-            </div>
+
+        <!-- Action Bar -->
+        <div class="action-bar">
+          <div class="btn-group-modern">
+            <a href="assigned_services.php" class="btn-modern">
+              <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <?php if($user_type == 'partner' && $total_clients > 1): ?>
+              <a href="view_partner_clients_ca.php?application_id=<?php echo $application_id; ?>" class="btn-modern btn-modern-primary">
+                <i class="fas fa-users"></i> View All Clients
+              </a>
+            <?php else: ?>
+              <a href="view_customer_form.php?application_id=<?php echo $application_id; ?>" class="btn-modern btn-modern-primary">
+                <i class="fas fa-file-alt"></i> View Form Data
+              </a>
+            <?php endif; ?>
+            <button type="button" class="btn-modern btn-modern-success" onclick="updateStatus(<?php echo $application_id; ?>, <?php echo $application['status']; ?>)">
+              <i class="fas fa-<?php echo $application['status'] == '0' ? 'check' : 'undo'; ?>"></i>
+              <?php echo $application['status'] == '0' ? 'Mark Completed' : 'Mark Pending'; ?>
+            </button>
+            <button type="button" class="btn-modern" onclick="window.print()">
+              <i class="fas fa-print"></i> Print
+            </button>
+          </div>
+          <div>
+            <span class="badge-modern <?php echo $application['status'] == '0' ? 'badge-pending' : 'badge-completed'; ?> mr-2">
+              <?php echo $application['status'] == '0' ? 'Pending' : 'Completed'; ?>
+            </span>
+            <span class="badge-modern <?php echo $user_type == 'customer' ? 'badge-customer' : 'badge-partner'; ?>">
+              <?php echo ucfirst($user_type); ?> Application
+            </span>
           </div>
         </div>
 
         <!-- Main Details Row -->
         <div class="row">
           <!-- Left Column - User and Payment Details -->
-          <div class="col-md-4">
-            <!-- User Information -->
-            <div class="card info-card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-user mr-2"></i>
-                  <?php echo $user_type == 'customer' ? 'Customer' : 'Partner'; ?> Information
-                </h3>
+          <div class="col-lg-4">
+            <!-- User Information Card -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <h3><i class="fas fa-user"></i> <?php echo $user_type == 'customer' ? 'Customer' : 'Partner'; ?> Information</h3>
               </div>
-              <div class="card-body">
-                <table class="table table-sm">
+              <div class="detail-card-body">
+                <table class="info-table">
                   <tr>
-                    <th width="40%">Name:</th>
+                    <td>Name:</td>
                     <td><strong><?php echo htmlspecialchars($application['user_name']); ?></strong></td>
                   </tr>
                   <tr>
-                    <th>Email:</th>
+                    <td>Email:</td>
                     <td><a href="mailto:<?php echo $application['user_email']; ?>"><?php echo htmlspecialchars($application['user_email']); ?></a></td>
                   </tr>
                   <tr>
-                    <th>Contact:</th>
+                    <td>Contact:</td>
                     <td><a href="tel:<?php echo $application['user_contact']; ?>"><?php echo htmlspecialchars($application['user_contact']); ?></a></td>
                   </tr>
                   <tr>
-                    <th>ID:</th>
+                    <td>ID:</td>
                     <td><span class="badge badge-secondary">#<?php echo $application[$user_type == 'customer' ? 'cid' : 'partner_id']; ?></span></td>
                   </tr>
                   <?php if($user_type == 'partner'): ?>
                   <tr>
-                    <th>Business:</th>
+                    <td>Business:</td>
                     <td><?php echo htmlspecialchars($application['business_name'] ?? 'N/A'); ?></td>
                   </tr>
                   <tr>
-                    <th>GST:</th>
+                    <td>GST:</td>
                     <td><?php echo htmlspecialchars($application['gst_number'] ?? 'N/A'); ?></td>
                   </tr>
                   <?php endif; ?>
                 </table>
-                
                 <div class="mt-3">
-                  <a href="mailto:<?php echo $application['user_email']; ?>" class="btn btn-sm btn-outline-primary">
+                  <a href="mailto:<?php echo $application['user_email']; ?>" class="btn-modern">
                     <i class="fas fa-envelope"></i> Email
                   </a>
-                  <a href="tel:<?php echo $application['user_contact']; ?>" class="btn btn-sm btn-outline-success">
+                  <a href="tel:<?php echo $application['user_contact']; ?>" class="btn-modern">
                     <i class="fas fa-phone"></i> Call
                   </a>
                 </div>
               </div>
             </div>
-            
-            <!-- Payment Information -->
+
+            <!-- Payment Information Card (if exists) -->
             <?php if($application['payment_status']): ?>
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-credit-card mr-2"></i>Payment Details</h3>
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <h3><i class="fas fa-credit-card"></i> Payment Details</h3>
               </div>
-              <div class="card-body">
-                <table class="table table-sm">
+              <div class="detail-card-body">
+                <table class="info-table">
                   <tr>
-                    <th>Status:</th>
+                    <td>Status:</td>
                     <td>
-                      <span class="badge badge-<?php echo $application['payment_status'] == 'Success' ? 'success' : 'warning'; ?>">
+                      <span class="badge-modern <?php echo $application['payment_status'] == 'Success' ? 'badge-completed' : 'badge-pending'; ?>">
                         <?php echo $application['payment_status']; ?>
                       </span>
                     </td>
                   </tr>
                   <tr>
-                    <th>Amount:</th>
+                    <td>Amount:</td>
                     <td class="price-highlight">₹<?php echo number_format($application['total_amount'], 2); ?></td>
                   </tr>
                   <tr>
-                    <th>Unit Price:</th>
+                    <td>Unit Price:</td>
                     <td>₹<?php echo number_format($application['unit_price'], 2); ?></td>
                   </tr>
                   <?php if($application['is_partner_price_applied']): ?>
                   <tr>
-                    <th>Partner Price:</th>
-                    <td><span class="badge badge-success">Applied</span></td>
+                    <td>Partner Price:</td>
+                    <td><span class="badge-modern badge-completed">Applied</span></td>
                   </tr>
                   <?php endif; ?>
                   <?php if($application['billing_name']): ?>
                   <tr>
-                    <th>Billed To:</th>
+                    <td>Billed To:</td>
                     <td><?php echo htmlspecialchars($application['billing_name']); ?></td>
                   </tr>
                   <?php endif; ?>
                   <?php if($application['payment_date']): ?>
                   <tr>
-                    <th>Date:</th>
+                    <td>Date:</td>
                     <td><?php echo date('d M Y', strtotime($application['payment_date'])); ?></td>
                   </tr>
                   <?php endif; ?>
@@ -419,20 +647,20 @@ while($row = $sql->fetch_assoc()){
               </div>
             </div>
             <?php endif; ?>
-            
-            <!-- Application Info -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-info-circle mr-2"></i>Application Info</h3>
+
+            <!-- Application Info Card -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <h3><i class="fas fa-info-circle"></i> Application Info</h3>
               </div>
-              <div class="card-body">
-                <table class="table table-sm">
+              <div class="detail-card-body">
+                <table class="info-table">
                   <tr>
-                    <th>Applied On:</th>
+                    <td>Applied On:</td>
                     <td><?php echo date('d M Y, h:i A', strtotime($application['created'])); ?></td>
                   </tr>
                   <tr>
-                    <th>Clients:</th>
+                    <td>Clients:</td>
                     <td>
                       <?php echo $total_clients; ?>
                       <?php if($user_type == 'partner' && $total_clients > 1): ?>
@@ -441,69 +669,66 @@ while($row = $sql->fetch_assoc()){
                     </td>
                   </tr>
                   <tr>
-                    <th>Form Progress:</th>
+                    <td>Form Progress:</td>
                     <td>
-                      <div class="progress progress-sm">
-                        <div class="progress-bar bg-<?php echo $completion_percentage >= 100 ? 'success' : ($completion_percentage >= 50 ? 'warning' : 'danger'); ?>" 
-                             style="width: <?php echo $completion_percentage; ?>%"></div>
+                      <div class="progress-modern">
+                        <div class="progress-bar-modern bg-<?php echo $completion_percentage >= 100 ? 'success' : ($completion_percentage >= 50 ? 'warning' : 'danger'); ?>" 
+                             style="width: <?php echo $completion_percentage; ?>%;"></div>
                       </div>
                       <small><?php echo $completion_percentage; ?>% (<?php echo $total_responses; ?>/<?php echo $total_expected_fields; ?> fields)</small>
                     </td>
                   </tr>
                   <tr>
-                    <th>Documents:</th>
+                    <td>Documents:</td>
                     <td><span class="badge badge-info"><?php echo count($documents); ?> uploaded</span></td>
                   </tr>
                 </table>
               </div>
             </div>
           </div>
-          
+
           <!-- Right Column - Service and Form Details -->
-          <div class="col-md-8">
-            <!-- Service Information -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-copy mr-2"></i><?php echo htmlspecialchars($application['service_title']); ?>
-                  <small class="text-muted ml-2">(<?php echo htmlspecialchars($application['category_name']); ?>)</small>
-                </h3>
+          <div class="col-lg-8">
+            <!-- Service Information Card -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <h3><i class="fas fa-copy"></i> <?php echo htmlspecialchars($application['service_title']); ?></h3>
               </div>
-              <div class="card-body">
+              <div class="detail-card-body">
+                <div class="mb-3">
+                  <span class="badge badge-info"><?php echo htmlspecialchars($application['category_name']); ?></span>
+                </div>
                 <?php if($application['short_description']): ?>
                 <div class="mb-3">
-                  <h6>Short Description:</h6>
+                  <h6 style="font-weight: 600;">Short Description</h6>
                   <p><?php echo nl2br(htmlspecialchars($application['short_description'])); ?></p>
                 </div>
                 <?php endif; ?>
-                
                 <?php if($application['full_description']): ?>
                 <div>
-                  <h6>Full Description:</h6>
-                  <div class="p-3 bg-light">
+                  <h6 style="font-weight: 600;">Full Description</h6>
+                  <div class="p-3 bg-light rounded">
                     <?php echo $application['full_description']; ?>
                   </div>
                 </div>
                 <?php endif; ?>
               </div>
             </div>
-            
-            <!-- Form Data Summary -->
+
+            <!-- Form Data Summary Card -->
             <?php if(!empty($form_fields)): ?>
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-file-alt mr-2"></i>Form Data Summary
-                </h3>
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <h3><i class="fas fa-file-alt"></i> Form Data Summary</h3>
                 <?php if($user_type == 'partner' && $total_clients > 1): ?>
-                <div class="card-tools">
-                  <a href="view_partner_clients_ca.php?application_id=<?php echo $application_id; ?>" class="btn btn-sm btn-primary">
+                <div>
+                  <a href="view_partner_clients_ca.php?application_id=<?php echo $application_id; ?>" class="btn-modern btn-modern-primary btn-sm">
                     <i class="fas fa-users"></i> View All Clients
                   </a>
                 </div>
                 <?php endif; ?>
               </div>
-              <div class="card-body">
+              <div class="detail-card-body">
                 <?php if(empty($form_responses)): ?>
                   <div class="alert alert-warning">
                     <i class="fas fa-exclamation-triangle"></i> 
@@ -512,14 +737,16 @@ while($row = $sql->fetch_assoc()){
                 <?php else: ?>
                   <?php if($user_type == 'partner' && $total_clients > 1): ?>
                     <!-- Client Tabs -->
-                    <ul class="nav nav-tabs" id="clientTabs">
+                    <ul class="nav nav-tabs-modern" id="clientTabs" role="tablist">
                       <?php for($i = 1; $i <= $total_clients; $i++): 
                         $client_responses = $form_responses[$i] ?? [];
                       ?>
-                      <li class="nav-item">
+                      <li class="nav-item" role="presentation">
                         <a class="nav-link <?php echo $i == 1 ? 'active' : ''; ?>" 
+                           id="client-<?php echo $i; ?>-tab" 
                            data-toggle="tab" 
-                           href="#client-<?php echo $i; ?>">
+                           href="#client-<?php echo $i; ?>" 
+                           role="tab">
                           Client <?php echo $i; ?>
                           <span class="badge badge-<?php echo count($client_responses) == count($form_fields) ? 'success' : 'warning'; ?> ml-1">
                             <?php echo count($client_responses); ?>/<?php echo count($form_fields); ?>
@@ -529,111 +756,118 @@ while($row = $sql->fetch_assoc()){
                       <?php endfor; ?>
                     </ul>
                     
-                    <!-- Tab Content -->
-                    <div class="tab-content mt-3">
+                    <div class="tab-content-modern tab-content" id="clientTabsContent">
                       <?php for($i = 1; $i <= $total_clients; $i++): 
                         $client_responses = $form_responses[$i] ?? [];
                       ?>
-                      <div class="tab-pane fade <?php echo $i == 1 ? 'show active' : ''; ?>" id="client-<?php echo $i; ?>">
+                      <div class="tab-pane fade <?php echo $i == 1 ? 'show active' : ''; ?>" 
+                           id="client-<?php echo $i; ?>" 
+                           role="tabpanel">
                         <?php if(empty($client_responses)): ?>
                           <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle"></i> 
                             No form data for this client.
                           </div>
                         <?php else: ?>
-                          <table class="table table-bordered table-sm">
-                            <?php foreach($form_fields as $field): 
-                              $response = $client_responses[$field['id']] ?? null;
-                            ?>
-                              <tr>
-                                <th width="30%"><?php echo htmlspecialchars($field['field_label']); ?></th>
-                                <td>
-                                  <?php if($response): ?>
-                                    <?php if($field['field_type'] == 'file'): ?>
-                                      <a href="../uploads/service_docs/<?php echo $response['field_value']; ?>" target="_blank">
-                                        <i class="fas fa-download"></i> Download
-                                      </a>
-                                    <?php elseif($field['field_type'] == 'checkbox'): 
-                                      $values = explode(',', $response['field_value']);
-                                      foreach($values as $val): ?>
-                                        <span class="badge badge-primary"><?php echo htmlspecialchars(trim($val)); ?></span>
-                                      <?php endforeach;
-                                    else: ?>
-                                      <?php echo nl2br(htmlspecialchars($response['field_value'])); ?>
+                          <div class="table-responsive">
+                            <table class="table">
+                              <?php foreach($form_fields as $field): 
+                                $response = $client_responses[$field['id']] ?? null;
+                              ?>
+                                <tr>
+                                  <th width="30%"><?php echo htmlspecialchars($field['field_label']); ?></th>
+                                  <td>
+                                    <?php if($response): ?>
+                                      <?php if($field['field_type'] == 'file'): ?>
+                                        <a href="../uploads/service_docs/<?php echo $response['field_value']; ?>" target="_blank">
+                                          <i class="fas fa-download"></i> Download
+                                        </a>
+                                      <?php elseif($field['field_type'] == 'checkbox'): 
+                                        $values = explode(',', $response['field_value']);
+                                        foreach($values as $val): ?>
+                                          <span class="badge badge-primary"><?php echo htmlspecialchars(trim($val)); ?></span>
+                                        <?php endforeach;
+                                      else: ?>
+                                        <?php echo nl2br(htmlspecialchars($response['field_value'])); ?>
+                                      <?php endif; ?>
+                                    <?php else: ?>
+                                      <span class="text-muted">Not provided</span>
                                     <?php endif; ?>
-                                  <?php else: ?>
-                                    <span class="text-muted">Not provided</span>
-                                  <?php endif; ?>
-                                </td>
-                              </tr>
-                            <?php endforeach; ?>
-                          </table>
+                                  </td>
+                                </tr>
+                              <?php endforeach; ?>
+                            </table>
+                          </div>
                         <?php endif; ?>
                       </div>
                       <?php endfor; ?>
                     </div>
                   <?php else: ?>
                     <!-- Single Client View -->
-                    <table class="table table-bordered">
-                      <?php 
-                      $client_responses = $form_responses[1] ?? [];
-                      foreach($form_fields as $field): 
-                        $response = $client_responses[$field['id']] ?? null;
-                      ?>
-                        <tr>
-                          <th width="30%"><?php echo htmlspecialchars($field['field_label']); ?></th>
-                          <td>
-                            <?php if($response): ?>
-                              <?php if($field['field_type'] == 'file'): ?>
-                                <a href="../uploads/service_docs/<?php echo $response['field_value']; ?>" target="_blank">
-                                  <i class="fas fa-download"></i> Download File
-                                </a>
-                              <?php elseif($field['field_type'] == 'checkbox'): 
-                                $values = explode(',', $response['field_value']);
-                                foreach($values as $val): ?>
-                                  <span class="badge badge-primary"><?php echo htmlspecialchars(trim($val)); ?></span>
-                                <?php endforeach;
-                              else: ?>
-                                <?php echo nl2br(htmlspecialchars($response['field_value'])); ?>
+                    <div class="table-responsive">
+                      <table class="table">
+                        <?php 
+                        $client_responses = $form_responses[1] ?? [];
+                        foreach($form_fields as $field): 
+                          $response = $client_responses[$field['id']] ?? null;
+                        ?>
+                          <tr>
+                            <th width="30%"><?php echo htmlspecialchars($field['field_label']); ?></th>
+                            <td>
+                              <?php if($response): ?>
+                                <?php if($field['field_type'] == 'file'): ?>
+                                  <a href="../uploads/service_docs/<?php echo $response['field_value']; ?>" target="_blank">
+                                    <i class="fas fa-download"></i> Download File
+                                  </a>
+                                <?php elseif($field['field_type'] == 'checkbox'): 
+                                  $values = explode(',', $response['field_value']);
+                                  foreach($values as $val): ?>
+                                    <span class="badge badge-primary"><?php echo htmlspecialchars(trim($val)); ?></span>
+                                  <?php endforeach;
+                                else: ?>
+                                  <?php echo nl2br(htmlspecialchars($response['field_value'])); ?>
+                                <?php endif; ?>
+                              <?php else: ?>
+                                <span class="text-muted">Not provided</span>
                               <?php endif; ?>
-                            <?php else: ?>
-                              <span class="text-muted">Not provided</span>
-                            <?php endif; ?>
-                          </td>
-                        </tr>
-                      <?php endforeach; ?>
-                    </table>
+                            </td>
+                          </tr>
+                        <?php endforeach; ?>
+                      </table>
+                    </div>
                   <?php endif; ?>
                 <?php endif; ?>
               </div>
             </div>
             <?php endif; ?>
-            
-            <!-- Documents -->
+
+            <!-- Documents Card -->
             <?php if(!empty($documents)): ?>
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-file-upload mr-2"></i>Uploaded Documents</h3>
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <h3><i class="fas fa-file-upload"></i> Uploaded Documents</h3>
               </div>
-              <div class="card-body">
+              <div class="detail-card-body">
                 <div class="row">
                   <?php foreach($documents as $doc): ?>
-                  <div class="col-md-6">
+                  <div class="col-md-6 mb-3">
                     <div class="document-item">
                       <a href="../uploads/<?php echo $doc['file']; ?>" target="_blank">
                         <?php if(preg_match('/\.pdf$/i', $doc['file'])): ?>
-                          <i class="fas fa-file-pdf fa-2x text-danger mr-2"></i>
+                          <i class="fas fa-file-pdf fa-2x"></i>
                         <?php elseif(preg_match('/\.(jpg|jpeg|png|gif)$/i', $doc['file'])): ?>
-                          <i class="fas fa-file-image fa-2x text-primary mr-2"></i>
+                          <i class="fas fa-file-image fa-2x"></i>
                         <?php else: ?>
-                          <i class="fas fa-file fa-2x text-secondary mr-2"></i>
+                          <i class="fas fa-file fa-2x"></i>
                         <?php endif; ?>
-                        <strong><?php echo htmlspecialchars($doc['doc_name'] ?? 'Document'); ?></strong>
+                        <div>
+                          <strong><?php echo htmlspecialchars($doc['doc_name'] ?? 'Document'); ?></strong>
+                          <br>
+                          <small class="text-muted">
+                            <i class="fas fa-calendar"></i> <?php echo date('d M Y', strtotime($doc['created'])); ?>
+                          </small>
+                        </div>
                       </a>
-                      <br>
-                      <small class="text-muted">
-                        <i class="fas fa-calendar"></i> <?php echo date('d M Y', strtotime($doc['created'])); ?>
-                      </small>
                     </div>
                   </div>
                   <?php endforeach; ?>
@@ -641,21 +875,21 @@ while($row = $sql->fetch_assoc()){
               </div>
             </div>
             <?php endif; ?>
-            
-            <!-- Admin Notes -->
+
+            <!-- Admin Notes Card -->
             <?php if(!empty($notes)): ?>
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-sticky-note mr-2"></i>Admin Notes</h3>
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <h3><i class="fas fa-sticky-note"></i> Admin Notes</h3>
               </div>
-              <div class="card-body">
+              <div class="detail-card-body">
                 <?php foreach($notes as $note): ?>
-                <div class="timeline-item">
-                  <div class="d-flex justify-content-between">
+                <div class="note-item">
+                  <div class="note-header">
                     <strong><?php echo htmlspecialchars($note['admin_name'] ?? 'Admin'); ?></strong>
-                    <small class="text-muted"><?php echo date('d M Y, h:i A', strtotime($note['created_at'])); ?></small>
+                    <small><?php echo date('d M Y, h:i A', strtotime($note['created_at'])); ?></small>
                   </div>
-                  <p class="mb-0 mt-2"><?php echo nl2br(htmlspecialchars($note['notes'])); ?></p>
+                  <p class="mb-0"><?php echo nl2br(htmlspecialchars($note['notes'])); ?></p>
                 </div>
                 <?php endforeach; ?>
               </div>
@@ -663,7 +897,7 @@ while($row = $sql->fetch_assoc()){
             <?php endif; ?>
           </div>
         </div>
-        
+
       </div><!-- /.container-fluid -->
     </section>
   </div>

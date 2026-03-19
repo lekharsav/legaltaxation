@@ -127,59 +127,322 @@ $completion_percentage = $total_fields > 0 ? round(($filled_fields / $total_fiel
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>View Customer Form - Legal Taxation</title>
-  
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
+  <title>Customer Form Data - CA Dashboard | Legal Taxation</title>
+
+  <!-- Google Font: Inter (modern, clean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Theme style (AdminLTE 3) - we keep for layout but override heavily -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+
   <style>
-    .form-card {
-      border-left: 4px solid #007bff;
-      margin-bottom: 20px;
+    * {
+      font-family: 'Inter', sans-serif;
     }
-    .user-info {
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 5px;
+
+    body {
+      background-color: #f8fafc;
     }
+
+    .wrapper {
+      background-color: #f8fafc;
+    }
+
+    /* Override AdminLTE defaults */
+    .main-header {
+      background-color: #ffffff !important;
+      border-bottom: 1px solid #e9ecef;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .content-wrapper {
+      background-color: #f8fafc;
+    }
+
+    /* Page Header */
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-weight: 600;
+      font-size: 1.875rem;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .page-header h1 i {
+      color: #3b82f6;
+      margin-right: 0.75rem;
+      font-size: 2rem;
+    }
+
+    .page-header .breadcrumb {
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .page-header .breadcrumb a {
+      color: #64748b;
+    }
+
+    .page-header .breadcrumb .active {
+      color: #0f172a;
+      font-weight: 500;
+    }
+
+    /* Info Bar */
+    .info-bar {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .user-details h5 {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+    }
+
+    .user-details p {
+      color: #475569;
+      margin-bottom: 0.25rem;
+      font-size: 0.9rem;
+    }
+
+    .user-details i {
+      color: #3b82f6;
+      width: 18px;
+    }
+
+    .btn-group-modern {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-modern {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 100px;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-modern:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+      color: #0f172a;
+    }
+
+    .btn-modern-primary {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #ffffff;
+    }
+    .btn-modern-primary:hover {
+      background: #2563eb;
+      border-color: #2563eb;
+    }
+
+    .btn-modern-info {
+      background: #e0f2fe;
+      border-color: #bae6fd;
+      color: #0369a1;
+    }
+    .btn-modern-info:hover {
+      background: #bae6fd;
+    }
+
+    /* Cards */
+    .detail-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      border: 1px solid #f1f5f9;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .detail-card-header {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      background: #f8fafc;
+    }
+
+    .detail-card-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .detail-card-header h3 i {
+      color: #3b82f6;
+    }
+
+    .detail-card-body {
+      padding: 1.5rem 1.75rem;
+    }
+
+    .detail-card-footer {
+      padding: 1rem 1.75rem;
+      border-top: 1px solid #f1f5f9;
+      background: #f8fafc;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    /* Progress */
+    .progress-modern {
+      height: 0.5rem;
+      background: #e9ecef;
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+    .progress-bar-modern {
+      height: 100%;
+      border-radius: 1rem;
+    }
+
+    /* Form fields */
     .field-group {
-      margin-bottom: 20px;
-      border-bottom: 1px solid #dee2e6;
-      padding-bottom: 15px;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 1.5rem;
+    }
+    .field-group:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
     }
     .field-label {
-      font-weight: bold;
-      color: #495057;
-      margin-bottom: 5px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .field-label .badge {
+      font-size: 0.7rem;
     }
     .field-value {
-      background: #f8f9fa;
-      padding: 12px;
-      border-radius: 5px;
-      border-left: 3px solid #28a745;
+      background: #f8fafc;
+      border-radius: 1rem;
+      padding: 1rem;
+      border-left: 3px solid #3b82f6;
     }
+
+    /* Documents */
     .document-item {
-      padding: 10px;
-      border: 1px solid #dee2e6;
-      border-radius: 5px;
-      margin-bottom: 10px;
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      transition: all 0.2s;
     }
     .document-item:hover {
-      background: #f8f9fa;
+      border-color: #3b82f6;
+      background: #ffffff;
     }
-    .progress-thin {
-      height: 8px;
+    .document-item a {
+      color: #0f172a;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
-    .badge-complete {
-      background-color: #28a745;
-      color: white;
+    .document-item i {
+      font-size: 1.5rem;
     }
-    .badge-incomplete {
-      background-color: #dc3545;
-      color: white;
+    .fa-file-pdf { color: #ef4444; }
+    .fa-file-image { color: #3b82f6; }
+    .fa-file-word { color: #0284c7; }
+    .fa-file { color: #64748b; }
+
+    /* Info boxes */
+    .info-box-modern {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .info-box-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    .info-box-content {
+      flex: 1;
+    }
+    .info-box-label {
+      font-size: 0.8rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .info-box-number {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    /* Badges */
+    .badge-modern {
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .badge-success { background: #d1fae5; color: #065f46; }
+    .badge-warning { background: #fff3cd; color: #856404; }
+    .badge-danger { background: #fee2e2; color: #991b1b; }
+    .badge-info { background: #e0f2fe; color: #0284c7; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .info-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -188,22 +451,24 @@ $completion_percentage = $total_fields > 0 ? round(($filled_fields / $total_fiel
 
   <!-- Navbar -->
   <?php include('navbar.php'); ?>
-  <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
+  <!-- Sidebar -->
   <?php include('sidebar.php'); ?>
 
   <!-- Content Wrapper -->
   <div class="content-wrapper">
     <!-- Content Header -->
-    <div class="content-header">
+    <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row mb-3">
           <div class="col-sm-6">
-            <h1 class="m-0">
-              <i class="fas fa-file-alt mr-2"></i>Customer Form Data
-              <small class="text-muted">Application #<?php echo $application_id; ?></small>
-            </h1>
+            <div class="page-header">
+              <h1>
+                <i class="fas fa-file-alt"></i>
+                Customer Form Data
+                <span class="text-muted" style="font-size: 1rem; margin-left: 0.5rem;">#<?php echo $application_id; ?></span>
+              </h1>
+            </div>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -215,93 +480,71 @@ $completion_percentage = $total_fields > 0 ? round(($filled_fields / $total_fiel
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        
-        <!-- Quick Info Row -->
-        <div class="row mb-3">
-          <div class="col-md-12">
-            <div class="card card-primary">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-8">
-                    <h5>
-                      <i class="fas fa-user mr-2"></i>
-                      <?php echo htmlspecialchars($application['user_name']); ?>
-                      <small class="text-muted">(<?php echo ucfirst($user_type); ?>)</small>
-                    </h5>
-                    <p class="mb-1">
-                      <i class="fas fa-envelope"></i> <?php echo htmlspecialchars($application['user_email']); ?> |
-                      <i class="fas fa-phone"></i> <?php echo htmlspecialchars($application['user_contact']); ?>
-                    </p>
-                    <p class="mb-0">
-                      <i class="fas fa-copy"></i> <?php echo htmlspecialchars($application['service_title']); ?>
-                      <span class="badge badge-info ml-2"><?php echo htmlspecialchars($application['category_name']); ?></span>
-                    </p>
-                  </div>
-                  <div class="col-md-4 text-right">
-                    <div class="btn-group">
-                      <a href="view_assigned_service.php?application_id=<?php echo $application_id; ?>" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Back
-                      </a>
-                      <a href="mailto:<?php echo $application['user_email']; ?>" class="btn btn-info">
-                        <i class="fas fa-envelope"></i> Email
-                      </a>
-                      <button type="button" class="btn btn-primary" onclick="window.print()">
-                        <i class="fas fa-print"></i> Print
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+
+        <!-- Info Bar -->
+        <div class="info-bar">
+          <div class="user-details">
+            <h5>
+              <i class="fas fa-user mr-2"></i><?php echo htmlspecialchars($application['user_name']); ?>
+              <span class="badge-modern <?php echo $user_type == 'customer' ? 'badge-success' : 'badge-info'; ?>">
+                <?php echo ucfirst($user_type); ?>
+              </span>
+            </h5>
+            <p><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($application['user_email']); ?></p>
+            <p><i class="fas fa-phone-alt"></i> <?php echo htmlspecialchars($application['user_contact']); ?></p>
+            <p><i class="fas fa-copy"></i> <?php echo htmlspecialchars($application['service_title']); ?> 
+              <span class="badge badge-info"><?php echo htmlspecialchars($application['category_name']); ?></span>
+            </p>
+          </div>
+          <div class="btn-group-modern">
+            <a href="view_assigned_service.php?application_id=<?php echo $application_id; ?>" class="btn-modern">
+              <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <a href="mailto:<?php echo $application['user_email']; ?>" class="btn-modern btn-modern-info">
+              <i class="fas fa-envelope"></i> Email
+            </a>
+            <button type="button" class="btn-modern" onclick="window.print()">
+              <i class="fas fa-print"></i> Print
+            </button>
           </div>
         </div>
 
         <div class="row">
-          <!-- Form Data Column -->
-          <div class="col-md-8">
-            <!-- Form Completion Progress -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-chart-bar mr-2"></i>Form Completion
-                  <span class="badge badge-<?php echo $completion_percentage >= 100 ? 'success' : ($completion_percentage >= 50 ? 'warning' : 'danger'); ?> ml-2">
-                    <?php echo $completion_percentage; ?>%
-                  </span>
-                </h3>
+          <!-- Left Column - Form Data -->
+          <div class="col-lg-8">
+            <!-- Progress Card -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <h3><i class="fas fa-chart-bar"></i> Form Completion</h3>
+                <span class="badge-modern <?php echo $completion_percentage >= 100 ? 'badge-success' : ($completion_percentage >= 50 ? 'badge-warning' : 'badge-danger'); ?>">
+                  <?php echo $completion_percentage; ?>%
+                </span>
               </div>
-              <div class="card-body">
-                <div class="progress progress-thin">
-                  <div class="progress-bar bg-<?php echo $completion_percentage >= 100 ? 'success' : ($completion_percentage >= 50 ? 'warning' : 'danger'); ?>" 
-                       style="width: <?php echo $completion_percentage; ?>%"></div>
+              <div class="detail-card-body">
+                <div class="progress-modern">
+                  <div class="progress-bar-modern bg-<?php echo $completion_percentage >= 100 ? 'success' : ($completion_percentage >= 50 ? 'warning' : 'danger'); ?>" 
+                       style="width: <?php echo $completion_percentage; ?>%;"></div>
                 </div>
-                <p class="text-muted mt-2">
-                  <?php echo $filled_fields; ?> out of <?php echo $total_fields; ?> fields filled
-                </p>
+                <p class="text-muted mt-2"><?php echo $filled_fields; ?> out of <?php echo $total_fields; ?> fields filled</p>
               </div>
             </div>
-            
-            <!-- Form Fields -->
+
+            <!-- Form Fields Card -->
             <?php if(empty($form_fields)): ?>
-              <div class="alert alert-info">
-                <i class="fas fa-info-circle"></i> No form fields configured for this service.
-              </div>
+              <div class="alert alert-info">No form fields configured for this service.</div>
             <?php elseif(empty($form_responses)): ?>
-              <div class="alert alert-warning">
-                <i class="fas fa-exclamation-triangle"></i> No form data has been submitted yet.
-              </div>
+              <div class="alert alert-warning">No form data has been submitted yet.</div>
             <?php else: ?>
-              <div class="card form-card">
-                <div class="card-header">
-                  <h3 class="card-title">
-                    <i class="fas fa-list-alt mr-2"></i>Submitted Form Data
-                  </h3>
+              <div class="detail-card">
+                <div class="detail-card-header">
+                  <h3><i class="fas fa-list-alt"></i> Submitted Form Data</h3>
                 </div>
-                <div class="card-body">
+                <div class="detail-card-body">
                   <?php foreach($form_fields as $field): 
                     $response = $form_responses[$field['id']] ?? null;
                     $has_response = !empty($response);
@@ -310,15 +553,15 @@ $completion_percentage = $total_fields > 0 ? round(($filled_fields / $total_fiel
                       <div class="field-label">
                         <?php echo htmlspecialchars($field['field_label']); ?>
                         <?php if($field['is_required']): ?>
-                          <span class="badge badge-danger ml-2">Required</span>
+                          <span class="badge badge-danger">Required</span>
                         <?php endif; ?>
-                        <small class="text-muted ml-2">(<?php echo $field['field_name']; ?>)</small>
+                        <small class="text-muted">(<?php echo $field['field_name']; ?>)</small>
                       </div>
                       
                       <?php if($has_response): ?>
                         <div class="field-value">
                           <?php if($field['field_type'] == 'file'): ?>
-                            <a href="../uploads/service_docs/<?php echo $response['field_value']; ?>" target="_blank" class="btn btn-sm btn-info">
+                            <a href="../uploads/service_docs/<?php echo $response['field_value']; ?>" target="_blank" class="btn-modern btn-modern-info btn-sm">
                               <i class="fas fa-download"></i> Download File
                             </a>
                             <small class="text-muted d-block mt-1"><?php echo basename($response['field_value']); ?></small>
@@ -348,125 +591,127 @@ $completion_percentage = $total_fields > 0 ? round(($filled_fields / $total_fiel
                           <?php endif; ?>
                         </div>
                       <?php else: ?>
-                        <div class="text-muted font-italic p-2 bg-light rounded">
+                        <div class="text-muted font-italic p-3 bg-light rounded">
                           Not provided
                         </div>
                       <?php endif; ?>
                     </div>
                   <?php endforeach; ?>
                 </div>
-                <div class="card-footer">
-                  <small class="text-muted">
-                    <i class="fas fa-clock"></i> Last updated: 
-                    <?php 
-                    if(!empty($form_responses)){
-                        $last_response = end($form_responses);
-                        echo date('d M Y, h:i A', strtotime($last_response['created_at']));
-                    } else {
-                        echo 'Never';
-                    }
-                    ?>
-                  </small>
+                <div class="detail-card-footer">
+                  <i class="fas fa-clock"></i> Last updated: 
+                  <?php 
+                  if(!empty($form_responses)){
+                      $last_response = end($form_responses);
+                      echo date('d M Y, h:i A', strtotime($last_response['created_at']));
+                  } else {
+                      echo 'Never';
+                  }
+                  ?>
                 </div>
               </div>
             <?php endif; ?>
           </div>
-          
-          <!-- Sidebar Column -->
-          <div class="col-md-4">
+
+          <!-- Right Column - Sidebar -->
+          <div class="col-lg-4">
             <!-- Documents Card -->
-            <div class="card">
-              <div class="card-header bg-success">
-                <h3 class="card-title">
-                  <i class="fas fa-file-upload mr-2"></i>Uploaded Documents
-                  <span class="badge badge-light ml-2"><?php echo count($documents); ?></span>
-                </h3>
+            <div class="detail-card">
+              <div class="detail-card-header" style="background: #d1fae5;">
+                <h3><i class="fas fa-file-upload" style="color: #065f46;"></i> Uploaded Documents</h3>
+                <span class="badge-modern badge-success"><?php echo count($documents); ?></span>
               </div>
-              <div class="card-body">
+              <div class="detail-card-body">
                 <?php if(empty($documents)): ?>
-                  <p class="text-muted text-center py-3">
-                    <i class="fas fa-folder-open fa-3x mb-2"></i><br>
-                    No documents uploaded
-                  </p>
+                  <div class="text-center py-4">
+                    <i class="fas fa-folder-open fa-3x text-muted mb-2"></i>
+                    <p class="text-muted">No documents uploaded</p>
+                  </div>
                 <?php else: ?>
                   <?php foreach($documents as $doc): ?>
                   <div class="document-item">
-                    <a href="../uploads/<?php echo $doc['file']; ?>" target="_blank" class="d-block">
+                    <a href="../uploads/<?php echo $doc['file']; ?>" target="_blank">
                       <?php if(preg_match('/\.pdf$/i', $doc['file'])): ?>
-                        <i class="fas fa-file-pdf text-danger mr-2"></i>
+                        <i class="fas fa-file-pdf fa-2x"></i>
                       <?php elseif(preg_match('/\.(jpg|jpeg|png|gif)$/i', $doc['file'])): ?>
-                        <i class="fas fa-file-image text-primary mr-2"></i>
+                        <i class="fas fa-file-image fa-2x"></i>
                       <?php elseif(preg_match('/\.(doc|docx)$/i', $doc['file'])): ?>
-                        <i class="fas fa-file-word text-info mr-2"></i>
+                        <i class="fas fa-file-word fa-2x"></i>
                       <?php else: ?>
-                        <i class="fas fa-file text-secondary mr-2"></i>
+                        <i class="fas fa-file fa-2x"></i>
                       <?php endif; ?>
-                      <strong><?php echo htmlspecialchars($doc['doc_name'] ?? 'Document'); ?></strong>
+                      <div>
+                        <strong><?php echo htmlspecialchars($doc['doc_name'] ?? 'Document'); ?></strong>
+                        <br>
+                        <small class="text-muted"><i class="fas fa-calendar-alt"></i> <?php echo date('d M Y', strtotime($doc['created'])); ?></small>
+                      </div>
                     </a>
-                    <small class="text-muted d-block mt-1">
-                      <i class="fas fa-calendar-alt"></i> <?php echo date('d M Y', strtotime($doc['created'])); ?>
-                    </small>
                   </div>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </div>
             </div>
-            
+
             <!-- Quick Stats Card -->
-            <div class="card mt-3">
-              <div class="card-header bg-info">
-                <h3 class="card-title"><i class="fas fa-chart-pie mr-2"></i>Quick Stats</h3>
+            <div class="detail-card mt-3">
+              <div class="detail-card-header" style="background: #e0f2fe;">
+                <h3><i class="fas fa-chart-pie" style="color: #0284c7;"></i> Quick Stats</h3>
               </div>
-              <div class="card-body">
-                <div class="info-box bg-light">
-                  <span class="info-box-icon bg-primary"><i class="fas fa-file-alt"></i></span>
+              <div class="detail-card-body">
+                <div class="info-box-modern">
+                  <div class="info-box-icon" style="background: #e0f2fe; color: #0284c7;">
+                    <i class="fas fa-file-alt"></i>
+                  </div>
                   <div class="info-box-content">
-                    <span class="info-box-text">Form Fields</span>
-                    <span class="info-box-number"><?php echo $total_fields; ?></span>
+                    <div class="info-box-label">Form Fields</div>
+                    <div class="info-box-number"><?php echo $total_fields; ?></div>
                   </div>
                 </div>
-                
-                <div class="info-box bg-light">
-                  <span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span>
+                <div class="info-box-modern">
+                  <div class="info-box-icon" style="background: #d1fae5; color: #065f46;">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
                   <div class="info-box-content">
-                    <span class="info-box-text">Filled Fields</span>
-                    <span class="info-box-number"><?php echo $filled_fields; ?></span>
+                    <div class="info-box-label">Filled Fields</div>
+                    <div class="info-box-number"><?php echo $filled_fields; ?></div>
                   </div>
                 </div>
-                
-                <div class="info-box bg-light">
-                  <span class="info-box-icon bg-warning"><i class="fas fa-file-upload"></i></span>
+                <div class="info-box-modern">
+                  <div class="info-box-icon" style="background: #fef9c3; color: #a16207;">
+                    <i class="fas fa-file-upload"></i>
+                  </div>
                   <div class="info-box-content">
-                    <span class="info-box-text">Documents</span>
-                    <span class="info-box-number"><?php echo count($documents); ?></span>
+                    <div class="info-box-label">Documents</div>
+                    <div class="info-box-number"><?php echo count($documents); ?></div>
                   </div>
                 </div>
-                
-                <div class="info-box bg-light">
-                  <span class="info-box-icon bg-secondary"><i class="fas fa-clock"></i></span>
+                <div class="info-box-modern">
+                  <div class="info-box-icon" style="background: #f1f5f9; color: #334155;">
+                    <i class="fas fa-clock"></i>
+                  </div>
                   <div class="info-box-content">
-                    <span class="info-box-text">Applied On</span>
-                    <span class="info-box-number"><?php echo date('d M Y', strtotime($application['created'])); ?></span>
+                    <div class="info-box-label">Applied On</div>
+                    <div class="info-box-number"><?php echo date('d M Y', strtotime($application['created'])); ?></div>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <!-- Actions Card -->
-            <div class="card mt-3">
-              <div class="card-header bg-secondary">
-                <h3 class="card-title"><i class="fas fa-bolt mr-2"></i>Actions</h3>
+            <div class="detail-card mt-3">
+              <div class="detail-card-header" style="background: #f1f5f9;">
+                <h3><i class="fas fa-bolt" style="color: #334155;"></i> Actions</h3>
               </div>
-              <div class="card-body">
+              <div class="detail-card-body">
                 <div class="d-grid gap-2">
-                  <a href="view_assigned_service.php?application_id=<?php echo $application_id; ?>" class="btn btn-outline-primary btn-block">
+                  <a href="view_assigned_service.php?application_id=<?php echo $application_id; ?>" class="btn-modern btn-block">
                     <i class="fas fa-info-circle"></i> View Full Details
                   </a>
-                  <button type="button" class="btn btn-outline-success btn-block" onclick="updateStatus(<?php echo $application_id; ?>, <?php echo $application['status']; ?>)">
+                  <button type="button" class="btn-modern btn-modern-primary btn-block" onclick="updateStatus(<?php echo $application_id; ?>, <?php echo $application['status']; ?>)">
                     <i class="fas fa-<?php echo $application['status'] == '0' ? 'check' : 'undo'; ?>"></i>
                     <?php echo $application['status'] == '0' ? 'Mark Completed' : 'Mark Pending'; ?>
                   </button>
-                  <a href="mailto:<?php echo $application['user_email']; ?>" class="btn btn-outline-info btn-block">
+                  <a href="mailto:<?php echo $application['user_email']; ?>" class="btn-modern btn-modern-info btn-block">
                     <i class="fas fa-envelope"></i> Send Email
                   </a>
                 </div>
@@ -474,7 +719,7 @@ $completion_percentage = $total_fields > 0 ? round(($filled_fields / $total_fiel
             </div>
           </div>
         </div>
-        
+
       </div><!-- /.container-fluid -->
     </section>
   </div>

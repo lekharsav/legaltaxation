@@ -80,19 +80,17 @@
     </div>
 </section>
 
-<div class="copy_area">
+<div class="copy_area" style="padding: 20px 0; background: #f8fafc; border-top: 1px solid #e2e8f0;">
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <p>© Copyrights 2023 Legal Taxation | All rights reserved.</p>
-            </div>
-			<div class="col-md-6 copy_right">
-                <p>Design & Developed by <a href="https://aimdigitalise.in/" target="new">Aim Digitalise</a></p>
+            <div class="col-12 text-center">
+                <p style="margin: 0; font-size: 0.95rem; color: #64748b;">
+                    © Copyrights 2023 Legal Taxation | All rights reserved.
+                </p>
             </div>
         </div>
     </div>
 </div>
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
