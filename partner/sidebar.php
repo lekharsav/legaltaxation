@@ -227,7 +227,7 @@
                     <img src="../uploads/partners/<?php echo $partner_image; ?>" class="img-circle elevation-2" alt="Partner Image" onerror="this.src='../assets/images/default-user.jpg'">
                 <?php else: ?>
                     <div class="img-circle elevation-2 bg-warning d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                        <i class="fas fa-user-tie text-white"></i>
+                        <i class="fas"></i>
                     </div>
                 <?php endif; ?>
             </div>
@@ -326,7 +326,7 @@
                               isActivePage('service-details', $current_page) ||
                               isActivePage('client-details', $current_page)) ? 'active' : ''; 
                     ?>">
-                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <i class="nav-icon"></i>
                         <p>
                             Services
                             <i class="right fas fa-angle-left"></i>
@@ -505,12 +505,12 @@
                 </li> -->
                 
                 <!-- Change Password -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="change-password.php" class="nav-link <?php echo isActivePage('change-password', $current_page) ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-key"></i>
                         <p>Change Password</p>
                     </a>
-                </li>
+                </li> -->
                 
                 <!-- External Links -->
                 <!-- <li class="nav-item">
